@@ -6,18 +6,8 @@ function Nav() {
       <ul className="Nav">
         <li className="itemnav">
           <a href="/ins">
-            <img src="../public/ins.png" className="img_menu" alt="img_menu" />
-          </a>
-        </li>
-        <li className="itemnav">
-          <a href="">
-            <img src="../public/mask.png" className="img_menu" alt="img_menu" />
-          </a>
-        </li>
-        <li className="itemnav">
-          <a href="">
             <img
-              src="../public/tarjeta.png"
+              src="../public/icons/ins.png"
               className="img_menu"
               alt="img_menu"
             />
@@ -26,7 +16,25 @@ function Nav() {
         <li className="itemnav">
           <a href="">
             <img
-              src="../public/avatarDefault.png"
+              src="../public/icons/mask.png"
+              className="img_menu"
+              alt="img_menu"
+            />
+          </a>
+        </li>
+        <li className="itemnav">
+          <a href="">
+            <img
+              src="../public/icons/tarjeta.png"
+              className="img_menu"
+              alt="img_menu"
+            />
+          </a>
+        </li>
+        <li className="itemnav">
+          <a href="">
+            <img
+              src="../public/icons/avatarDefault.png"
               className="img_menu"
               alt="img_menu"
             />
