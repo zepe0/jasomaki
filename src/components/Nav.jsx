@@ -14,7 +14,7 @@ function Nav() {
           </a>
         </li>
         <li className="itemnav">
-          <a href="">
+          <a href="/traje">
             <img
               src="../public/icons/mask.png"
               className="img_menu"
@@ -23,7 +23,7 @@ function Nav() {
           </a>
         </li>
         <li className="itemnav">
-          <a href="">
+          <a href="/pagos">
             <img
               src="../public/icons/tarjeta.png"
               className="img_menu"
@@ -32,7 +32,7 @@ function Nav() {
           </a>
         </li>
         <li className="itemnav">
-          <a href="">
+          <a href="/Perfil">
             <img
               src="../public/icons/avatarDefault.png"
               className="img_menu"
