@@ -1,22 +1,26 @@
 .Nav {
   display: flex;
-  width: 375px;
-  height: 102px;
+  min-width: 375px;
+  min-height: 102px;
   flex-direction: row;
   /* gap: 16px; */
   align-items: center;
   justify-content: space-between;
   list-style: none;
+  padding: 4px;
 }
 .itemnav {
-  width: 87px;
-  height: 81px;
+  min-width: 87px;
+  min-height: 81px;
   background-color: #c553c8;
   display: flex;
   border: solid black 1px;
   border-radius: 20%;
+  align-items: center;
+  justify-content: center;
 }
-.itemnav> img {
-  width: 50px;
-  height: 50px;
+a > img {
+  max-width: 50px;
+  max-height: 50px;
+  padding: 4px;
 }

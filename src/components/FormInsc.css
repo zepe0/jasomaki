@@ -1,0 +1,13 @@
+.FormInsc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.inputFormIns {
+  text-align: center;
+}
+.inputFormIns::placeholder {
+  text-align: center;
+}
+
+
