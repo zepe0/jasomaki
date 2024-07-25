@@ -1,17 +1,18 @@
 .Nav {
   display: flex;
-  min-width: 375px;
-  min-height: 102px;
+  flex-wrap: wrap;
+  /*  min-width: 375px; */
+  min-height: 55px;
   flex-direction: row;
-  /* gap: 16px; */
+   gap: 16px; 
   align-items: center;
   justify-content: space-between;
   list-style: none;
-  padding: 4px;
+  margin-right: 10%;
 }
 .itemnav {
-  min-width: 87px;
-  min-height: 81px;
+  min-width: 60px;
+  min-height: 60px;
   background-color: #c553c8;
   display: flex;
   border: solid black 1px;

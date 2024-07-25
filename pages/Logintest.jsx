@@ -1,36 +1,31 @@
-import Nav from "../src/components/Nav";
-import error from "../error/index";
 import toast, { Toaster } from "react-hot-toast";
+import Nav from "../src/components/Nav";
 
 function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
-    const nombre = e.target.Nombre.value;
-    const dni = e.target.DNI.value;
-    const tel = e.target.tel.value;
 
-   
-
-      const formData = {
-        nombre: e.target.Nombre.value,
-        dni: e.target.DNI.value,
-        tel: e.target.tel.value,
-      };
-
-    fetch('http://localhost/login.php', { // Usa la URL directa al servidor PHP
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify(formData),
-})
-.then(response => response.json())
-.then(data => {
-  console.log('Respuesta del servidor:', data);
-})
-.catch(error => {
-  console.error('Hubo un problema con la solicitud:', error);
-});
+    fetch("http://localhost/jasomaki/api/login/login2.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // Agregar otros encabezados si es necesario
+      },
+      // Si necesitas enviar datos, agrega el cuerpo de la solicitud
+      // body: JSON.stringify({ key: 'value' })
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        toast.error("Respuesta del servidor:", data);
+      })
+      .catch((error) => {
+       toast.error("Hubo un problema con la solicitud:", error);
+      });
   };
   return (
     <>
@@ -61,7 +56,7 @@ function Login() {
           <button type="submit">Registrar</button>
         </form>
       </div>
-      <Toaster />
+      <Toaster/>
     </>
   );
 }

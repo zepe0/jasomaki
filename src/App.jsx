@@ -1,6 +1,6 @@
 import Home from "../pages/Home";
 import Inscripciones from "../pages/Inscripciones";
-import Login from "../pages/Login";
+import Login from "../pages/Logintest";
 import Pagos from "../pages/Pagos";
 import Perfil from "../pages/Perfil";
 import Traje from "../pages/Traje";
@@ -18,7 +18,7 @@ function App() {
           <Route path="/Traje" element={<Traje />} />
           <Route path="/pagos" element={<Pagos />} />
           <Route path="/Perfil" element={<Perfil />} />
-          <Route path="/Login" element={<Login />} />
+          <Route path="/Login/*" element={<Login />} />
         </Routes>
       </BrowserRouter>
     </>
