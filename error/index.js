@@ -5,23 +5,23 @@ const EMAIL_REGEX =
 
 function validateString(string, explain = "string") {
   if (typeof string !== "string")
-    return new TypeError(`${explain} is not a string`);
+    throw new TypeError(`${explain} is not a string`);
 }
 
-function validateStringNotEmptyOrBlank(string, explain = "string") {
+function validateStringNotEmptyOrBlank(string, explain = "Campo") {
   validateString(string, explain);
 
-  if (!string.length) return new Error(`${explain} is empty`);
+  if (!string.length) throw new Error(`${explain} vació`);
 
-  if (!string.trim().length) return new Error(`${explain} is blank`);
+  if (!string.trim().length) throw new Error(`${explain} is blank`);
 }
 
 function validateStringNotEmptyNoSpaces(string, explain = "string") {
   validateString(string, explain);
 
-  if (!string.length) return new Error(`${explain} is empty`);
+  if (!string.length) throw new Error(`${explain} is empty`);
 
-  if (string.includes(" ")) return new Error(`${explain} has spaces`);
+  if (string.includes(" ")) throw new Error(`${explain} has spaces`);
 }
 
 function validateJwt(token) {
@@ -30,7 +30,7 @@ function validateJwt(token) {
   const parts = token.split(".");
 
   if (parts.length !== 3 || !parts.every((part) => part.length > 0))
-    return new Error("invalid token format");
+    throw new Error("invalid token format");
 
   const [, b64Payload] = parts;
 
@@ -57,50 +57,59 @@ function isJwtValid(token) {
 function validatePassword(password, explain = "password") {
   validateStringNotEmptyNoSpaces(password, explain);
 
-  if (password.length < 4)
-    return new Error(`${explain} length is lower than 4`);
+  if (password.length < 4) throw new Error(`${explain} length is lower than 4`);
 }
 
 function validateUsername(username) {
   validateStringNotEmptyNoSpaces(username, "username");
 
-  if (username.length < 4)
-    return new Error("username length is lower than 4");
+  if (username.length < 4) throw new Error("username length is lower than 4");
 }
 
 function validateFunction(func, explain = "function") {
   if (typeof func !== "function")
-    return new TypeError(`${explain} is not a function`);
+    throw new TypeError(`${explain} is not a function`);
 }
 
 function validateDate(date, explain = "date") {
-  if (!(date instanceof Date)) return new TypeError(`${explain} is not Date`);
+  if (!(date instanceof Date)) throw new TypeError(`${explain} is not Date`);
 }
 
 function validateNumber(number, explain = "number") {
   if (typeof number !== "number")
-    return new TypeError(`${explain} is not a number`);
+    throw new TypeError(`${explain} is not a number`);
 }
 
 function validatePositiveInteger(number, explain = "number") {
   validateNumber(number, explain);
 
   if (!Number.isInteger(number))
-    return new Error(`${explain} is not an integer`);
+    throw new Error(`${explain} is not an integer`);
 
   if (number < 0 || number > 150)
-    return new RangeError(`${explain} is lower than 0 or greater than 150`);
+    throw new RangeError(`${explain} is lower than 0 or greater than 150`);
 }
 
 function validateEmail(email, explain = "email") {
-  if (!EMAIL_REGEX.test(email))
-    return new Error(`${explain} is not an email`);
+  if (!EMAIL_REGEX.test(email)) throw new Error(`${explain} is not an email`);
 }
 
 function validateId(id, explain = "id") {
   validateString(id, explain);
 
-  if (id.length !== 24) return new Error("id length is not 24 characters");
+  if (id.length !== 24) throw new Error("id length is not 24 characters");
+}
+function validateTel(phone) {
+  const phoneRegex = /^\+?[1-9]\d{1,14}$/; // Ejemplo de regex para formato E.164 internacional
+  if (!phoneRegex.test(phone)) {
+    throw new Error("El número de teléfono no es válido");
+  }
+}
+function validateDNI(dni) {
+  const dniRegex = /^\d{8}[A-Z]$/; // Ejemplo de regex para DNI español
+  if (!dniRegex.test(dni)) {
+    throw new Error("El DNI no es válido");
+  }
 }
 
 export default {
@@ -117,4 +126,6 @@ export default {
   validatePositiveInteger,
   validateEmail,
   validateId,
+  validateTel,
+  validateDNI,
 };

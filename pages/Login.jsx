@@ -1,20 +1,42 @@
 import Nav from "../src/components/Nav";
 import error from "../error/index";
+import toast, { Toaster } from "react-hot-toast";
 
 function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const nombre = e.target.Nombre.value;
-    /*   const dni = e.target.DNI.value;
-    const tel = e.target.tel.value; */
-    const fo = error.validateUsername(nombre);
-    if (fo) {
-      console.log("error");
-      if (fo.message) {
-        console.log(fo.message);
+    const dni = e.target.DNI.value;
+    const tel = e.target.tel.value;
+
+    try {
+      error.validateUsername(nombre);
+      error.validateStringNotEmptyOrBlank(dni);
+      error.validateStringNotEmptyOrBlank(tel);
+      error.validateDNI(dni);
+      error.validateTel(tel);
+      const formData = {
+        nombre: nombre,
+        tel: tel,
+        dni: dni,
+      };
+      /* TODO-> COMPROBAR */
+      const response = fetch("https://example.com/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Error en la solicitud: " + response.statusText);
       }
-    } else {
-      console.log("ok");
+
+      const data = response.json();
+      console.log("Respuesta del servidor:", data);
+    } catch (error) {
+      toast.error(error.message);
     }
   };
 
@@ -47,6 +69,7 @@ function Login() {
           <button type="submit">Registrar</button>
         </form>
       </div>
+      <Toaster />
     </>
   );
 }
