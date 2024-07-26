@@ -2,31 +2,42 @@ import Nav from "../src/components/Nav";
 import error from "../error/index";
 import toast, { Toaster } from "react-hot-toast";
 
+const API = import.meta.env.VITE_API_URL;
+
 function Login() {
   const handleSubmit = (e) => {
-    e.preventDefault();   
+    e.preventDefault();
 
-      const formData = {
-        nombre: e.target.Nombre.value,
-        dni: e.target.DNI.value,
-        tel: e.target.tel.value,
-      };
-      debugger
-
-    fetch('http://localhost/jasomaki/api/login/login.php', { // Usa la URL directa al servidor PHP
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify(formData),
-})
-.then(response => response.json())
-.then(data => {
-  console.log('Respuesta del servidor:', data);
-})
-.catch(error => {
-  console.error('Hubo un problema con la solicitud:', error);
-});
+    const formData = {
+      nombre: e.target.Nombre.value,
+      dni: e.target.DNI.value,
+      tel: e.target.tel.value,
+    };
+    const nombre = e.target.Nombre.value;
+    const dni = e.target.DNI.value;
+    const tel = e.target.tel.value;
+    try {
+      error.validateStringNotEmptyOrBlank(nombre);
+      error.validateDNI(dni);
+      error.validateTel(tel);
+      fetch(`${API}/login/login.php`, {
+        // Usa la URL directa al servidor PHP
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Respuesta del servidor:", data);
+        })
+        .catch((error) => {
+          console.error("Hubo un problema con la solicitud:", error);
+        });
+    } catch {
+      toast.error("Error al ingresar los datos");
+    }
   };
   return (
     <>

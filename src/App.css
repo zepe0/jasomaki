@@ -1,9 +1,9 @@
 @font-face {
     font-family: 'JejuHallasan';
-    src:url('/public/font/JejuHallasan.ttf.woff') format('woff'),
-        url('/public/font/JejuHallasan.ttf.svg#JejuHallasan') format('svg'),
-        url('/public/font/JejuHallasan.ttf.eot'),
-        url('/public/font/JejuHallasan.ttf.eot?#iefix') format('embedded-opentype'); 
+    src:url('/src/font/JejuHallasan.ttf.woff') format('woff'),
+        url('/src/font/JejuHallasan.ttf.svg#JejuHallasan') format('svg'),
+        url('/src/font/JejuHallasan.ttf.eot'),
+        url('/src/font/JejuHallasan.ttf.eot?#iefix') format('embedded-opentype'); 
     font-weight: normal;
     font-style: normal;
 }

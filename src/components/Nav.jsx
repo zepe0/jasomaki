@@ -7,7 +7,7 @@ function Nav() {
         <li className="itemnav">
           <a href="/ins">
             <img
-              src="../public/icons/ins.png"
+              src="../src/icons/ins.png"
               className="img_menu"
               alt="img_menu"
             />
@@ -16,7 +16,7 @@ function Nav() {
         <li className="itemnav">
           <a href="/traje">
             <img
-              src="../public/icons/mask.png"
+              src="../src/icons/mask.png"
               className="img_menu"
               alt="img_menu"
             />
@@ -25,7 +25,7 @@ function Nav() {
         <li className="itemnav">
           <a href="/pagos">
             <img
-              src="../public/icons/tarjeta.png"
+              src="../src/icons/tarjeta.png"
               className="img_menu"
               alt="img_menu"
             />
@@ -34,7 +34,7 @@ function Nav() {
         <li className="itemnav">
           <a href="/Perfil">
             <img
-              src="../public/icons/avatarDefault.png"
+              src="../src/icons/avatarDefault.png"
               className="img_menu"
               alt="img_menu"
             />
