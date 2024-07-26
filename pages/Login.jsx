@@ -1,10 +1,24 @@
 import Nav from "../src/components/Nav";
 import error from "../error/index";
 import toast, { Toaster } from "react-hot-toast";
+import { useEffect } from "react";
 
 const API = import.meta.env.VITE_API_URL;
 
 function Login() {
+  useEffect(() => {
+    if (!sessionStorage.token) {
+      toast((t) => (
+        <span>
+          No has iniciado <b>sesión </b>
+          <button onClick={() => toast.dismiss(t.id)}>Iniciar</button>
+        </span>
+      ));
+
+      /* window.location.href = "/"; */
+    }
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -39,6 +53,7 @@ function Login() {
       toast.error("Error al ingresar los datos");
     }
   };
+
   return (
     <>
       <Nav></Nav>
