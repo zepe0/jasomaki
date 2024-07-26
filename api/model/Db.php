@@ -1,6 +1,7 @@
 <?php
-
-class Db {
+require_once 'Env.php';
+class Db
+{
     private $host;
     private $user;
     private $pass;
@@ -8,11 +9,12 @@ class Db {
     private $pdo;
     private $error;
 
-    public function __construct() {
-        $this->host = $_ENV['DB_HOST'];
-        $this->user = $_ENV['DB_USER'];
-        $this->pass = $_ENV['DB_PASS'];
-        $this->dbname = $_ENV['DB_NAME'];
+    public function __construct()
+    {
+        $this->host = Env::DB_HOST;
+        $this->user = Env::DB_USER;
+        $this->pass = Env::DB_PASS;
+        $this->dbname = Env::DB_NAME;
 
         // Establecer la conexión a la base de datos
         $dsn = "mysql:host={$this->host};dbname={$this->dbname};charset=utf8";
@@ -30,7 +32,8 @@ class Db {
         }
     }
 
-    public function getConnection() {
+    public function con()
+    {
         return $this->pdo;
     }
 }
