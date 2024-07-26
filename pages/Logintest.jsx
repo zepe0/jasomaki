@@ -4,7 +4,7 @@ import Nav from "../src/components/Nav";
 function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
-
+debugger
     fetch("http://localhost/jasomaki/api/login/login2.php", {
       method: "POST",
       headers: {

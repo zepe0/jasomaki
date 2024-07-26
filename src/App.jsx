@@ -1,6 +1,6 @@
 import Home from "../pages/Home";
 import Inscripciones from "../pages/Inscripciones";
-import Login from "../pages/Logintest";
+import Login from "../pages/Login";
 import Pagos from "../pages/Pagos";
 import Perfil from "../pages/Perfil";
 import Traje from "../pages/Traje";

@@ -4,20 +4,16 @@ import toast, { Toaster } from "react-hot-toast";
 
 function Login() {
   const handleSubmit = (e) => {
-    e.preventDefault();
-    const nombre = e.target.Nombre.value;
-    const dni = e.target.DNI.value;
-    const tel = e.target.tel.value;
-
-   
+    e.preventDefault();   
 
       const formData = {
         nombre: e.target.Nombre.value,
         dni: e.target.DNI.value,
         tel: e.target.tel.value,
       };
+      debugger
 
-    fetch('http://localhost/login.php', { // Usa la URL directa al servidor PHP
+    fetch('http://localhost/jasomaki/api/login/login.php', { // Usa la URL directa al servidor PHP
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',

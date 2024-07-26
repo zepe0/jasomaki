@@ -1,4 +1,5 @@
 <?php
+include_once("../headers.php");
 
 
 $json_data = file_get_contents('php://input');
