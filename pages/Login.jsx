@@ -7,16 +7,7 @@ const API = import.meta.env.VITE_API_URL;
 
 function Login() {
   useEffect(() => {
-    if (!sessionStorage.token) {
-      toast((t) => (
-        <span>
-          No has iniciado <b>sesión </b>
-          <button onClick={() => toast.dismiss(t.id)}>Iniciar</button>
-        </span>
-      ));
-
-      /* window.location.href = "/"; */
-    }
+   
   }, []);
 
   const handleSubmit = (e) => {
@@ -80,8 +71,9 @@ function Login() {
             name="tel"
             placeholder="Tel"
           ></input>
-          <button type="submit">Registrar</button>
+          <button type="submit">Entrar</button>
         </form>
+        <p>No tienes Cuenta <a href="/register">Regístrate</a></p>
       </div>
       <Toaster />
     </>

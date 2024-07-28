@@ -16,10 +16,10 @@ function validateStringNotEmptyOrBlank(string, explain = "Campo") {
   if (!string.trim().length) throw new Error(`${explain} is blank`);
 }
 
-function validateStringNotEmptyNoSpaces(string, explain = "string") {
+function validateStringNotEmptyNoSpaces(string, explain = "campo") {
   validateString(string, explain);
 
-  if (!string.length) throw new Error(`${explain} is empty`);
+  if (!string.length) throw new Error(`${explain} sin rellenar `);
 
   if (string.includes(" ")) throw new Error(`${explain} has spaces`);
 }
@@ -54,16 +54,18 @@ function isJwtValid(token) {
   }
 }
 
-function validatePassword(password, explain = "password") {
+function validatePassword(password, explain = "Contraseña") {
   validateStringNotEmptyNoSpaces(password, explain);
 
-  if (password.length < 4) throw new Error(`${explain} length is lower than 4`);
+  if (password.length < 4)
+    throw new Error(`la ${explain} debe tener al menos 4 caracteres`);
 }
 
 function validateUsername(username) {
   validateStringNotEmptyNoSpaces(username, "username");
 
-  if (username.length < 4) throw new Error("username length is lower than 4");
+  if (username.length < 4)
+    throw new Error("username debe tener al menos 4 caracteres");
 }
 
 function validateFunction(func, explain = "function") {
@@ -91,7 +93,7 @@ function validatePositiveInteger(number, explain = "number") {
 }
 
 function validateEmail(email, explain = "email") {
-  if (!EMAIL_REGEX.test(email)) throw new Error(`${explain} is not an email`);
+  if (!EMAIL_REGEX.test(email)) throw new Error(`${explain} no es un email`);
 }
 
 function validateId(id, explain = "id") {

@@ -5,4 +5,5 @@ class Env
     const DB_USER = 'root';
     const DB_PASS = "";
     const DB_NAME = 'jasomaki';
+    const SECRET_JWT = 'JASOMAKI';
 }

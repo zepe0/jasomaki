@@ -1,6 +1,9 @@
 import Nav from "../src/components/Nav";
 
 function Traje() {
+  if (!sessionStorage.token) {
+    window.location.href = "/";
+  }
   return (
     <>
       <Nav></Nav>

@@ -3,6 +3,7 @@ import Inscripciones from "../pages/Inscripciones";
 import Login from "../pages/Login";
 import Pagos from "../pages/Pagos";
 import Perfil from "../pages/Perfil";
+import Register from "../pages/Register";
 import Traje from "../pages/Traje";
 import "./App.css";
 
@@ -15,10 +16,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/ins" element={<Inscripciones />} />
-          <Route path="/Traje" element={<Traje />} />
+          <Route path="/traje" element={<Traje />} />
           <Route path="/pagos" element={<Pagos />} />
           <Route path="/Perfil" element={<Perfil />} />
-          <Route path="/Login/*" element={<Login />} />
+          <Route path="/Login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </BrowserRouter>
     </>

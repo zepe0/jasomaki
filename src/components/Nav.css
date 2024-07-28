@@ -1,27 +1,39 @@
 .Nav {
   display: flex;
   flex-wrap: wrap;
-  /*  min-width: 375px; */
+  /* min-width: 375px; */
   min-height: 55px;
   flex-direction: row;
-   gap: 16px; 
+  gap: 16px;
   align-items: center;
   justify-content: space-between;
   list-style: none;
-  margin-right: 10%;
+
 }
 .itemnav {
   min-width: 60px;
   min-height: 60px;
   background-color: #c553c8;
   display: flex;
-  border: solid black 1px;
+  /*   border: solid black 0.5px; */
   border-radius: 20%;
   align-items: center;
   justify-content: center;
+  box-shadow: 0px 1px 0px hsl(298, 55%, 40%), 0px 2px 0px hsl(298, 55%, 38%),
+    0px 3px 0px hsl(298, 55%, 37%), 0px 6px 10px #000;
+}
+
+.itemnav:hover {
+  background-image: linear-gradient(145deg, #b456b8, rgb(167, 31, 157));
+  box-shadow: 0px 1px 0px hsl(298, 55%, 40%), 0px 2px 0px hsl(298, 55%, 38%),
+    0px 3px 0px hsl(298, 55%, 37%), 0px 10px 10px #000;
 }
 a > img {
   max-width: 50px;
   max-height: 50px;
   padding: 4px;
+}
+.img_menu_cad {
+  max-width: 40px;
+  padding-top: 7px;
 }

@@ -1,31 +1,52 @@
 <?php
 require_once 'Db.php';
+function generateUID()
+{
+
+    return uniqid(bin2hex(random_bytes(4)), true);
+}
 class User extends Db
 {
 
-    protected function setUser($username, $password, $email)
+    protected function setUser($email, $password)
     {
-        $error = false;
-        $stmt = $this->con()->prepare("INSERT INTO users (users_uid, users_pwd, users_email) VALUES (?,?,?)");
+        $response = [];
+        $id = generateUID();
 
-        $hashedPwd = password_hash($password, PASSWORD_DEFAULT);
+        try {
+            $stmt = $this->con()->prepare("INSERT INTO user (id, pass, email) VALUES (?,?,?)");
 
-        if (!$stmt->execute(array($username, $hashedPwd, $email))) {
-            $error = true;
+            if (!$stmt->execute(array($id, $password, $email))) {
+                $response['error'] = "Error al ejecutar la consulta.";
+            } else {
+                require_once '../createtoken.php';
+                $payload['id'] = $id;
+                $payload['email'] = $email;
+                $token = createJwt($payload);
+                $response['success'] = "Usuario registrado con éxito.";
+                $response['token'] = $token;
+            }
+        } catch (PDOException $e) {
+            if ($e->getCode() == 23000 && strpos($e->getMessage(), '1062') !== false) {
+                $response['error'] = "El correo electrónico ya está registrado.";
+            } else {
+                $response['error'] = "Error en la base de datos: " . $e->getMessage();
+            }
         }
-        $stmt = null;
-        return $error;
 
+        $stmt = null;
+        return $response;
     }
 
 
-    protected function checkUser($username, $email)
+    protected function checkUser($userid, $email)
     {
-        $stmt = $this->con()->prepare("SELECT users_uid FROM users WHERE users_uid = ? OR users_email = ?;");
+      
+        $stmt = $this->con()->prepare("SELECT id FROM users WHERE users_uid = ? OR users_email = ?;");
 
-        if (!$stmt->execute(array($username, $email))) {
+        if (!$stmt->execute(array($userid, $email))) {
             $stmt = null;
-            header("Location: .../view/signup.html?error=stmtfailed");
+           
             exit();
         }
         $resultCheck = false;
@@ -83,7 +104,7 @@ class User extends Db
     }
     public function getUsers()
     {
-        $stmt = $this->con()->prepare("SELECT * FROM users ");
+        $stmt = $this->con()->prepare("SELECT * FROM user ");
         $res = $stmt->execute();
         if (!$res) {
             return 1;
@@ -115,7 +136,7 @@ class User extends Db
     public function getEmail($user)
     {
 
-        $stmt = $this->con()->prepare(" SELECT users_email FROM users  WHERE users_uid = ? ");
+        $stmt = $this->con()->prepare(" SELECT email FROM users  WHERE users_uid = ? ");
 
         $res = $stmt->execute(array($user));
         if (!$res) {
@@ -124,6 +145,10 @@ class User extends Db
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
+    }
+    public function setNewUser($email, $pas)
+    {
+        return $this->setUser($email, $pas);
     }
 
 

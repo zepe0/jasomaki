@@ -26,7 +26,7 @@ function Nav() {
           <a href="/pagos">
             <img
               src="../src/icons/tarjeta.png"
-              className="img_menu"
+              className="img_menu_cad"
               alt="img_menu"
             />
           </a>
