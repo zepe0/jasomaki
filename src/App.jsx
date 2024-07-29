@@ -1,3 +1,4 @@
+import AdminInscripciones from "../pages/AdminInscripciones";
 import Home from "../pages/Home";
 import HomeAdmin from "../pages/HomeAdmin";
 import Inscripciones from "../pages/Inscripciones";
@@ -28,6 +29,7 @@ function App() {
           {/*  Rutas Admin */}
 
           <Route path="/Admin" element={<HomeAdmin />} />
+          <Route path="/Admin/ins" element={<AdminInscripciones />} />
         </Routes>
       </BrowserRouter>
     </>

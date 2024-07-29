@@ -42,7 +42,7 @@ function FormInsc() {
           console.error("Hubo un problema con la solicitud:", error);
         });
     } catch (error) {
-      debugger;
+     
       toast.error(`error: ${error.message}`);
     }
   };

@@ -1,4 +1,4 @@
-import FormInsc from "../src/components/FormInsc";
+import ListEvents from "../src/components/ListEvents";
 import Nav from "../src/components/Nav";
 
 function Inscripciones() {
@@ -9,7 +9,7 @@ function Inscripciones() {
   return (
     <>
       <Nav></Nav>
-      <FormInsc></FormInsc>
+      <ListEvents />
     </>
   );
 }

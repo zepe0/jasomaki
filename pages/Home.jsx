@@ -5,7 +5,7 @@ import { useEffect } from "react";
 
 function Home() {
   useEffect(() => {
-    if (document.referrer == "http://localhost:5173/ins") {
+/*     if (document.referrer == "http://localhost:5173/ins") {
       toast.error("Para Inscribirte inicia sesión");
     }
     if (document.referrer == "http://localhost:5173/pagos") {
@@ -13,7 +13,7 @@ function Home() {
     }
     if (document.referrer == "http://localhost:5173/traje") {
       toast.error("inicia sesión para ver tu traje");
-    }
+    } */
   }, []);
 
   return (
