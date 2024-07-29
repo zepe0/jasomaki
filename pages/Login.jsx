@@ -1,30 +1,27 @@
 import Nav from "../src/components/Nav";
 import error from "../error/index";
 import toast, { Toaster } from "react-hot-toast";
-import { useEffect } from "react";
+
+import { useNavigate } from "react-router-dom";
 
 const API = import.meta.env.VITE_API_URL;
 
 function Login() {
-  useEffect(() => {
-   
-  }, []);
+  const goto = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const formData = {
-      nombre: e.target.Nombre.value,
-      dni: e.target.DNI.value,
-      tel: e.target.tel.value,
+      email: e.target.email.value,
+      pass: e.target.pass.value,
     };
-    const nombre = e.target.Nombre.value;
-    const dni = e.target.DNI.value;
-    const tel = e.target.tel.value;
+
     try {
-      error.validateStringNotEmptyOrBlank(nombre);
-      error.validateDNI(dni);
-      error.validateTel(tel);
+      error.validateStringNotEmptyOrBlank(formData.email);
+      error.validateStringNotEmptyOrBlank(formData.pass);
+      error.validatePassword(formData.pass);
+
       fetch(`${API}/login/login.php`, {
         // Usa la URL directa al servidor PHP
         method: "POST",
@@ -35,13 +32,23 @@ function Login() {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log("Respuesta del servidor:", data);
+          if (data.error == false) {
+            sessionStorage.token = data.token;
+            if (data.rol == 0) {
+              goto("/");
+            } else {
+              goto("/Admin");
+            }
+          }
+          if (data.error == true) {
+            toast.error(data.msn);
+          }
         })
         .catch((error) => {
           console.error("Hubo un problema con la solicitud:", error);
         });
-    } catch {
-      toast.error("Error al ingresar los datos");
+    } catch (error) {
+      toast.error(error.message);
     }
   };
 
@@ -54,26 +61,22 @@ function Login() {
           <input
             className="inputFormIns"
             type="text"
-            name="Nombre"
-            placeholder="Nombre"
+            name="email"
+            placeholder="Email"
           ></input>
 
           <input
-            className="inputFormIns"
-            type="text"
-            name="DNI"
-            placeholder="1234567A"
+            className="inputFormIns password-input  "
+            type="password"
+            name="pass"
+            placeholder="Contraseña"
           ></input>
 
-          <input
-            className="inputFormIns"
-            type="text"
-            name="tel"
-            placeholder="Tel"
-          ></input>
           <button type="submit">Entrar</button>
         </form>
-        <p>No tienes Cuenta <a href="/register">Regístrate</a></p>
+        <p>
+          No tienes Cuenta <a href="/register">Regístrate</a>
+        </p>
       </div>
       <Toaster />
     </>

@@ -40,13 +40,7 @@ $header = [
 ];
 
 // Payload
-$payload = [
-    'iss' => 'tu_dominio', // Emisor del token
-    'aud' => 'tu_dominio', // Audiencia del token
-    'iat' => time(), // Tiempo de emisión
-    'exp' => time() + 3600, // Tiempo de expiración (1 hora)
-    'email' => 'user@example.com'
-];
+
 
 
 ?>

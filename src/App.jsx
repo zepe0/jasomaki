@@ -1,6 +1,8 @@
 import Home from "../pages/Home";
+import HomeAdmin from "../pages/HomeAdmin";
 import Inscripciones from "../pages/Inscripciones";
 import Login from "../pages/Login";
+import Logout from "../pages/Logout";
 import Pagos from "../pages/Pagos";
 import Perfil from "../pages/Perfil";
 import Register from "../pages/Register";
@@ -21,6 +23,11 @@ function App() {
           <Route path="/Perfil" element={<Perfil />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/Logout" element={<Logout />} />
+
+          {/*  Rutas Admin */}
+
+          <Route path="/Admin" element={<HomeAdmin />} />
         </Routes>
       </BrowserRouter>
     </>

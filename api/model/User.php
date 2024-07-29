@@ -1,5 +1,6 @@
 <?php
 require_once 'Db.php';
+require_once '../createtoken.php';
 function generateUID()
 {
 
@@ -19,9 +20,9 @@ class User extends Db
             if (!$stmt->execute(array($id, $password, $email))) {
                 $response['error'] = "Error al ejecutar la consulta.";
             } else {
-                require_once '../createtoken.php';
+
                 $payload['id'] = $id;
-                $payload['email'] = $email;
+                $payload['rol'] = $email;
                 $token = createJwt($payload);
                 $response['success'] = "Usuario registrado con éxito.";
                 $response['token'] = $token;
@@ -41,12 +42,12 @@ class User extends Db
 
     protected function checkUser($userid, $email)
     {
-      
+
         $stmt = $this->con()->prepare("SELECT id FROM users WHERE users_uid = ? OR users_email = ?;");
 
         if (!$stmt->execute(array($userid, $email))) {
             $stmt = null;
-           
+
             exit();
         }
         $resultCheck = false;
@@ -57,30 +58,39 @@ class User extends Db
         return $resultCheck;
     }
 
-    protected function verifyLoginUser($username, $password)
+    protected function verifyLoginUser($email, $password)
     {
-        $error = 0;
-        $stmt = $this->con()->prepare("SELECT users_pwd,users_id from users WHERE users_uid = ? ");
+        $respuesta = [];
+        $stmt = $this->con()->prepare("SELECT pass,id,rol from user WHERE email = ? ");
 
-        if (!$stmt->execute(array($username))) {
-            $error = 1;
+        if (!$stmt->execute(array($email))) {
+            $respuesta = 1;
         }
 
         if ($stmt->rowCount() > 0) {
             $res = $stmt->fetchAll();
-            $hashedPwd = $res[0]['users_pwd'];
+            $hashedPwd = $res[0]['pass'];
             if (password_verify($password, $hashedPwd) == false) {
-                $error = 2;
+                $respuesta["error"] = true;
+                $respuesta["msn"] = "Credenciales incorrectas";
+
             } else {
-                print_r($res);
-                $_SESSION['userid'] = $res[0]['users_id'];
-                $_SESSION["username"] = $username;
+                $_SESSION['id'] = $res[0]['id'];
+
+                $payload['id'] = $res[0]['id'];
+                $payload['rol'] = $res[0]['rol'];
+                $token = createJwt($payload);
+
+                $respuesta["rol"] = $res[0]['rol'];
+                $respuesta["error"] = false;
+                $respuesta['token'] = $token;
             }
         } else {
-            $error = 2;
+            $respuesta["error"] = true;
+            $respuesta["msn"] = "Usuario no registrado";
         }
         $stmt = null;
-        return $error;
+        return $respuesta;
 
     }
     protected function UpdatePass($userid, $password)
@@ -151,6 +161,9 @@ class User extends Db
         return $this->setUser($email, $pas);
     }
 
-
+    public function login($email, $pas)
+    {
+        return $this->verifyLoginUser($email, $pas);
+    }
 
 }
