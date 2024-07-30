@@ -5,21 +5,22 @@ import {
   differenceInMinutes,
 } from "date-fns";
 import { jwtDecode } from "jwt-decode";
-import { da } from "date-fns/locale";
+
 import toast, { Toaster } from "react-hot-toast";
 
 const API = import.meta.env.VITE_API_URL;
 
 function ListEvents() {
+ 
   if (!sessionStorage.token) {
     window.location.href = "/";
   }
   const [events, setEvents] = useState([]);
+  const [myevents, setMyEvents] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   useEffect(() => {
     fetch(`${API}/inscripción/getEvents.php`, {
-      // Usa la URL directa al servidor PHP
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -28,6 +29,22 @@ function ListEvents() {
       .then((response) => response.json())
       .then((data) => {
         setEvents(data);
+      });
+    const decode = jwtDecode(sessionStorage.token);
+
+    const formData = {
+      id_user: decode.id,
+    };
+    fetch(`${API}/inscripción/getMyEvents.php`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setMyEvents(data);
       });
   }, []);
   const currentDate = new Date();
@@ -60,6 +77,7 @@ function ListEvents() {
   };
   const handeleAddUserInEvent = (e) => {
     e.preventDefault();
+   
     const decode = jwtDecode(sessionStorage.token);
     const formData = {
       nombre: e.target[0].value,
@@ -81,10 +99,12 @@ function ListEvents() {
       .then((response) => response.json())
       .then((data) => {
         if (data.error) {
-          toast.error(data.message);
+          toast.error(data.error);
         }
         if (data.success) {
           toast.success(data.msn);
+          setIsModalOpen(false);
+          setSelectedEvent(null);
         }
       })
       .catch((error) => {
@@ -102,6 +122,9 @@ function ListEvents() {
           })
           .map((ins) => {
             const timeLeftText = getTimeLeftText(ins.fin);
+            const isUserEnrolled = myevents.some(
+              (event) => event.id_event === ins.id_event
+            );
             return (
               <li key={ins.id_event}>
                 <form className="FormInsc">
@@ -115,9 +138,14 @@ function ListEvents() {
                     type="hidden"
                   />
                   <p>Finaliza en {timeLeftText}</p>
-                  <button onClick={() => handleOpenModal(event, ins)}>
-                    Inscribirme
-                  </button>
+
+                  {isUserEnrolled ? (
+                    <p>Ya inscrito</p>
+                  ) : (
+                    <button onClick={() => handleOpenModal(event, ins)}>
+                      Inscribirme
+                    </button>
+                  )}
                 </form>
               </li>
             );

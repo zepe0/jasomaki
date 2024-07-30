@@ -40,4 +40,33 @@ class Inscripcion extends Db
     {
         return $this->userInscripcion($nombre, $apelido, $apellidos, $tel, $dni, $id_event, $id_user);
     }
+
+    public function getMyEvents($userid)
+    {
+        $response = [];
+
+
+        try {
+            $stmt = $this->con()->prepare("SELECT id_event FROM ins  WHERE user_id = ?");
+
+            if (!$stmt->execute(array($userid))) {
+                $response['error'] = "Error al ejecutar la consulta.";
+
+            } else {
+
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            }
+        } catch (PDOException $e) {
+            if ($e->getCode() == 23000 && strpos($e->getMessage(), '1062') !== false) {
+                $response['error'] = $e->getMessage();;
+            } else {
+                $response['error'] = "Error en la base de datos: " . $e->getMessage();
+            }
+        }
+
+        $stmt = null;
+        return $response;
+
+    }
 }
