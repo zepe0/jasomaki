@@ -16,11 +16,11 @@ class Validator
         self::validateString($string, $explain);
 
         if (empty($string)) {
-            throw new Error("$explain vacío");
+            throw new Exception("$explain vacío");
         }
 
         if (trim($string) === '') {
-            throw new Error("$explain is blank");
+            throw new Exception("$explain is blank");
         }
     }
 
@@ -29,11 +29,11 @@ class Validator
         self::validateString($string, $explain);
 
         if (empty($string)) {
-            throw new Error("$explain sin rellenar");
+            throw new Exception("$explain sin rellenar");
         }
 
         if (strpos($string, ' ') !== false) {
-            throw new Error("$explain has spaces");
+            throw new Exception("$explain has spaces");
         }
     }
 
@@ -43,9 +43,12 @@ class Validator
 
         $parts = explode('.', $token);
 
-        if (count($parts) !== 3 || !array_reduce($parts, function ($carry, $part) {
-            return $carry && !empty($part); }, true)) {
-            throw new Error("invalid token format");
+        if (
+            count($parts) !== 3 || !array_reduce($parts, function ($carry, $part) {
+                return $carry && !empty($part);
+            }, true)
+        ) {
+            throw new Exception("invalid token format");
         }
 
         list(, $b64Payload) = $parts;
@@ -54,14 +57,14 @@ class Validator
         $payload = json_decode($jsonPayload, true);
 
         if (!$payload) {
-            throw new Error("invalid token payload");
+            throw new Exception("invalid token payload");
         }
 
         $exp = $payload['exp'] ?? 0;
         $now = time();
 
         if ($now > $exp) {
-            throw new Error("token expired");
+            throw new Exception("token expired");
         }
     }
 
@@ -80,7 +83,7 @@ class Validator
         self::validateStringNotEmptyNoSpaces($password, $explain);
 
         if (strlen($password) < 4) {
-            throw new Error("la $explain debe tener al menos 4 caracteres");
+            throw new Exception("la $explain debe tener al menos 4 caracteres");
         }
     }
 
@@ -89,7 +92,7 @@ class Validator
         self::validateStringNotEmptyNoSpaces($username, "username");
 
         if (strlen($username) < 4) {
-            throw new Error("username debe tener al menos 4 caracteres");
+            throw new Exception("username debe tener al menos 4 caracteres");
         }
     }
 
@@ -126,7 +129,7 @@ class Validator
     public static function validateEmail($email, $explain = "email")
     {
         if (!preg_match(self::EMAIL_REGEX, $email)) {
-            throw new Error("$explain no es un email");
+            throw new Exception("$explain no es un email");
         }
     }
 
@@ -135,15 +138,16 @@ class Validator
         self::validateString($id, $explain);
 
         if (strlen($id) !== 31) {
-            throw new Error("id length is not 24 characters");
+            throw new Exception("id length is not 24 characters");
         }
     }
 
     public static function validateTel($phone)
     {
-        $phoneRegex = '/^\+?[1-9]\d{1,14}$/'; // Ejemplo de regex para formato E.164 internacional
-        if (!preg_match($phoneRegex, $phone)) {
-            throw new Error("El número de teléfono no es válido");
+        $phoneRegex = '/^\+?[1-9]\d{8,14}$/'; 
+    // Ejemplo de regex para formato E.164 internacional
+        if (!preg_match($phoneRegex, $phone) ) {
+            throw new Exception("El número de teléfono no es válido");
         }
     }
 
@@ -151,7 +155,7 @@ class Validator
     {
         $dniRegex = '/^\d{8}[A-Z]$/'; // Ejemplo de regex para DNI español
         if (!preg_match($dniRegex, $dni)) {
-            throw new Error("El DNI no es válido");
+            throw new Exception("El DNI no es válido");
         }
     }
 }

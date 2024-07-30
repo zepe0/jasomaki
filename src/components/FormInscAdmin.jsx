@@ -35,13 +35,15 @@ function FormInscAdmin() {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
+          if (data.success) {
+            toast.success(data.msn);
+          }
+          toast.error(data.error);
         })
         .catch((error) => {
           console.error("Hubo un problema con la solicitud:", error);
         });
     } catch (error) {
-   
       toast.error(`error: ${error.message}`);
     }
   };
