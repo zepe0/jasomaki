@@ -49,7 +49,7 @@ function FormInscAdmin() {
   };
   return (
     <div className="">
-      <h1>Inscripciones</h1>
+      <h1>Añadir Inscripciones</h1>
       <form className="FormInsc" onSubmit={inscripcion}>
         <input
           className="inputFormIns"

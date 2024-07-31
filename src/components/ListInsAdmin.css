@@ -1,0 +1,19 @@
+.tableStyle {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 18px;
+  text-align: left;
+  min-width: 600px
+}
+.thTdStyle {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.thStyle {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background-color: #f2f2f2;
+  color: black;
+}

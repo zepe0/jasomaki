@@ -11,7 +11,6 @@ import toast, { Toaster } from "react-hot-toast";
 const API = import.meta.env.VITE_API_URL;
 
 function ListEvents() {
- 
   if (!sessionStorage.token) {
     window.location.href = "/";
   }
@@ -47,6 +46,8 @@ function ListEvents() {
         setMyEvents(data);
       });
   }, []);
+  const decode = jwtDecode(sessionStorage.token);
+  console.log(decode);
   const currentDate = new Date();
   currentDate.setHours(0, 0, 0, 0);
 
@@ -77,8 +78,9 @@ function ListEvents() {
   };
   const handeleAddUserInEvent = (e) => {
     e.preventDefault();
-   
+
     const decode = jwtDecode(sessionStorage.token);
+   
     const formData = {
       nombre: e.target[0].value,
       Apellido: e.target[1].value,

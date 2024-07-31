@@ -59,7 +59,8 @@ class Inscripcion extends Db
             }
         } catch (PDOException $e) {
             if ($e->getCode() == 23000 && strpos($e->getMessage(), '1062') !== false) {
-                $response['error'] = $e->getMessage();;
+                $response['error'] = $e->getMessage();
+                ;
             } else {
                 $response['error'] = "Error en la base de datos: " . $e->getMessage();
             }
@@ -68,5 +69,43 @@ class Inscripcion extends Db
         $stmt = null;
         return $response;
 
+    }
+    protected function getInscripciones()
+    {
+        $response = [];
+
+
+        try {
+            $stmt = $this->con()->prepare("SELECT * FROM ins ");
+
+            if (!$stmt->execute(array())) {
+                $response['error'] = "Error al ejecutar la consulta.";
+
+            } else {
+
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            }
+        } catch (PDOException $e) {
+            if ($e->getCode() == 23000 && strpos($e->getMessage(), '1062') !== false) {
+                $response['error'] = $e->getMessage();
+                ;
+            } else {
+                $response['error'] = "Error en la base de datos: " . $e->getMessage();
+            }
+        }
+
+        $stmt = null;
+        return $response;
+
+    }
+    public function getInscripcionesAdmin($rol)
+    {
+        $response = [];
+        if ($rol = 1) {
+
+            return $this->getInscripciones();
+        }
+        return $response['error'] = "No tienes permisos para la acción seleccionada";
     }
 }

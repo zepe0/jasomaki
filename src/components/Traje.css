@@ -1,0 +1,144 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+
+  height: 100vh;
+  background-color: #f4f4f4;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.head {
+  width: 100px;
+  height: 100px;
+  background-color: #d2b48c; /* Color del sombrero */
+  border-radius: 50%;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.body {
+  position: relative;
+}
+
+.arms {
+  display: flex;
+  justify-content: space-between;
+  width: 120px;
+  position: relative;
+}
+
+.arm {
+  width: 40px;
+  height: 100px;
+  background-color: #4682b4; /* Color de las mangas */
+  position: relative;
+}
+
+.arm.left {
+  margin-right: 10px; /* Espacio entre la manga y el chaleco */
+}
+
+.arm.right {
+  margin-left: 10px; /* Espacio entre la manga y el chaleco */
+}
+
+.chest {
+  width: 120px;
+  height: 150px;
+  background-color: #4682b4; /* Color del chaleco */
+  position: relative;
+}
+
+.skirt {
+  width: 120px;
+  height: 100px; /* Ajustar altura para que las piernas sean visibles */
+  background-color: #f08080; /* Color de la falda */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-top: 10px; /* Espacio para la etiqueta de tallaje */
+}
+
+.legs {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  height: 120px; /* Altura suficiente para mostrar las piernas */
+  margin-top: 100px;
+}
+
+.leg {
+  z-index: -1;
+  width: 40px;
+  height: 120px;
+  background-color: #d2b48c; /* Color de las piernas */
+  border-radius: 20px;
+  margin-top: 100px;
+}
+
+.feet {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  height: 20px;
+  width: 100%;
+  margin-top: 10px; /* Espacio para los pies */
+}
+
+.foot {
+  background-color: #000; /* Color de los pies */
+  border-radius: 10px;
+  width: 35px;
+  padding: 3px;
+  height: 15px;
+  margin-top: 70px;
+}
+
+.size-label {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.head .size-label {
+  top: 80%;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.chest .size-label {
+  top: 80%;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.skirt .size-label {
+  top: 10px;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.arm .size-label {
+  bottom: 10px; /* Ajuste para la etiqueta en las mangas */
+}

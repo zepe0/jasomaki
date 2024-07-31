@@ -22,7 +22,7 @@ function Login() {
       error.validateStringNotEmptyOrBlank(formData.pass);
       error.validatePassword(formData.pass);
 
-      fetch(`${API}/login/login.php`, {
+      fetch(`${API}login/login.php`, {
         // Usa la URL directa al servidor PHP
         method: "POST",
         headers: {
@@ -34,7 +34,7 @@ function Login() {
         .then((data) => {
           if (data.error == false) {
             sessionStorage.token = data.token;
-            if (data.rol == 0) {
+            if (data.rol === 0) {
               goto("/");
             } else {
               goto("/Admin");

@@ -1,17 +1,17 @@
 @font-face {
-    font-family: 'JejuHallasan';
-    src:url('/src/font/JejuHallasan.ttf.woff') format('woff'),
-        url('/src/font/JejuHallasan.ttf.svg#JejuHallasan') format('svg'),
-        url('/src/font/JejuHallasan.ttf.eot'),
-        url('/src/font/JejuHallasan.ttf.eot?#iefix') format('embedded-opentype'); 
-    font-weight: normal;
-    font-style: normal;
+  font-family: "JejuHallasan";
+  src: url("/src/font/JejuHallasan.ttf.woff") format("woff"),
+    url("/src/font/JejuHallasan.ttf.svg#JejuHallasan") format("svg"),
+    url("/src/font/JejuHallasan.ttf.eot"),
+    url("/src/font/JejuHallasan.ttf.eot?#iefix") format("embedded-opentype");
+  font-weight: normal;
+  font-style: normal;
 }
-*{
-    font-family: 'JejuHallasan';
+* {
+  font-family: "JejuHallasan";
 }
-#root{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+#root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

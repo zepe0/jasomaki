@@ -2,10 +2,12 @@ import toast, { Toaster } from "react-hot-toast";
 import Nav from "../src/components/Nav";
 import "./Register.css";
 import error from "../error";
+import { useNavigate } from "react-router-dom";
 
 const API = import.meta.env.VITE_API_URL;
 
 function Register() {
+  const goto = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -47,6 +49,7 @@ function Register() {
         }
         sessionStorage.token = data.token;
         toast.success(data.success);
+        goto("./");
       })
       .catch((error) => {
         toast.error("Hubo un problema con la solicitud:", error);

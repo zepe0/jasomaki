@@ -10,7 +10,7 @@ function Nav() {
     if (sessionStorage.token) {
       try {
         jwtDecode(sessionStorage.token);
-        setLogin(true); // Solo se establece en true si el decodificado es exitoso
+        setLogin(true); 
       } catch (error) {
         console.error("Token decoding failed:", error);
         setLogin(false);
