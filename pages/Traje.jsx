@@ -1,6 +1,6 @@
 import Nav from "../src/components/Nav";
+import Todo from "../src/components/patrones/Todo";
 import VistaTraje from "../src/components/VistaTraje";
-
 
 function Traje() {
   if (!sessionStorage.token) {
@@ -10,7 +10,8 @@ function Traje() {
     <>
       <Nav></Nav>
       <h1>Traje</h1>
-   <VistaTraje></VistaTraje>
+      <VistaTraje></VistaTraje>
+      <Todo></Todo>
     </>
   );
 }

@@ -25,38 +25,44 @@ function VistaTraje() {
   }, []); */
 
   return (
-    <div className="container">
-      <div className="figure">
+    <section>
+       <div className="mannequin">
+        <div className="tiara-label">Tiara - Talla</div>
         <div className="head">
-          <div className="size-label">Sombrero: M</div>
+            <div className="tiara">
+                <div className="feather feather-left"></div>
+                <div className="feather feather-center"></div>
+                <div className="feather feather-right"></div>
+            </div>
         </div>
-        <div className="body">
-          <div className="arms">
-            <div className="arm left">
-              <div className="size-label">Manga Izquierda</div>
-            </div>
-            <div className="chest">
-              <div className="size-label">Chaleco: L</div>
-            </div>
-            <div className="arm right">
-              <div className="size-label">Manga Derecha</div>
-            </div>
-          </div>
-          <div className="skirt">
-            <div className="size-label">Falda: S</div>
-            <div className="legs">
-              <div className="leg left"></div>
-              <div className="leg right"></div>
-            </div>
-          </div>
-          <div className="feet">
-            {/*   TODO  arreglar estilo para piernas */}
-            <div className="foot left"></div>
-            <div className="foot right"></div>
-          </div>
+        <div className="neck"></div>
+        <div className="torso">
+            <div className="chest-label">Pecho - Talla</div>
         </div>
-      </div>
+        <div className="skirt"></div>
+        <div className="left-arm">
+            <div className="upper-arm"></div>
+            <div className="lower-arm"></div>
+            <div className="hand"></div>
+        </div>
+        <div className="right-arm">
+            <div className="upper-arm"></div>
+            <div className="lower-arm"></div>
+            <div className="hand"></div>
+        </div>
+        <div className="left-leg">
+            <div className="leg-label">Pierna - Talla</div>
+            <div className="upper-leg"></div>
+            <div className="lower-leg"></div>
+            <div className="foot"></div>
+        </div>
+        <div className="right-leg">
+            <div className="upper-leg"></div>
+            <div className="lower-leg"></div>
+            <div className="foot"></div>
+        </div>
     </div>
+    </section>
   );
 }
 
