@@ -1,4 +1,5 @@
 import AdminInscripciones from "../pages/AdminInscripciones";
+import AdminTraje from "../pages/AdminTraje";
 import Home from "../pages/Home";
 import HomeAdmin from "../pages/HomeAdmin";
 import Inscripciones from "../pages/Inscripciones";
@@ -30,6 +31,7 @@ function App() {
 
           <Route path="/Admin" element={<HomeAdmin />} />
           <Route path="/Admin/ins" element={<AdminInscripciones />} />
+          <Route path="/Admin/traje" element={<AdminTraje />} />
         </Routes>
       </BrowserRouter>
     </>
