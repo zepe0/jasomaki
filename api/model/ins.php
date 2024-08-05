@@ -36,40 +36,79 @@ class Inscripcion extends Db
         $stmt = null;
         return $response;
     }
-    public function addIns($nombre, $apelido, $apellidos, $tel, $dni, $id_event, $id_user)
+   
+    private function setInsUser($insid, $nombre, $apellido, $apellidos,$tel,$dni,$fecha)
     {
-        return $this->userInscripcion($nombre, $apelido, $apellidos, $tel, $dni, $id_event, $id_user);
-    }
+        Validator::validateId($insid);
+        Validator::validateStringNotEmptyOrBlank($nombre);
+        Validator::validateStringNotEmptyOrBlank($apellido);
+        Validator::validateStringNotEmptyOrBlank($apellidos);
+        Validator::validateStringNotEmptyOrBlank($tel);
+        Validator::validateStringNotEmptyOrBlank($dni);
+        Validator::validateTel($tel);
+        Validator::validateStringNotEmptyOrBlank($fecha);
+        Validator::validateDNI($dni);
 
-    public function getMyEvents($userid)
-    {
+
         $response = [];
 
-
         try {
-            $stmt = $this->con()->prepare("SELECT id_event FROM ins  WHERE user_id = ?");
 
-            if (!$stmt->execute(array($userid))) {
-                $response['error'] = "Error al ejecutar la consulta.";
+            $stmt = $this->con()->prepare("UPDATE ins SET nombre = ?, apellido = ?, apellidos = ?,tel =?,dni=?,fecha_ins WHERE ins_id = ?");
 
+
+            if ($stmt->execute([$nombre, $apellido, $apellidos, $tel,$dni,$fecha,$insid])) {
+
+                $response['status'] = 'success';
+                $response['message'] = 'Datos actualizados correctamente.';
             } else {
 
-                return $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+                $response['status'] = 'error';
+                $response['message'] = 'Error al actualizar los datos.';
             }
+
+
+            $stmt->closeCursor();
         } catch (PDOException $e) {
-            if ($e->getCode() == 23000 && strpos($e->getMessage(), '1062') !== false) {
-                $response['error'] = $e->getMessage();
-                ;
-            } else {
-                $response['error'] = "Error en la base de datos: " . $e->getMessage();
-            }
+
+            $response['status'] = 'error';
+            $response['message'] = 'Error en la base de datos: ' . $e->getMessage();
         }
 
-        $stmt = null;
-        return $response;
 
+        return $response;
     }
+    private function deleteIns($idIns)
+    {
+        Validator::validateId($idIns);
+        $response = [];
+
+        try {
+
+            $stmt = $this->con()->prepare("DELETE FROM ins WHERE id_ins  = ?");
+
+            if ($stmt->execute([$idIns])) {
+
+                $response['status'] = 'success';
+                $response['message'] = 'Inscripción eliminado correctamente.';
+            } else {
+
+                $response['status'] = 'error';
+                $response['message'] = 'Error al eliminar el inscripción.';
+            }
+
+
+            $stmt->closeCursor();
+        } catch (PDOException $e) {
+
+            $response['status'] = 'error';
+            $response['message'] = 'Error en la base de datos: ' . $e->getMessage();
+        }
+
+
+        return $response;
+    }
+
     protected function getInscripciones()
     {
         $response = [];
@@ -107,5 +146,39 @@ class Inscripcion extends Db
             return $this->getInscripciones();
         }
         return $response['error'] = "No tienes permisos para la acción seleccionada";
+    }
+    public function getMyEvents($userid)
+    {
+        $response = [];
+
+
+        try {
+            $stmt = $this->con()->prepare("SELECT id_event FROM ins  WHERE user_id = ?");
+
+            if (!$stmt->execute(array($userid))) {
+                $response['error'] = "Error al ejecutar la consulta.";
+
+            } else {
+
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            }
+        } catch (PDOException $e) {
+            if ($e->getCode() == 23000 && strpos($e->getMessage(), '1062') !== false) {
+                $response['error'] = $e->getMessage();
+                ;
+            } else {
+                $response['error'] = "Error en la base de datos: " . $e->getMessage();
+            }
+        }
+
+        $stmt = null;
+        return $response;
+
+    }
+    
+    public function addIns($nombre, $apelido, $apellidos, $tel, $dni, $id_event, $id_user)
+    {
+        return $this->userInscripcion($nombre, $apelido, $apellidos, $tel, $dni, $id_event, $id_user);
     }
 }

@@ -57,6 +57,23 @@ class User extends Db
 
         return $resultCheck;
     }
+    public function checkAdmin($userid)
+    {
+
+        $stmt = $this->con()->prepare("SELECT rol FROM users WHERE users_uid = ? ;");
+
+        if (!$stmt->execute(array($userid))) {
+            $stmt = null;
+
+            exit();
+        }
+        $resultCheck = false;
+        if ($stmt->rowCount() > 0) {
+            $resultCheck = true;
+        }
+
+        return $resultCheck;
+    }
 
     protected function verifyLoginUser($email, $password)
     {
