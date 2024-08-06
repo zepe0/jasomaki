@@ -1,3 +1,4 @@
+import ListInsAdmin from "../src/components/Admin/ListInsAdmin";
 import FormInscAdmin from "../src/components/FormInscAdmin";
 import Nav from "../src/components/Nav";
 
@@ -10,6 +11,7 @@ function AdminInscripciones() {
     <>
       <Nav></Nav>
       <FormInscAdmin></FormInscAdmin>
+      <ListInsAdmin />
     </>
   );
 }

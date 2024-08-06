@@ -1,0 +1,60 @@
+form {
+  background: #e89df062;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 6px 6px 6px 5px rgba(23, 24, 24, 0.822);
+  width: 50vw;
+  display: flex;
+  flex-direction: column;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="time"],
+button {
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #fcf4fde7;
+  font-size: 14px;
+  text-align: center;
+  box-shadow: 6px 2px 6px 2px rgba(113, 122, 122, 0.37);
+  border: none;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus {
+  border-color: #c553c8;
+  outline: none;
+  
+}
+
+button {
+  background-color: #c553c8;
+  color: white;
+  border: none;
+  cursor: pointer;
+  box-shadow: 6px 6px 6px 5px rgba(23, 24, 24, 0.822);
+}
+
+button:hover {
+  background-color: #b143b5;
+}
+
+label {
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: #4328a3;
+  text-align: center;
+}
+
+.time-inputs {
+  display: flex;
+  justify-content: space-between;
+}
+
+.time-inputs input[type="time"] {
+  width: 48%;
+  text-align: center;
+}

@@ -17,7 +17,7 @@ function AdminTraje() {
     <>
       <Nav></Nav>
 
-      <button onClick={handelOpenIscripcion}> + </button>
+      <button onClick={handelOpenIscripcion}> Nueva inscripción </button>
       {openinscripcion ? (
         <div>
           <button onClick={handelCloseIscripcion}>X</button>

@@ -1,7 +1,8 @@
 import { Toaster } from "react-hot-toast";
 import Nav from "../src/components/Nav";
-import ListInsAdmin from "../src/components/ListInsAdmin";
+
 import { jwtDecode } from "jwt-decode";
+import ListInsAdmin from "../src/components/Admin/ListInsAdmin";
 function HomeAdmin() {
 
   if (!sessionStorage.token) {

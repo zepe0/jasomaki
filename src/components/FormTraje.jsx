@@ -2,7 +2,7 @@ const API = import.meta.env.VITE_API_URL;
 import { jwtDecode } from "jwt-decode";
 import error from "../../error";
 import toast, { Toaster } from "react-hot-toast";
-
+import "./FormTraje.css";
 
 function FormTraje() {
 
@@ -57,8 +57,10 @@ function FormTraje() {
         <input type="text" placeholder="ubicacion" name="ubicacion" />
         <input type="text" placeholder="desc" name="desc" />
         <input type="date" name="dia" />
-        <input type="time" name="inicio" /> inicio
-        <input type="time" name="fin" />
+        <label>inicio</label>
+        <input type="time" name="inicio" /> 
+        <label>fin</label>
+        <input type="time" name="fin" /> 
         <button type="submit">Añadir </button>
       </form>
       <Toaster />
