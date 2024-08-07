@@ -17,7 +17,7 @@ $userid = $inputs['id'];
 
 
 $query = new EventoTraje();
-$result = $query->addEvent($userid, $titulo, $ubicacion, $desc, $dia, $inicio, $fin);
+$result = $query->addEventoTraje($userid, $titulo, $ubicacion, $desc, $dia, $inicio, $fin);
 
 echo json_encode($result);
 

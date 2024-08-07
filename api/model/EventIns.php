@@ -14,7 +14,7 @@ class EventIns extends Db
         $idins = generateUID();
 
         try {
-            $stmt = $this->con()->prepare("INSERT INTO eventins (ins_id,id_user,titulo,descr,inicio,fin) VALUES (?,?,?,?,?,?)");
+            $stmt = $this->con()->prepare("INSERT INTO eventins (id_event,id_user,titulo,descr,inicio,fin) VALUES (?,?,?,?,?,?)");
 
             if (!$stmt->execute(array($idins, $iduser, $titulo, $des, $inicio, $fin))) {
                 $response['error'] = "Error al ejecutar la consulta.";
@@ -27,7 +27,7 @@ class EventIns extends Db
             }
         } catch (PDOException $e) {
             if ($e->getCode() == 23000 && strpos($e->getMessage(), '1062') !== false) {
-                $response['error'] = "Ya estas inscrito";
+                $response['error'] = "Evento ya creado";
             } else {
                 $response['error'] = "Error en la base de datos: " . $e->getMessage();
             }
@@ -59,7 +59,8 @@ class EventIns extends Db
             }
         } catch (PDOException $e) {
             if ($e->getCode() == 23000 && strpos($e->getMessage(), '1062') !== false) {
-                $response['error'] = $e->getMessage();;
+                $response['error'] = $e->getMessage();
+                ;
             } else {
                 $response['error'] = "Error en la base de datos: " . $e->getMessage();
             }
@@ -69,5 +70,5 @@ class EventIns extends Db
         return $response;
 
     }
-   
+
 }

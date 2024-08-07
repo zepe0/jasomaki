@@ -1,7 +1,9 @@
 import { jwtDecode } from "jwt-decode";
 import Nav from "../src/components/Nav";
-/* import Todo from "../src/components/patrones/Todo";
-import VistaTraje from "../src/components/VistaTraje"; */
+import Todo from "../src/components/patrones/Todo";
+/* 
+import VistaTraje from "../src/components/VistaTraje"; 
+*/
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -22,7 +24,8 @@ function Traje() {
       <Nav></Nav>
       <h1>Traje</h1>
       {/*  <VistaTraje></VistaTraje>
-      <Todo></Todo> */}
+       */}
+      <Todo></Todo>
     </>
   );
 }

@@ -1,0 +1,28 @@
+.itemListEvent {
+  display: flex;
+  flex-direction: column;
+  width: 50vw;
+  align-items: center;
+}
+.fa-check {
+  color: green;
+  font-size: 24px;
+  margin-left: 15vw;
+  border-radius: 20px;
+  background-color: rgba(240, 248, 255, 0.493);
+  padding: 4px;
+}
+.times {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 50vw;
+}
+
+.titulo {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centra el texto dentro del contenedor */
+  margin: 0; /* Elimina el margen para alinear el texto con el ícono */
+  padding-right: 40px; /* Asegura que haya espacio suficiente para el ícono a la derecha */
+}

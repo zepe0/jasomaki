@@ -14,11 +14,11 @@ $fin = $inputs['fin'];
 
 
 try {
-    Validator::validateStringNotEmptyNoSpaces($Titulo);
-    Validator::validateStringNotEmptyNoSpaces($Descripcion);
-    Validator::validateStringNotEmptyNoSpaces($id);
-    Validator::validateStringNotEmptyNoSpaces($inicio);
-    Validator::validateStringNotEmptyNoSpaces($fin);
+    Validator::validateStringNotEmptyOrBlank($Titulo);
+    Validator::validateStringNotEmptyOrBlank($Descripcion);
+    Validator::validateStringNotEmptyOrBlank($id);
+    Validator::validateStringNotEmptyOrBlank($inicio);
+    Validator::validateStringNotEmptyOrBlank($fin);
     Validator::validateId($id);
 } catch (Exception $e) {
     echo 'Error: ' . $e->getMessage();

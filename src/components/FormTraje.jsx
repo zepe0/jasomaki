@@ -20,11 +20,11 @@ function FormTraje() {
       id: decode.id,
     };
     try {
-         error.validateStringNotEmptyNoSpaces(formData.titulo);
-        error.validateStringNotEmptyNoSpaces(formData.ubicacion);
-        error.validateStringNotEmptyNoSpaces(formData.desc);
-        error.validateStringNotEmptyNoSpaces(formData.dia);
-        error.validateStringNotEmptyNoSpaces(formData.fin);        
+         error.validateStringNotEmptyOrBlank(formData.titulo);
+        error.validateStringNotEmptyOrBlank(formData.ubicacion);
+        error.validateStringNotEmptyOrBlank(formData.desc);
+        error.validateStringNotEmptyOrBlank(formData.dia);
+        error.validateStringNotEmptyOrBlank(formData.fin);        
         error.validateId(formData.id); 
 
       fetch(`${API}traje/addEventTraje.php`, {

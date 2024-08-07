@@ -1,11 +1,8 @@
 <?php
 require_once 'Db.php';
 require_once '../createtoken.php';
-function generateUID()
-{
+require_once '../utils/generateUID.php';
 
-    return uniqid(bin2hex(random_bytes(4)), true);
-}
 class User extends Db
 {
 

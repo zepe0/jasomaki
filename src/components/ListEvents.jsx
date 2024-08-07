@@ -5,8 +5,8 @@ import {
   differenceInMinutes,
 } from "date-fns";
 import { jwtDecode } from "jwt-decode";
-
 import toast, { Toaster } from "react-hot-toast";
+import "./ListEvents.css";
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -18,6 +18,7 @@ function ListEvents() {
   const [myevents, setMyEvents] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [inscrito, setinscrito] = useState(null);
   useEffect(() => {
     fetch(`${API}/inscripción/getEvents.php`, {
       method: "POST",
@@ -44,10 +45,10 @@ function ListEvents() {
       .then((response) => response.json())
       .then((data) => {
         setMyEvents(data);
+        setinscrito(false);
       });
-  }, []);
-  const decode = jwtDecode(sessionStorage.token);
-  console.log(decode);
+  }, [inscrito]);
+
   const currentDate = new Date();
   currentDate.setHours(0, 0, 0, 0);
 
@@ -80,7 +81,7 @@ function ListEvents() {
     e.preventDefault();
 
     const decode = jwtDecode(sessionStorage.token);
-   
+
     const formData = {
       nombre: e.target[0].value,
       Apellido: e.target[1].value,
@@ -104,10 +105,12 @@ function ListEvents() {
           toast.error(data.error);
         }
         if (data.success) {
+          setinscrito(true);
           toast.success(data.msn);
           setIsModalOpen(false);
           setSelectedEvent(null);
         }
+        if (data.message) toast.error(data.message);
       })
       .catch((error) => {
         console.error("Hubo un problema con la solicitud:", error);
@@ -129,26 +132,30 @@ function ListEvents() {
             );
             return (
               <li key={ins.id_event}>
-                <form className="FormInsc">
-                  <input className="inputFormIns" placeholder={ins.titulo} />
-                  <input className="inputFormIns" placeholder={ins.descr} />
-                  <input className="inputFormIns" placeholder={ins.inicio} />
-                  <input className="inputFormIns" placeholder={ins.fin} />
-                  <input
-                    className="inputFormIns"
-                    placeholder={ins.id_user}
-                    type="hidden"
-                  />
-                  <p>Finaliza en {timeLeftText}</p>
+                <section className="itemListEvent">
+                  <div className="titulo">
+                    <h2 className="titulo">
+                    
+                      {ins.titulo}{" "}
+                      {isUserEnrolled ? (
+                        <i className="fas fa-check"></i>
+                      ) : (
+                        <button onClick={() => handleOpenModal(event, ins)}>
+                          Inscribirme
+                        </button>
+                      )}{" "}
+                    </h2>
+                  </div>
+                  <h4 className="">{ins.descr} </h4>
 
-                  {isUserEnrolled ? (
-                    <p>Ya inscrito</p>
-                  ) : (
-                    <button onClick={() => handleOpenModal(event, ins)}>
-                      Inscribirme
-                    </button>
-                  )}
-                </form>
+                  <div className="times">
+                    <p className="">
+                      De {ins.inicio} a {ins.fin}{" "}
+                    </p>
+
+                    <p>Finaliza en {timeLeftText}</p>
+                  </div>
+                </section>
               </li>
             );
           })
@@ -161,7 +168,7 @@ function ListEvents() {
         </li>
       )}
       {isModalOpen && (
-        <dialog id="formInsUser" open>
+        <dialog id="" open>
           <button onClick={handleCloseModal}>X</button>
           <h2>{selectedEvent.titulo}</h2>
           <p>{selectedEvent.descr}</p>

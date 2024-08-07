@@ -2,12 +2,9 @@
 require_once 'Db.php';
 require_once 'User.php';
 require_once 'Validator.php';
+require_once '../utils/generateUID.php';
 
-function generateUID()
-{
 
-    return uniqid(bin2hex(random_bytes(4)), true);
-}
 class EventoTraje extends Db
 {
 
@@ -50,7 +47,19 @@ class EventoTraje extends Db
     private function getAllTrajes()
     {
         $response = [];
-        $stmt = $this->con()->prepare("SELECT * FROM traje ");
+        $stmt = $this->con()->prepare("SELECT idEventoTraje, dia,inicio,fin,ubicacion,descr FROM traje ");
+        $res = $stmt->execute();
+        if (!$res) {
+            $response['sucess'] = "No se han registrado trajes aun ";
+        } else {
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+    }
+    private function getAllEventsTrajes()
+    {
+        $response = [];
+        $stmt = $this->con()->prepare("SELECT * FROM eventostraje ");
         $res = $stmt->execute();
         if (!$res) {
             $response['sucess'] = "No se han registrado trajes aun ";
@@ -125,9 +134,13 @@ class EventoTraje extends Db
     }
 
     /* PUBLICAS */
+    public function addEventoTraje($userid, $titulo, $ubicacion, $des, $dia, $inicio, $fin)
+    {
+        return $this->addEventTraje($userid, $titulo, $ubicacion, $des, $dia, $inicio, $fin);
+    }
     public function allTrajes()
     {
-        return $this->getAllTrajes();
+        return $this->getAllEventsTrajes();
     }
 
     public function updateTraje($idAdmin, $iduser, $pecho, $piernas, $fecha)

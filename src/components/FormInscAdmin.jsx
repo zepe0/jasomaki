@@ -18,9 +18,9 @@ function FormInscAdmin() {
       id: decode.id,
     };
     try {
-      error.validateStringNotEmptyNoSpaces(formData.Titulo);
-      error.validateStringNotEmptyNoSpaces(formData.Descripcion);
-      error.validateStringNotEmptyNoSpaces(formData.id);
+      error.validateStringNotEmptyOrBlank(formData.Titulo);
+      error.validateStringNotEmptyOrBlank(formData.Descripcion);
+      error.validateStringNotEmptyOrBlank(formData.id);
       error.validateDate(formData.inicio);
       error.validateDate(formData.fin);
       error.validateId(formData.id);
