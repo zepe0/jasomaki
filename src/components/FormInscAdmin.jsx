@@ -36,7 +36,7 @@ function FormInscAdmin() {
         .then((response) => response.json())
         .then((data) => {
           if (data.success) {
-            toast.success(data.msn);
+            return toast.success(data.msn);
           }
           toast.error(data.error);
         })

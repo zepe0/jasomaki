@@ -7,18 +7,22 @@ import {
 import { jwtDecode } from "jwt-decode";
 import toast, { Toaster } from "react-hot-toast";
 import "./ListEvents.css";
+import error from "../../error";
 
 const API = import.meta.env.VITE_API_URL;
 
 function ListEvents() {
   if (!sessionStorage.token) {
     window.location.href = "/";
+    return null; // Asegúrate de que no renderice nada si no hay token
   }
+
   const [events, setEvents] = useState([]);
   const [myevents, setMyEvents] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [inscrito, setinscrito] = useState(null);
+  const [inscrito, setInscrito] = useState(false); // Cambiar a `false` inicialmente
+
   useEffect(() => {
     fetch(`${API}/inscripción/getEvents.php`, {
       method: "POST",
@@ -30,6 +34,7 @@ function ListEvents() {
       .then((data) => {
         setEvents(data);
       });
+
     const decode = jwtDecode(sessionStorage.token);
 
     const formData = {
@@ -45,9 +50,9 @@ function ListEvents() {
       .then((response) => response.json())
       .then((data) => {
         setMyEvents(data);
-        setinscrito(false);
+        setInscrito(false); // Restablecer el estado de inscripción
       });
-  }, [inscrito]);
+  }, [inscrito, isModalOpen]);
 
   const currentDate = new Date();
   currentDate.setHours(0, 0, 0, 0);
@@ -77,113 +82,124 @@ function ListEvents() {
     setIsModalOpen(false);
     setSelectedEvent(null);
   };
-  const handeleAddUserInEvent = (e) => {
+
+  const handleAddUserInEvent = (e) => {
     e.preventDefault();
+    try {
+      const decode = jwtDecode(sessionStorage.token);
 
-    const decode = jwtDecode(sessionStorage.token);
+      
+      error.validateStringNotEmptyOrBlank(e.target[1].value);
+      error.validateStringNotEmptyOrBlank(e.target[2].value); 
+      error.validateStringNotEmptyOrBlank(e.target[3].value); 
+      error.validateStringNotEmptyOrBlank(e.target[4].value); 
+      error.validateStringNotEmptyOrBlank(e.target[5].value); 
+      error.validateDNI(e.target[5].value);
+      error.validateTel(e.target[4].value);
 
-    const formData = {
-      nombre: e.target[0].value,
-      Apellido: e.target[1].value,
-      Apellidos: e.target[2].value,
-      tel: e.target[3].value,
-      dni: e.target[4].value,
-      id_user: decode.id,
-      id_event: selectedEvent.id_event,
-    };
+      const formData = {
+        nombre: e.target[1].value,
+        Apellido: e.target[2].value,
+        Apellidos: e.target[3].value,
+        tel: e.target[4].value,
+        dni: e.target[5].value,
+        id_user: decode.id,
+        id_event: selectedEvent.id_event,
+      };
 
-    fetch(`${API}/inscripción/AgregarUsuario.php`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.error) {
-          toast.error(data.error);
-        }
-        if (data.success) {
-          setinscrito(true);
-          toast.success(data.msn);
-          setIsModalOpen(false);
-          setSelectedEvent(null);
-        }
-        if (data.message) toast.error(data.message);
+      fetch(`${API}/inscripción/AgregarUsuario.php`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       })
-      .catch((error) => {
-        console.error("Hubo un problema con la solicitud:", error);
-      });
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.error) {
+            toast.error(data.error.message);
+          }
+          if (data.success) {
+            setInscrito(true); // Actualizar el estado de inscripción
+            toast.success(data.msn);
+            handleCloseModal(); // Cerrar el modal
+          }
+          if (data.message) toast.error(data.message);
+        })
+        .catch((error) => {
+          console.error("Hubo un problema con la solicitud:", error);
+        });
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
+
   return (
-    <ul>
-      {events.length !== 0 ? (
-        events
-          .filter((ins) => {
-            const eventEndDate = new Date(ins.fin);
-            eventEndDate.setHours(0, 0, 0, 0);
-            return eventEndDate >= currentDate;
-          })
-          .map((ins) => {
-            const timeLeftText = getTimeLeftText(ins.fin);
-            const isUserEnrolled = myevents.some(
-              (event) => event.id_event === ins.id_event
-            );
-            return (
-              <li key={ins.id_event}>
-                <section className="itemListEvent">
-                  <div className="titulo">
-                    <h2 className="titulo">
-                    
-                      {ins.titulo}{" "}
-                      {isUserEnrolled ? (
-                        <i className="fas fa-check"></i>
-                      ) : (
-                        <button onClick={() => handleOpenModal(event, ins)}>
-                          Inscribirme
-                        </button>
-                      )}{" "}
-                    </h2>
-                  </div>
-                  <h4 className="">{ins.descr} </h4>
-
-                  <div className="times">
-                    <p className="">
-                      De {ins.inicio} a {ins.fin}{" "}
-                    </p>
-
-                    <p>Finaliza en {timeLeftText}</p>
-                  </div>
-                </section>
-              </li>
-            );
-          })
-      ) : (
-        <li>
-          <p>
-            Sabemos que tienes ganas de Carnaval pero la Inscripciones aun no
-            empiezan{" "}
-          </p>
-        </li>
-      )}
+    <section>
       {isModalOpen && (
-        <dialog id="" open>
+        <dialog id="dialog" open>
           <button onClick={handleCloseModal}>X</button>
-          <h2>{selectedEvent.titulo}</h2>
-          <p>{selectedEvent.descr}</p>
-          <form onSubmit={handeleAddUserInEvent}>
-            <input type="text" name="Nombre" placeholder="Nombre" id="" />
-            <input type="text" name="Apellido" placeholder="Apellido" id="" />
-            <input type="text" name="Apellidos" placeholder="Apellidos" id="" />
-            <input type="text" name="Tel" placeholder="Tel" id="" />
-            <input type="text" name="Dni" placeholder="Dni" id="" />
-            <button type="submit">Guardar plaza</button>
+          <form onSubmit={handleAddUserInEvent}>
+            <fieldset className="form">
+              <h2>{selectedEvent ? selectedEvent.titulo : ""}</h2>
+              <input type="text" name="Nombre" placeholder="Nombre" />
+              <input type="text" name="Apellido" placeholder="Apellido" />
+              <input type="text" name="Apellidos" placeholder="Apellidos" />
+              <input type="text" name="Tel" placeholder="Tel" />
+              <input type="text" name="Dni" placeholder="Dni" />
+              <button type="submit">Guardar plaza</button>
+            </fieldset>
           </form>
         </dialog>
       )}
-      <Toaster />
-    </ul>
+      <ul className="listEvent">
+        {events.length !== 0 ? (
+          events
+            .filter((ins) => {
+              const eventEndDate = new Date(ins.fin);
+              eventEndDate.setHours(0, 0, 0, 0);
+              return eventEndDate >= currentDate;
+            })
+            .map((ins) => {
+              const timeLeftText = getTimeLeftText(ins.fin);
+              const isUserEnrolled = myevents.some(
+                (event) => event.id_event === ins.id_event
+              );
+              return (
+                <li key={ins.id_event} className="itemListEvent">
+                  <h2 className="titulo">
+                    {ins.titulo}{" "}
+                    {isUserEnrolled ? <i className="fas fa-check"></i> : ""}
+                  </h2>
+                  <h4 className="desc">{ins.descr}</h4>
+                  <div className="footerItem">
+                    <div className="times">
+                      <p>De {ins.inicio}</p>
+                      <p>a {ins.fin}</p>
+                    </div>
+                    <div>
+                      <p>Finaliza en {timeLeftText}</p>
+                    </div>
+                  </div>
+                  {!isUserEnrolled && (
+                    <button onClick={(e) => handleOpenModal(e, ins)}>
+                      Inscribirme
+                    </button>
+                  )}
+                </li>
+              );
+            })
+        ) : (
+          <li>
+            <p>
+              Sabemos que tienes ganas de Carnaval pero las inscripciones aún no
+              empiezan.
+            </p>
+          </li>
+        )}
+        <Toaster />
+      </ul>
+    </section>
   );
 }
 

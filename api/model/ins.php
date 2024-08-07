@@ -8,36 +8,39 @@ function generateUID()
 }
 class Inscripcion extends Db
 {
-    protected function userInscripcion($nombre, $apelido, $apellidos, $tel, $dni, $id_event, $id_user)
+    protected function userInscripcion($nombre, $apellido, $apellidos, $tel, $dni, $id_event, $id_user)
     {
         $response = [];
         $idins = generateUID();
-
+    
         try {
-            $stmt = $this->con()->prepare("INSERT INTO ins (ins_id,nombre,apellido,apellidos,tel,dni,id_event,user_id) VALUES (?,?,?,?,?,?,?,?)");
-
-            if (!$stmt->execute(array($idins, $nombre, $apelido, $apellidos, $tel, $dni, $id_event, $id_user))) {
-                $response['error'] = "Error al ejecutar la consulta.";
+           
+            $stmt = $this->con()->prepare("SELECT COUNT(*) FROM ins WHERE dni = ? AND id_event = ?");
+            $stmt->execute([$dni, $id_event]);
+            $count = $stmt->fetchColumn();
+    
+            if ($count > 0) {
+               
+                $response['message'] = "Ya estás inscrito en este evento.";
             } else {
-
-
-                $response['success'] = true;
-                $response['msn'] = "Inscrito con éxito.";
-
+                
+                $stmt = $this->con()->prepare("INSERT INTO ins (ins_id, nombre, apellido, apellidos, tel, dni, id_event, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                if (!$stmt->execute([$idins, $nombre, $apellido, $apellidos, $tel, $dni, $id_event, $id_user])) {
+                    $response['error'] = "Error al ejecutar la consulta.";
+                } else {
+                    $response['success'] = true;
+                    $response['msn'] = "Inscrito con éxito.";
+                }
             }
         } catch (PDOException $e) {
-            if ($e->getCode() == 23000 && strpos($e->getMessage(), '1062') !== false) {
-                $response['error'] = "Ya estas inscrito";
-            } else {
-                $response['error'] = "Error en la base de datos: " . $e->getMessage();
-            }
+            $response['error'] = "Error en la base de datos: " . $e->getMessage();
         }
-
+    
         $stmt = null;
         return $response;
     }
-   
-    private function setInsUser($insid, $nombre, $apellido, $apellidos,$tel,$dni,$fecha)
+
+    private function setInsUser($insid, $nombre, $apellido, $apellidos, $tel, $dni, $fecha)
     {
         Validator::validateId($insid);
         Validator::validateStringNotEmptyOrBlank($nombre);
@@ -57,7 +60,7 @@ class Inscripcion extends Db
             $stmt = $this->con()->prepare("UPDATE ins SET nombre = ?, apellido = ?, apellidos = ?,tel =?,dni=?,fecha_ins WHERE ins_id = ?");
 
 
-            if ($stmt->execute([$nombre, $apellido, $apellidos, $tel,$dni,$fecha,$insid])) {
+            if ($stmt->execute([$nombre, $apellido, $apellidos, $tel, $dni, $fecha, $insid])) {
 
                 $response['status'] = 'success';
                 $response['message'] = 'Datos actualizados correctamente.';
@@ -176,7 +179,7 @@ class Inscripcion extends Db
         return $response;
 
     }
-    
+
     public function addIns($nombre, $apelido, $apellidos, $tel, $dni, $id_event, $id_user)
     {
         return $this->userInscripcion($nombre, $apelido, $apellidos, $tel, $dni, $id_event, $id_user);

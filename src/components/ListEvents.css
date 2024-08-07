@@ -1,28 +1,76 @@
 .itemListEvent {
   display: flex;
   flex-direction: column;
-  width: 50vw;
-  align-items: center;
+  width: 100vw;
+  max-width: 80vw;
+  padding: 10px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #e89df062;
+  box-shadow: 6px 6px 6px 5px rgba(23, 24, 24, 0.822);
 }
-.fa-check {
-  color: green;
-  font-size: 24px;
-  margin-left: 15vw;
-  border-radius: 20px;
-  background-color: rgba(240, 248, 255, 0.493);
-  padding: 4px;
-}
-.times {
+.footerItem {
   display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  width: 50vw;
+  flex-direction: column;
+  align-items: center;
 }
 
 .titulo {
+  margin: 0;
+  padding-right: 40px;
+  white-space: nowrap;
+  text-overflow: ellipsis; /* Agrega puntos suspensivos si el texto es demasiado largo */
+}
+
+.fa-check {
+  color: green;
+  font-size: 24px;
+  background-color: rgba(240, 248, 255, 0.493);
+  border-radius: 20px;
+  padding: 4px;
+  margin-left: 10px;
+}
+.desc {
+  text-align: center;
+}
+.times {
   display: flex;
-  align-items: center;
-  justify-content: center; /* Centra el texto dentro del contenedor */
-  margin: 0; /* Elimina el margen para alinear el texto con el ícono */
-  padding-right: 40px; /* Asegura que haya espacio suficiente para el ícono a la derecha */
+  justify-content: space-around;
+  flex-direction: row;
+  width: 100%;
+  border-color: #c553c8;
+  font-size: 14px;
+}
+
+.times p {
+  margin: 0;
+}
+dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 8px;
+  background: rgba(236, 232, 232, 0.13);
+  z-index: 1000;
+}
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999; 
+}
+.listEvent {
+  max-height: 89vh; /* Altura máxima del contenedor */
+  overflow-y: auto;  /* Habilitar el desplazamiento vertical */
+  padding: 0;
+  margin: 0;
+  list-style: none;  /* Elimina el estilo de lista predeterminado */
+background-color: #c453c841;
+  padding: 8px;
 }

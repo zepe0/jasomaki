@@ -102,7 +102,7 @@ function validateId(id, explain = "id") {
   if (id.length !== 31) throw new Error("id length is not 24 characters");
 }
 function validateTel(phone) {
-  const phoneRegex = /^\+?[1-9]\d{1,14}$/; // Ejemplo de regex para formato E.164 internacional
+  const phoneRegex = /^\+?[1-9]\d{8,14}$/; // Ejemplo de regex para formato E.164 internacional
   if (!phoneRegex.test(phone)) {
     throw new Error("El número de teléfono no es válido");
   }

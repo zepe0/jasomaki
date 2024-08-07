@@ -1,11 +1,12 @@
-form {
-  background: #e89df062;
+.form {
+  background: #7e5382;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 6px 6px 6px 5px rgba(23, 24, 24, 0.822);
   width: 50vw;
   display: flex;
   flex-direction: column;
+  text-align: center;
 }
 
 input[type="text"],

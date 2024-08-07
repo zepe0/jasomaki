@@ -31,7 +31,7 @@ try {
     echo json_encode($inscripcion);
 
 } catch (Exception $e) {
-    $response['error'] = 'error';
+    $response['message'] = 'error';
     $response['message'] = $e->getMessage();
     header('Content-Type: application/json');
     echo json_encode($response);
