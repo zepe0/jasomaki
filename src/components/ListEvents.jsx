@@ -120,9 +120,9 @@ function ListEvents() {
             toast.error(data.error.message);
           }
           if (data.success) {
-            setInscrito(true); // Actualizar el estado de inscripción
+            setInscrito(true); 
             toast.success(data.msn);
-            handleCloseModal(); // Cerrar el modal
+            handleCloseModal(); 
           }
           if (data.message) toast.error(data.message);
         })

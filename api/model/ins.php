@@ -118,7 +118,7 @@ class Inscripcion extends Db
 
 
         try {
-            $stmt = $this->con()->prepare("SELECT * FROM ins ");
+            $stmt = $this->con()->prepare("SELECT i.ins_id, i.id_event ,i.nombre,i.apellido,i.apellidos,i.dni,i.tel,i.fecha_insc ,e.titulo FROM ins as i INNER join eventins as e on i.id_event= e.id_event");
 
             if (!$stmt->execute(array())) {
                 $response['error'] = "Error al ejecutar la consulta.";
