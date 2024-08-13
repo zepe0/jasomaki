@@ -12,18 +12,18 @@ class Inscripcion extends Db
     {
         $response = [];
         $idins = generateUID();
-    
+
         try {
-           
+
             $stmt = $this->con()->prepare("SELECT COUNT(*) FROM ins WHERE dni = ? AND id_event = ?");
             $stmt->execute([$dni, $id_event]);
             $count = $stmt->fetchColumn();
-    
+
             if ($count > 0) {
-               
+
                 $response['message'] = "Ya estás inscrito en este evento.";
             } else {
-                
+
                 $stmt = $this->con()->prepare("INSERT INTO ins (ins_id, nombre, apellido, apellidos, tel, dni, id_event, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
                 if (!$stmt->execute([$idins, $nombre, $apellido, $apellidos, $tel, $dni, $id_event, $id_user])) {
                     $response['error'] = "Error al ejecutar la consulta.";
@@ -35,7 +35,7 @@ class Inscripcion extends Db
         } catch (PDOException $e) {
             $response['error'] = "Error en la base de datos: " . $e->getMessage();
         }
-    
+
         $stmt = null;
         return $response;
     }
@@ -114,32 +114,34 @@ class Inscripcion extends Db
 
     protected function getInscripciones()
     {
-        $response = [];
-
+        $response = ['error' => null, 'data' => null];
 
         try {
-            $stmt = $this->con()->prepare("SELECT i.ins_id, i.id_event ,i.nombre,i.apellido,i.apellidos,i.dni,i.tel,i.fecha_insc ,e.titulo FROM ins as i INNER join eventins as e on i.id_event= e.id_event");
+            $stmt = $this->con()->prepare("SELECT i.ins_id, i.id_event, i.nombre, i.apellido, i.apellidos, i.dni, i.tel, i.fecha_insc, e.titulo 
+                                           FROM ins as i 
+                                           INNER JOIN eventins as e on i.id_event = e.id_event");
 
-            if (!$stmt->execute(array())) {
+            if (!$stmt->execute()) {
+                // Si la ejecución falla por alguna razón que no sea una excepción, capturamos aquí.
                 $response['error'] = "Error al ejecutar la consulta.";
-
             } else {
-
-                return $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+                // Si la consulta fue exitosa, devolvemos los datos.
+                $response['data'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
             }
         } catch (PDOException $e) {
+            // Manejamos diferentes tipos de errores según el código de error o el mensaje.
             if ($e->getCode() == 23000 && strpos($e->getMessage(), '1062') !== false) {
-                $response['error'] = $e->getMessage();
-                ;
+                $response['error'] = "Registro duplicado: " . $e->getMessage();
             } else {
                 $response['error'] = "Error en la base de datos: " . $e->getMessage();
             }
         }
 
+        // Liberar el recurso del statement
         $stmt = null;
-        return $response;
 
+        // Devolver la respuesta con datos o error
+        return $response;
     }
     public function getInscripcionesAdmin($rol)
     {

@@ -3,9 +3,8 @@ import toast, { Toaster } from "react-hot-toast";
 import { jwtDecode } from "jwt-decode";
 import "./ListInsAdmin.css";
 import utils from "../../utils/time";
-
-const API = import.meta.env.VITE_API_URL;
-
+import { getEventInscripciones } from "../../logic/Admin/getEventsInscripciones";
+import { getInscripciones } from "../../logic/Admin/getInscripciones";
 function ListInsAdmin() {
   if (!sessionStorage.token) {
     window.location.href = "/";
@@ -16,29 +15,32 @@ function ListInsAdmin() {
     window.location.href = "/";
   }
 
+  const [inscripciones, setInscripciones] = useState([]);
   const [list, setList] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
 
   useEffect(() => {
-    const decode = jwtDecode(sessionStorage.token);
-
-    const formData = {
-      rol: decode.rol,
-    };
-
-    fetch(`${API}/inscripción/getInscripciones.php`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    })
-      .then((response) => response.json())
+    getEventInscripciones()
       .then((data) => {
-        setList(data);
+        if (data.error) {
+          throw "error en la conexión a la base de datos";
+        } else {
+          setList(data);
+        }
       })
       .catch((error) => {
-        toast.error("Error fetching data: ", error);
+        toast.error(error);
+      });
+    getInscripciones()
+      .then((data) => {
+        if (data.error) {
+          throw "error en la conexión a la base de datos";
+        } else {
+          setInscripciones(data.data); //TODO hacer consulta sobre el evento pra recoger los usuarios apuntados
+        }
+      })
+      .catch((error) => {
+        toast.error(error);
       });
   }, []);
 
@@ -55,30 +57,20 @@ function ListInsAdmin() {
               <th className="thTdStyle thStyle">Nombre</th>
               <th className="thTdStyle thStyle">Apellido</th>
               <th className="thTdStyle thStyle">Apellidos</th>
-              <th className="thTdStyle thStyle">Tel</th>
-              <th className="thTdStyle thStyle">DNI</th>
-              <th className="thTdStyle thStyle">Titulo Inscripcion</th>
-              <th className="thTdStyle thStyle">Inscrito</th>
             </tr>
           </thead>
           <tbody>
             {list.length > 0 ? (
               list.map((participante) => (
-                <React.Fragment key={participante.ins_id}>
-                  <tr onClick={() => handleClick(participante.ins_id)}>
-                    <td className="thTdStyle">{participante.nombre}</td>
-                    <td className="thTdStyle">{participante.apellido}</td>
-                    <td className="thTdStyle">{participante.apellidos}</td>
-                    <td className="thTdStyle">{participante.tel}</td>
-                    <td className="thTdStyle">{participante.dni}</td>
+                <React.Fragment key={participante.id_event}>
+                  <tr onClick={() => handleClick(participante.id_event)}>
                     <td className="thTdStyle">{participante.titulo}</td>
+                    <td className="thTdStyle">{participante.descr}</td>
                     <td className="thTdStyle">
-                      {utils.resetData(
-                        utils.formatHour(participante.fecha_insc)
-                      )}
+                      {utils.formatDate(participante.inicio)}
                     </td>
                   </tr>
-                  {selectedId === participante.ins_id && (
+                  {selectedId === participante.id_event && (
                     <tr>
                       <td className="thTdStyle" colSpan="7">
                         <DetailComponent id={selectedId} />
@@ -105,21 +97,20 @@ function ListInsAdmin() {
 
 function DetailComponent({ id }) {
   return (
-
-     <table className="tableStyle" style={{ minWidth: "800px" }}>
-          <thead>
-            <tr>
-              <th className="thTdStyle thStyle">Nombre</th>
-              <th className="thTdStyle thStyle">Apellido</th>
-              <th className="thTdStyle thStyle">Apellidos</th>
-              <th className="thTdStyle thStyle">Tel</th>
-              <th className="thTdStyle thStyle">DNI</th>
-              <th className="thTdStyle thStyle">Titulo Inscripcion</th>
-              <th className="thTdStyle thStyle">Inscrito</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-          </table>
+    <table className="tableStyle" style={{ minWidth: "800px" }}>
+      <thead>
+        <tr>
+          <th className="thTdStyle thStyle">Nombre</th>
+          <th className="thTdStyle thStyle">Apellido</th>
+          <th className="thTdStyle thStyle">Apellidos</th>
+          <th className="thTdStyle thStyle">Tel</th>
+          <th className="thTdStyle thStyle">DNI</th>
+          <th className="thTdStyle thStyle">Titulo Inscripcion</th>
+          <th className="thTdStyle thStyle">Inscrito</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
   );
 }
 

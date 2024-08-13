@@ -8,6 +8,7 @@ class Db
     private $dbname;
     private $pdo;
     private $error;
+    private $msn;
 
     public function __construct()
     {
@@ -28,7 +29,7 @@ class Db
             $this->pdo = new PDO($dsn, $this->user, $this->pass, $options);
         } catch (PDOException $e) {
             $this->error = $e->getMessage();
-            echo "Error de conexión: " . $this->error;
+            throw new Exception("No se pudo conectar a la base de datos: ");
         }
     }
 

@@ -12,10 +12,17 @@ try {
     $inscripciones = $quey->getInscripcionesAdmin($rol);
     echo json_encode($inscripciones);
 
+} catch (PDOException $e) {
+    // Captura errores relacionados con la base de datos
+    http_response_code(500);
+    $response['error'] = 'error';
+    $response['message'] = 'Error al conectar con la base de datos: ' . $e->getMessage();
+    echo json_encode($response);
 
 } catch (Exception $e) {
+    // Captura cualquier otro tipo de error
+    http_response_code(400);
     $response['error'] = 'error';
     $response['message'] = $e->getMessage();
-    header('Content-Type: application/json');
     echo json_encode($response);
 }
