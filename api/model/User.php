@@ -12,14 +12,14 @@ class User extends Db
         $id = generateUID();
 
         try {
-            $stmt = $this->con()->prepare("INSERT INTO user (id, pass, email) VALUES (?,?,?)");
+            $stmt = $this->con()->prepare("INSERT INTO usuarios (id, email, contraseña,rol) VALUES (?,?,?,?)");
 
-            if (!$stmt->execute(array($id, $password, $email))) {
+            if (!$stmt->execute(array($id, $email, $password, 0))) {
                 $response['error'] = "Error al ejecutar la consulta.";
             } else {
 
                 $payload['id'] = $id;
-                $payload['rol'] = $email;
+                $payload['rol'] = 0;
                 $token = createJwt($payload);
                 $response['success'] = "Usuario registrado con éxito.";
                 $response['token'] = $token;
@@ -40,7 +40,7 @@ class User extends Db
     protected function checkUser($userid, $email)
     {
 
-        $stmt = $this->con()->prepare("SELECT id FROM users WHERE users_uid = ? OR users_email = ?;");
+        $stmt = $this->con()->prepare("SELECT id FROM usuarios WHERE users_uid = ? OR users_email = ?;");
 
         if (!$stmt->execute(array($userid, $email))) {
             $stmt = null;
@@ -57,7 +57,7 @@ class User extends Db
     public function checkAdmin($userid)
     {
 
-        $stmt = $this->con()->prepare("SELECT rol FROM users WHERE users_uid = ? ;");
+        $stmt = $this->con()->prepare("SELECT rol FROM usuarios WHERE id = ? ;");
 
         if (!$stmt->execute(array($userid))) {
             $stmt = null;
@@ -75,7 +75,7 @@ class User extends Db
     protected function verifyLoginUser($email, $password)
     {
         $respuesta = [];
-        $stmt = $this->con()->prepare("SELECT pass,id,rol from user WHERE email = ? ");
+        $stmt = $this->con()->prepare("SELECT contraseña,id,rol from usuarios WHERE email = ? ");
 
         if (!$stmt->execute(array($email))) {
             $respuesta = 1;
@@ -83,7 +83,7 @@ class User extends Db
 
         if ($stmt->rowCount() > 0) {
             $res = $stmt->fetchAll();
-            $hashedPwd = $res[0]['pass'];
+            $hashedPwd = $res[0]['contraseña'];
             if (password_verify($password, $hashedPwd) == false) {
                 $respuesta["error"] = true;
                 $respuesta["msn"] = "Credenciales incorrectas";
@@ -111,7 +111,7 @@ class User extends Db
     {
         $error = 0;
 
-        $stmt = $this->con()->prepare(" UPDATE users SET users_pwd = ? WHERE users_id  = ? ");
+        $stmt = $this->con()->prepare(" UPDATE usuarios SET contraseña = ? WHERE id  = ? ");
 
         if (!$stmt->execute()) {
             $error = 1;
@@ -128,7 +128,7 @@ class User extends Db
     }
     public function getUsers()
     {
-        $stmt = $this->con()->prepare("SELECT * FROM user ");
+        $stmt = $this->con()->prepare("SELECT * FROM usuarios ");
         $res = $stmt->execute();
         if (!$res) {
             return 1;
@@ -141,7 +141,7 @@ class User extends Db
     {
         $error = 0;
 
-        $stmt = $this->con()->prepare(" UPDATE users SET token=? WHERE users_email = ? ");
+        $stmt = $this->con()->prepare(" UPDATE usuarios SET token=? WHERE email = ? ");
 
         if (!$stmt->execute(array($token, $email))) {
             $error = 1;
@@ -160,7 +160,7 @@ class User extends Db
     public function getEmail($user)
     {
 
-        $stmt = $this->con()->prepare(" SELECT email FROM users  WHERE users_uid = ? ");
+        $stmt = $this->con()->prepare(" SELECT email FROM usuarios  WHERE id = ? ");
 
         $res = $stmt->execute(array($user));
         if (!$res) {

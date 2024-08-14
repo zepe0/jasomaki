@@ -18,29 +18,33 @@ function ListInsAdmin() {
   const [inscripciones, setInscripciones] = useState([]);
   const [list, setList] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
-
   useEffect(() => {
     getEventInscripciones()
       .then((data) => {
+        console.log("getEventInscripciones data:", data);
         if (data.error) {
-          throw "error en la conexión a la base de datos";
+          throw new Error("Error en la conexión a la base de datos");
         } else {
           setList(data);
         }
       })
       .catch((error) => {
-        toast.error(error);
+    
+        toast.error(error.message || "Ocurrió un error"); // Asegúrate de pasar una cadena
       });
+
     getInscripciones()
       .then((data) => {
-        if (data.error) {
-          throw "error en la conexión a la base de datos";
+        if (!data) {
+       
+          throw new Error("Error en la conexión a la base de datos");
         } else {
-          setInscripciones(data.data); //TODO hacer consulta sobre el evento pra recoger los usuarios apuntados
+          setInscripciones(data.data);
         }
       })
       .catch((error) => {
-        toast.error(error);
+       
+        toast.error(error.message || "Ocurrió un error"); // Asegúrate de pasar una cadena
       });
   }, []);
 

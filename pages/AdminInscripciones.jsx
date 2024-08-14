@@ -19,7 +19,7 @@ function AdminInscripciones() {
     <>
       <Nav></Nav>
       <button onClick={openForm}>Añadir nuevas inscripciones</button>
-      <ListInsAdmin />
+  <ListInsAdmin />  
 
       <dialog id="formadd">
         <button onClick={closeForm}>X</button>

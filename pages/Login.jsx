@@ -1,7 +1,6 @@
 import Nav from "../src/components/Nav";
 import error from "../error/index";
 import toast, { Toaster } from "react-hot-toast";
-
 import { useNavigate } from "react-router-dom";
 
 const API = import.meta.env.VITE_API_URL;
@@ -45,6 +44,7 @@ function Login() {
           }
         })
         .catch((error) => {
+         
           console.error("Hubo un problema con la solicitud:", error);
         });
     } catch (error) {

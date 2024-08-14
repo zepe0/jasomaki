@@ -3,11 +3,18 @@ import Nav from "../src/components/Nav";
 import "./Register.css";
 import error from "../error";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const API = import.meta.env.VITE_API_URL;
 
 function Register() {
   const goto = useNavigate();
+  useEffect(() => {
+    if (sessionStorage.getItem("token")) {
+      goto("../");
+    }
+  }, []);
+  
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -49,7 +56,7 @@ function Register() {
         }
         sessionStorage.token = data.token;
         toast.success(data.success);
-        goto("./");
+        goto("/");
       })
       .catch((error) => {
         toast.error("Hubo un problema con la solicitud:", error);

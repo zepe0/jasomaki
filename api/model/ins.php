@@ -15,7 +15,7 @@ class Inscripcion extends Db
 
         try {
 
-            $stmt = $this->con()->prepare("SELECT COUNT(*) FROM ins WHERE dni = ? AND id_event = ?");
+            $stmt = $this->con()->prepare("SELECT COUNT(*) FROM inscripciones WHERE dni = ? AND id_event = ?");
             $stmt->execute([$dni, $id_event]);
             $count = $stmt->fetchColumn();
 
@@ -24,8 +24,8 @@ class Inscripcion extends Db
                 $response['message'] = "Ya estás inscrito en este evento.";
             } else {
 
-                $stmt = $this->con()->prepare("INSERT INTO ins (ins_id, nombre, apellido, apellidos, tel, dni, id_event, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-                if (!$stmt->execute([$idins, $nombre, $apellido, $apellidos, $tel, $dni, $id_event, $id_user])) {
+                $stmt = $this->con()->prepare("INSERT INTO ins (id_event, user_id) VALUES (?, ?)");
+                if (!$stmt->execute([$id_event, $id_user])) {
                     $response['error'] = "Error al ejecutar la consulta.";
                 } else {
                     $response['success'] = true;
@@ -114,12 +114,12 @@ class Inscripcion extends Db
 
     protected function getInscripciones()
     {
-        $response = ['error' => null, 'data' => null];
+        $response = [];
 
         try {
-            $stmt = $this->con()->prepare("SELECT i.ins_id, i.id_event, i.nombre, i.apellido, i.apellidos, i.dni, i.tel, i.fecha_insc, e.titulo 
-                                           FROM ins as i 
-                                           INNER JOIN eventins as e on i.id_event = e.id_event");
+            $stmt = $this->con()->prepare("SELECT id, participante_id, evento_id nombre 
+                                           FROM inscripciones 
+                                          ");
 
             if (!$stmt->execute()) {
                 // Si la ejecución falla por alguna razón que no sea una excepción, capturamos aquí.
@@ -133,7 +133,7 @@ class Inscripcion extends Db
             if ($e->getCode() == 23000 && strpos($e->getMessage(), '1062') !== false) {
                 $response['error'] = "Registro duplicado: " . $e->getMessage();
             } else {
-                $response['error'] = "Error en la base de datos: " . $e->getMessage();
+                $response['error'] = "Error en la base de datos : " . $e->getMessage();
             }
         }
 
@@ -158,7 +158,7 @@ class Inscripcion extends Db
 
 
         try {
-            $stmt = $this->con()->prepare("SELECT id_event FROM ins  WHERE user_id = ?");
+            $stmt = $this->con()->prepare("SELECT id_event FROM inscripciones  WHERE user_id = ?");
 
             if (!$stmt->execute(array($userid))) {
                 $response['error'] = "Error al ejecutar la consulta.";

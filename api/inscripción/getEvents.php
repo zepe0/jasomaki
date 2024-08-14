@@ -1,6 +1,6 @@
 <?php
 include_once ("../headers.php");
-require "../model/Eventins.php";
+require "../model/Eventos.php";
 require "../model/Validator.php";
 
 $quey = new EventIns();

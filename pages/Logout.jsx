@@ -7,7 +7,7 @@ function Logout() {
   useEffect(() => {
     if (sessionStorage.token) {
       delete sessionStorage.token;
-      goto("/");
+      goto("/Login");
     }
   }, []);
 

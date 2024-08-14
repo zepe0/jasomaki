@@ -8,15 +8,15 @@ function generateUID()
 }
 class EventIns extends Db
 {
-    private function addEvent($iduser, $titulo, $des, $inicio, $fin)
+    private function addEvent($id, $nombre, $fecha, $hora)
     {
         $response = [];
         $idins = generateUID();
 
         try {
-            $stmt = $this->con()->prepare("INSERT INTO eventins (id_event,id_user,titulo,descr,inicio,fin) VALUES (?,?,?,?,?,?)");
+            $stmt = $this->con()->prepare("INSERT INTO eventos (id,nombre,fecha,hora) VALUES (?,?,?,?)");
 
-            if (!$stmt->execute(array($idins, $iduser, $titulo, $des, $inicio, $fin))) {
+            if (!$stmt->execute(array($id, $nombre, $fecha, $hora ))) {
                 $response['error'] = "Error al ejecutar la consulta.";
             } else {
 
@@ -37,9 +37,9 @@ class EventIns extends Db
         return $response;
     }
 
-    public function addEventIns($id, $Titulo, $Descripcion, $inicio, $fin)
+    public function addEvents($id, $Titulo, $Descripcion, $inicio)
     {
-        return $this->addEvent($id, $Titulo, $Descripcion, $inicio, $fin);
+        return $this->addEvent($id, $Titulo, $Descripcion, $inicio);
     }
     public function getAllEvents()
     {
@@ -47,7 +47,7 @@ class EventIns extends Db
 
 
         try {
-            $stmt = $this->con()->prepare("SELECT * FROM eventins");
+            $stmt = $this->con()->prepare("SELECT * FROM eventos");
 
             if (!$stmt->execute(array())) {
                 $response['error'] = "Error al ejecutar la consulta.";

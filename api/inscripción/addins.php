@@ -1,6 +1,6 @@
 <?php
 include_once ("../headers.php");
-require "../model/Eventins.php";
+require "../model/Eventos.php";
 require "../model/Validator.php";
 
 $json_data = file_get_contents('php://input');
@@ -17,14 +17,14 @@ try {
     Validator::validateStringNotEmptyOrBlank($Titulo);
     Validator::validateStringNotEmptyOrBlank($Descripcion);
     Validator::validateStringNotEmptyOrBlank($id);
-    Validator::validateStringNotEmptyOrBlank($inicio);
-    Validator::validateStringNotEmptyOrBlank($fin);
+    Validator::validateStringNotEmptyOrBlank($inicio);//TODO mirar como enviar datos
+  
     Validator::validateId($id);
 } catch (Exception $e) {
     echo 'Error: ' . $e->getMessage();
 }
 
 $quey = new EventIns();
-$inscripcion = $quey->addEventIns($id, $Titulo, $Descripcion, $inicio, $fin);
+$inscripcion = $quey->addEvents($id, $Titulo, $Descripcion, $inicio);
 
 echo json_encode($inscripcion);

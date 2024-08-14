@@ -4,15 +4,14 @@ import Nav from "../src/components/Nav";
 import { jwtDecode } from "jwt-decode";
 import ListInsAdmin from "../src/components/Admin/ListInsAdmin";
 function HomeAdmin() {
-
   if (!sessionStorage.token) {
-    window.location.href = "/";
+    window.location.href = "/Login";
     return;
   }
   const decode = jwtDecode(sessionStorage.token);
- 
-  if (decode.rol === 0) {
-    window.location.href = "/";
+
+  if (decode.rol === 1) {
+    window.location.href = "/Admin";
     return;
   }
   return (

@@ -16,13 +16,20 @@ export function getInscripciones() {
     body: JSON.stringify(formData),
   })
     .then((response) => {
-    
-      return response.json();
+      // Registrar el texto de la respuesta para depuración
+      return response.text().then((text) => {
+      
+        try {
+          return JSON.parse(text);
+        } catch (e) {
+          throw new Error(`Failed to parse JSON: ${e.message}`);
+        }
+      });
     })
     .then((data) => {
       return data;
     })
     .catch((error) => {
-      toast.error("Error fetching data: ", error);
+      toast.error(`Error fetching data: ${error.message}`);
     });
 }
