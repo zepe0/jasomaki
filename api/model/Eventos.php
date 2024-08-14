@@ -16,7 +16,7 @@ class EventIns extends Db
         try {
             $stmt = $this->con()->prepare("INSERT INTO eventos (id,nombre,fecha,hora) VALUES (?,?,?,?)");
 
-            if (!$stmt->execute(array($id, $nombre, $fecha, $hora ))) {
+            if (!$stmt->execute(array($id, $nombre, $fecha, $hora))) {
                 $response['error'] = "Error al ejecutar la consulta.";
             } else {
 
@@ -27,7 +27,8 @@ class EventIns extends Db
             }
         } catch (PDOException $e) {
             if ($e->getCode() == 23000 && strpos($e->getMessage(), '1062') !== false) {
-                $response['error'] = "Evento ya creado";
+                print_r($e->getCode(), $e->getMessage());
+                $response['error'] = "Existe Un evento ya para ese dia";
             } else {
                 $response['error'] = "Error en la base de datos: " . $e->getMessage();
             }
@@ -37,9 +38,9 @@ class EventIns extends Db
         return $response;
     }
 
-    public function addEvents($id, $Titulo, $Descripcion, $inicio)
+    public function addEvents($id, $Titulo, $inicio, $hora)
     {
-        return $this->addEvent($id, $Titulo, $Descripcion, $inicio);
+        return $this->addEvent($id, $Titulo, $inicio, $hora);
     }
     public function getAllEvents()
     {

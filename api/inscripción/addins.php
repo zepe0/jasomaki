@@ -8,23 +8,21 @@ $inputs = json_decode($json_data, true);
 
 $id = $inputs['id'];
 $Titulo = $inputs['Titulo'];
-$Descripcion = $inputs['Descripcion'];
 $inicio = $inputs['inicio'];
-$fin = $inputs['fin'];
+$hora = $inputs['hora'];
 
 
 try {
     Validator::validateStringNotEmptyOrBlank($Titulo);
-    Validator::validateStringNotEmptyOrBlank($Descripcion);
-    Validator::validateStringNotEmptyOrBlank($id);
+    /* Validator::validateStringNotEmptyOrBlank($id); */
     Validator::validateStringNotEmptyOrBlank($inicio);//TODO mirar como enviar datos
-  
+
     Validator::validateId($id);
 } catch (Exception $e) {
     echo 'Error: ' . $e->getMessage();
 }
 
 $quey = new EventIns();
-$inscripcion = $quey->addEvents($id, $Titulo, $Descripcion, $inicio);
+$inscripcion = $quey->addEvents($id, $Titulo, $inicio, $hora);
 
 echo json_encode($inscripcion);

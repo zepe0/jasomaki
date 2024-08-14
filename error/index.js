@@ -99,7 +99,7 @@ function validateEmail(email, explain = "email") {
 function validateId(id, explain = "id") {
   validateString(id, explain);
 
-  if (id.length !== 31) throw new Error("id length is not 24 characters");
+  if (id.length !== 24) throw new Error("id length is not 24 characters");
 }
 function validateTel(phone) {
   const phoneRegex = /^\+?[1-9]\d{8,14}$/; // Ejemplo de regex para formato E.164 internacional

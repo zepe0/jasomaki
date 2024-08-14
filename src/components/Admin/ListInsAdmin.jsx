@@ -5,6 +5,8 @@ import "./ListInsAdmin.css";
 import utils from "../../utils/time";
 import { getEventInscripciones } from "../../logic/Admin/getEventsInscripciones";
 import { getInscripciones } from "../../logic/Admin/getInscripciones";
+import { CiEdit } from "react-icons/ci";
+import { MdDelete } from "react-icons/md";
 function ListInsAdmin() {
   if (!sessionStorage.token) {
     window.location.href = "/";
@@ -15,13 +17,11 @@ function ListInsAdmin() {
     window.location.href = "/";
   }
 
-  const [inscripciones, setInscripciones] = useState([]);
   const [list, setList] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
   useEffect(() => {
     getEventInscripciones()
       .then((data) => {
-        console.log("getEventInscripciones data:", data);
         if (data.error) {
           throw new Error("Error en la conexión a la base de datos");
         } else {
@@ -29,21 +29,6 @@ function ListInsAdmin() {
         }
       })
       .catch((error) => {
-    
-        toast.error(error.message || "Ocurrió un error"); // Asegúrate de pasar una cadena
-      });
-
-    getInscripciones()
-      .then((data) => {
-        if (!data) {
-       
-          throw new Error("Error en la conexión a la base de datos");
-        } else {
-          setInscripciones(data.data);
-        }
-      })
-      .catch((error) => {
-       
         toast.error(error.message || "Ocurrió un error"); // Asegúrate de pasar una cadena
       });
   }, []);
@@ -55,28 +40,34 @@ function ListInsAdmin() {
   return (
     <div className="divtable">
       <div style={{ overflowX: "auto", maxWidth: "100%" }}>
+        <h3>Eventos creados</h3>
         <table className="tableStyle" style={{ minWidth: "800px" }}>
           <thead>
             <tr>
-              <th className="thTdStyle thStyle">Nombre</th>
-              <th className="thTdStyle thStyle">Apellido</th>
-              <th className="thTdStyle thStyle">Apellidos</th>
+              <th className="thTdStyle thStyle">Titulo</th>
+              <th className="thTdStyle thStyle">dia</th>
+              <th className="thTdStyle thStyle"></th>
             </tr>
           </thead>
           <tbody>
             {list.length > 0 ? (
-              list.map((participante) => (
-                <React.Fragment key={participante.id_event}>
-                  <tr onClick={() => handleClick(participante.id_event)}>
-                    <td className="thTdStyle">{participante.titulo}</td>
-                    <td className="thTdStyle">{participante.descr}</td>
-                    <td className="thTdStyle">
-                      {utils.formatDate(participante.inicio)}
+              list.map((evento) => (
+                <React.Fragment key={evento.id}>
+                  <tr onClick={() => handleClick(evento.id)}>
+                    <td className="thTdStyle">{evento.nombre}</td>
+                    <td className="thTdStyle">{evento.fecha}</td>
+                    <td>
+                      <button>
+                        <CiEdit />
+                      </button>
+                      <button>
+                        <MdDelete />
+                      </button>
                     </td>
                   </tr>
-                  {selectedId === participante.id_event && (
+                  {selectedId === evento.id && (
                     <tr>
-                      <td className="thTdStyle" colSpan="7">
+                      <td className="thTdStyle" colSpan="3">
                         <DetailComponent id={selectedId} />
                       </td>
                     </tr>
@@ -85,7 +76,10 @@ function ListInsAdmin() {
               ))
             ) : (
               <tr>
-                <td colSpan="7" style={{ textAlign: "center" }}>
+                <td
+                  colSpan="7"
+                  style={{ textAlign: "center", backgroundColor: "#f0f0f0" }}
+                >
                   No hay inscripciones disponibles
                 </td>
               </tr>
@@ -99,7 +93,21 @@ function ListInsAdmin() {
   );
 }
 
-function DetailComponent({ id }) {
+function DetailComponent() {
+  const [inscripciones, setInscripciones] = useState([]);
+  useEffect(() => {
+    getInscripciones()
+      .then((data) => {
+        if (!data) {
+          throw new Error("Error en la conexión a la base de datos");
+        } else {
+          setInscripciones(data.data);
+        }
+      })
+      .catch((error) => {
+        toast.error(error.message || "Ocurrió un error"); // Asegúrate de pasar una cadena
+      });
+  }, []);
   return (
     <table className="tableStyle" style={{ minWidth: "800px" }}>
       <thead>
@@ -109,11 +117,36 @@ function DetailComponent({ id }) {
           <th className="thTdStyle thStyle">Apellidos</th>
           <th className="thTdStyle thStyle">Tel</th>
           <th className="thTdStyle thStyle">DNI</th>
-          <th className="thTdStyle thStyle">Titulo Inscripcion</th>
+          <th className="thTdStyle thStyle">Titulo Inscripción</th>
           <th className="thTdStyle thStyle">Inscrito</th>
         </tr>
       </thead>
-      <tbody></tbody>
+      <tbody>
+        {inscripciones.length != 0 ? (
+          <tr>
+            <td
+              colSpan="7"
+              style={{ textAlign: "center", backgroundColor: "#f0f0f0" }}
+            >
+              Sin personas apuntadas aún
+            </td>
+          </tr>
+        ) : (
+          inscripciones.map((inscripcion, index) => (
+            <tr key={index}>
+              <td className="thTdStyle">{inscripcion.nombre}</td>
+              <td className="thTdStyle">{inscripcion.apellido}</td>
+              <td className="thTdStyle">{inscripcion.apellidos}</td>
+              <td className="thTdStyle">{inscripcion.tel}</td>
+              <td className="thTdStyle">{inscripcion.dni}</td>
+              <td className="thTdStyle">{inscripcion.titulo}</td>
+              <td className="thTdStyle">
+                {utils.formatDate(inscripcion.inscrito)}
+              </td>
+            </tr>
+          ))
+        )}
+      </tbody>
     </table>
   );
 }

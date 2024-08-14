@@ -1,28 +1,27 @@
 import toast, { Toaster } from "react-hot-toast";
 import error from "../../error";
 import "./FormInsc.css";
-import { jwtDecode } from "jwt-decode";
 
-function FormInscAdmin() {
+import { generateUID } from "../utils/generateUid";
+
+// eslint-disable-next-line react/prop-types
+function FormInscAdmin({ onSuccess }) {
   const API = import.meta.env.VITE_API_URL;
   const inscripcion = (e) => {
     e.preventDefault();
     const inicio = new Date(e.target.inicio.value);
-    const fin = new Date(e.target.fin.value);
-    const decode = jwtDecode(sessionStorage.token);
+
     const formData = {
       Titulo: e.target.Titulo.value,
-      Descripcion: e.target.Descripcion.value,
+      hora: e.target.hora.value,
       inicio: inicio,
-      fin: fin,
-      id: decode.id,
+      id: generateUID(),
     };
+
     try {
       error.validateStringNotEmptyOrBlank(formData.Titulo);
-      error.validateStringNotEmptyOrBlank(formData.Descripcion);
       error.validateStringNotEmptyOrBlank(formData.id);
       error.validateDate(formData.inicio);
-      error.validateDate(formData.fin);
       error.validateId(formData.id);
 
       fetch(`${API}/inscripción/addins.php`, {
@@ -36,6 +35,7 @@ function FormInscAdmin() {
         .then((response) => response.json())
         .then((data) => {
           if (data.success) {
+            onSuccess();
             return toast.success(data.msn);
           }
           toast.error(data.error);
@@ -57,16 +57,9 @@ function FormInscAdmin() {
           name="Titulo"
           placeholder="Titulo"
         ></input>
-        <input
-          className="inputFormIns"
-          type="text"
-          name="Descripcion"
-          placeholder="Descripción"
-        ></input>
 
         <input className="inputFormIns" type="date" name="inicio"></input>
-
-        <input className="inputFormIns" type="date" name="fin"></input>
+        <input className="inputFormIns" type="time" name="hora"></input>
         <button type="submit">Crear</button>
       </form>
       <Toaster />
