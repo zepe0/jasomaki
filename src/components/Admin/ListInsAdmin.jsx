@@ -7,7 +7,8 @@ import { getEventInscripciones } from "../../logic/Admin/getEventsInscripciones"
 import { getInscripciones } from "../../logic/Admin/getInscripciones";
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
-function ListInsAdmin() {
+// eslint-disable-next-line react/prop-types
+function ListInsAdmin({ onSelect }) {
   if (!sessionStorage.token) {
     window.location.href = "/";
   }
@@ -29,12 +30,19 @@ function ListInsAdmin() {
         }
       })
       .catch((error) => {
-        toast.error(error.message || "Ocurrió un error"); // Asegúrate de pasar una cadena
+        toast.error(error.message || "Ocurrió un error");
       });
   }, []);
-
+  const clikedit = (e,id) => {  
+   
+    e.stopPropagation();
+    const dialog = document.getElementById("formadd");
+    dialog.showModal();
+    
+    onSelect(list.find(list =>list.id === id)); // TODO buscar en el list y mostrar
+  };
   const handleClick = (id) => {
-    setSelectedId((prevId) => (prevId === id ? null : id)); // Alterna la visibilidad del componente
+    setSelectedId((prevId) => (prevId === id ? null : id));
   };
 
   return (
@@ -43,11 +51,11 @@ function ListInsAdmin() {
         <h3>Eventos creados</h3>
         <table className="tableStyle" style={{ minWidth: "800px" }}>
           <thead>
-            <tr>
+         {/*    <tr>
               <th className="thTdStyle thStyle">Titulo</th>
               <th className="thTdStyle thStyle">dia</th>
               <th className="thTdStyle thStyle"></th>
-            </tr>
+            </tr> */}
           </thead>
           <tbody>
             {list.length > 0 ? (
@@ -57,7 +65,7 @@ function ListInsAdmin() {
                     <td className="thTdStyle">{evento.nombre}</td>
                     <td className="thTdStyle">{evento.fecha}</td>
                     <td>
-                      <button>
+                      <button onClick={(e) => clikedit(e, evento.id)}>
                         <CiEdit />
                       </button>
                       <button>

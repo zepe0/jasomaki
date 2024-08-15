@@ -6,6 +6,7 @@ import { useState } from "react";
 
 function AdminInscripciones() {
   const [refresh, setRefresh] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
   if (!sessionStorage.token) {
     window.location.href = "/";
   }
@@ -15,22 +16,29 @@ function AdminInscripciones() {
   }
   function closeForm() {
     const dialog = document.getElementById("formadd");
+    setSelectedEvent(null)
     dialog.close();
+
   }
 
   function refreshList() {
     closeForm();
     setRefresh((prev) => !prev);
+  
+  }
+  function handleSelect(id) {  
+    setSelectedEvent(id);
+    openForm();
   }
   return (
     <>
       <Nav></Nav>
       <button onClick={openForm}>Añadir nuevas inscripciones</button>
-      <ListInsAdmin key={refresh} />
+      <ListInsAdmin key={refresh} onSelect={handleSelect} />
 
       <dialog id="formadd">
         <button onClick={closeForm}>X</button>
-        <FormInscAdmin onSuccess={refreshList} />
+        <FormInscAdmin onSuccess={refreshList} selectedit={selectedEvent} />
       </dialog>
       <Toaster />
     </>

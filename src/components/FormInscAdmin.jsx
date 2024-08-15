@@ -1,19 +1,44 @@
+/* eslint-disable react/prop-types */
 import toast, { Toaster } from "react-hot-toast";
 import error from "../../error";
 import "./FormInsc.css";
-
 import { generateUID } from "../utils/generateUid";
+import { useEffect, useState } from "react";
+const API = import.meta.env.VITE_API_URL;
 
-// eslint-disable-next-line react/prop-types
-function FormInscAdmin({ onSuccess }) {
-  const API = import.meta.env.VITE_API_URL;
+function FormInscAdmin({ onSuccess, selectedit }) {
+  const [inputValue, setInputValue] = useState({
+    Titulo: selectedit ? selectedit.nombre : "",
+    inicio: selectedit ? selectedit.fecha : "",
+    hora: selectedit ? selectedit.hora : "",
+  });
+
+  useEffect(() => {
+    if (selectedit) {
+      setInputValue({
+        Titulo: selectedit.nombre,
+        inicio: selectedit.fecha,
+        hora: selectedit.hora,
+      });
+    }
+  }, [selectedit]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setInputValue((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   const inscripcion = (e) => {
     e.preventDefault();
-    const inicio = new Date(e.target.inicio.value);
+   
+    const inicio = new Date(inputValue.inicio);
 
     const formData = {
-      Titulo: e.target.Titulo.value,
-      hora: e.target.hora.value,
+      Titulo: inputValue.Titulo,
+      hora: inputValue.hora,
       inicio: inicio,
       id: generateUID(),
     };
@@ -25,7 +50,6 @@ function FormInscAdmin({ onSuccess }) {
       error.validateId(formData.id);
 
       fetch(`${API}/inscripción/addins.php`, {
-        // Usa la URL directa al servidor PHP
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -47,6 +71,7 @@ function FormInscAdmin({ onSuccess }) {
       toast.error(`error: ${error.message}`);
     }
   };
+
   return (
     <div className="">
       <h1>Añadir Inscripciones</h1>
@@ -55,12 +80,31 @@ function FormInscAdmin({ onSuccess }) {
           className="inputFormIns"
           type="text"
           name="Titulo"
-          placeholder="Titulo"
-        ></input>
+          value={inputValue.Titulo}
+          onChange={handleInputChange}
+        />
 
-        <input className="inputFormIns" type="date" name="inicio"></input>
-        <input className="inputFormIns" type="time" name="hora"></input>
-        <button type="submit">Crear</button>
+        <input
+          className="inputFormIns"
+          type="date"
+          name="inicio"
+          value={inputValue.inicio}
+          onChange={handleInputChange}
+        />
+
+        <input
+          className="inputFormIns"
+          type="time"
+          name="hora"
+          value={inputValue.hora}
+          onChange={handleInputChange}
+        />
+        {inputValue ? (
+        /*   <button type="button">Editar </button> */
+          <button type="submit">Crear</button>
+        ) : (
+          <button type="submit">Crear</button>
+        )}
       </form>
       <Toaster />
     </div>

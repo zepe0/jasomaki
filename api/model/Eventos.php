@@ -11,7 +11,7 @@ class EventIns extends Db
     private function addEvent($id, $nombre, $fecha, $hora)
     {
         $response = [];
-        $idins = generateUID();
+        $id = generateUID();
 
         try {
             $stmt = $this->con()->prepare("INSERT INTO eventos (id,nombre,fecha,hora) VALUES (?,?,?,?)");
@@ -26,11 +26,14 @@ class EventIns extends Db
 
             }
         } catch (PDOException $e) {
-            if ($e->getCode() == 23000 && strpos($e->getMessage(), '1062') !== false) {
-                print_r($e->getCode(), $e->getMessage());
-                $response['error'] = "Existe Un evento ya para ese dia";
+
+            if ($e->getCode() == '45000' && strpos($e->getMessage(), 'No se pueden crear más de 3 eventos en la misma fecha') !== false) {
+                $response['error'] = 'No se pueden crear más de 3 eventos en la misma fecha';
+            } else if ($e->getCode() == 23000 && strpos($e->getMessage(), '1062') !== false) {
+                $response['error'] = "Error en la base de datos   34: " . $e->getMessage();
             } else {
-                $response['error'] = "Error en la base de datos: " . $e->getMessage();
+
+                $response['error'] = "Error en la base de datos: Código" . $e->getCode() . ", Mensaje: " . $e->getMessage();
             }
         }
 
