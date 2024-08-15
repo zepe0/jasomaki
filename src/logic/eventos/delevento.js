@@ -1,17 +1,15 @@
-
 import toast from "react-hot-toast";
 const API = import.meta.env.VITE_API_URL;
-export function getEventInscripciones() {
-
-
-  return fetch(`${API}inscripción/getEvents.php`, {
+export function delEvento(data) {
+  return fetch(`${API}eventos/delEventos.php`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-    }
-    
+    },
+    body: JSON.stringify(data),
   })
     .then((response) => {
+      console.log(response.success);
       return response.json();
     })
     .then((data) => {

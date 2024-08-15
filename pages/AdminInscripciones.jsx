@@ -10,23 +10,24 @@ function AdminInscripciones() {
   if (!sessionStorage.token) {
     window.location.href = "/";
   }
-  function openForm() {
+  function openForm(e) {
     const dialog = document.getElementById("formadd");
     dialog.showModal();
+    if (e) {
+      setSelectedEvent(null); // Resetea el estado a null
+    }
   }
   function closeForm() {
     const dialog = document.getElementById("formadd");
-    setSelectedEvent(null)
+    setSelectedEvent(null);
     dialog.close();
-
   }
 
   function refreshList() {
     closeForm();
     setRefresh((prev) => !prev);
-  
   }
-  function handleSelect(id) {  
+  function handleSelect(id) {
     setSelectedEvent(id);
     openForm();
   }

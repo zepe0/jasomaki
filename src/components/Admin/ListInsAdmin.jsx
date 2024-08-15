@@ -4,7 +4,8 @@ import { jwtDecode } from "jwt-decode";
 import "./ListInsAdmin.css";
 import utils from "../../utils/time";
 import { getEventInscripciones } from "../../logic/Admin/getEventsInscripciones";
-import { getInscripciones } from "../../logic/Admin/getInscripciones";
+import { delEvento } from "../../logic/eventos/delevento";
+
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 // eslint-disable-next-line react/prop-types
@@ -33,16 +34,23 @@ function ListInsAdmin({ onSelect }) {
         toast.error(error.message || "Ocurrió un error");
       });
   }, []);
-  const clikedit = (e,id) => {  
-   
+  const clikedit = (e, id) => {
     e.stopPropagation();
     const dialog = document.getElementById("formadd");
     dialog.showModal();
-    
-    onSelect(list.find(list =>list.id === id)); // TODO buscar en el list y mostrar
+    onSelect(list.find((list) => list.id === id));
   };
   const handleClick = (id) => {
     setSelectedId((prevId) => (prevId === id ? null : id));
+  };
+  const clikdelet = (e, id) => {
+    e.stopPropagation();
+    const fromData = {
+      id: id,
+      user: decode.id,
+      rol: decode.rol,
+    };
+    delEvento(fromData);
   };
 
   return (
@@ -51,7 +59,7 @@ function ListInsAdmin({ onSelect }) {
         <h3>Eventos creados</h3>
         <table className="tableStyle" style={{ minWidth: "800px" }}>
           <thead>
-         {/*    <tr>
+            {/*    <tr>
               <th className="thTdStyle thStyle">Titulo</th>
               <th className="thTdStyle thStyle">dia</th>
               <th className="thTdStyle thStyle"></th>
@@ -68,7 +76,7 @@ function ListInsAdmin({ onSelect }) {
                       <button onClick={(e) => clikedit(e, evento.id)}>
                         <CiEdit />
                       </button>
-                      <button>
+                      <button onClick={(e) => clikdelet(e, evento.id)}>
                         <MdDelete />
                       </button>
                     </td>

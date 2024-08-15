@@ -4,6 +4,8 @@ import error from "../../error";
 import "./FormInsc.css";
 import { generateUID } from "../utils/generateUid";
 import { useEffect, useState } from "react";
+import { editevents } from "../logic/eventos/editEvent";
+import { jwtDecode } from "jwt-decode";
 const API = import.meta.env.VITE_API_URL;
 
 function FormInscAdmin({ onSuccess, selectedit }) {
@@ -19,6 +21,13 @@ function FormInscAdmin({ onSuccess, selectedit }) {
         Titulo: selectedit.nombre,
         inicio: selectedit.fecha,
         hora: selectedit.hora,
+        id: selectedit.id,
+      });
+    } else {
+      setInputValue({
+        Titulo: "",
+        inicio: "",
+        hora: "",
       });
     }
   }, [selectedit]);
@@ -33,7 +42,7 @@ function FormInscAdmin({ onSuccess, selectedit }) {
 
   const inscripcion = (e) => {
     e.preventDefault();
-   
+
     const inicio = new Date(inputValue.inicio);
 
     const formData = {
@@ -71,11 +80,33 @@ function FormInscAdmin({ onSuccess, selectedit }) {
       toast.error(`error: ${error.message}`);
     }
   };
+  const editevent = (e) => {
+    e.preventDefault();
+    const form = e.target.closest("form");
+
+    const formData = {
+      id: form.id,
+      titulo: form.Titulo.value,
+      fecha: form.inicio.value,
+      hora: form.hora.value,
+      rol: jwtDecode(sessionStorage.token).rol,
+      user: jwtDecode(sessionStorage.token).id,
+    };
+
+    editevents(formData).then((data) => {
+      if (data.success) {
+        toast.success(data.msn);
+        onSuccess();
+      } else {
+        toast.error(data.error);
+      }
+    });
+  };
 
   return (
     <div className="">
       <h1>Añadir Inscripciones</h1>
-      <form className="FormInsc" onSubmit={inscripcion}>
+      <form className="FormInsc" onSubmit={inscripcion} id={inputValue.id}>
         <input
           className="inputFormIns"
           type="text"
@@ -99,9 +130,10 @@ function FormInscAdmin({ onSuccess, selectedit }) {
           value={inputValue.hora}
           onChange={handleInputChange}
         />
-        {inputValue ? (
-        /*   <button type="button">Editar </button> */
-          <button type="submit">Crear</button>
+        {inputValue.Titulo != "" ? (
+          <button type="button" onClick={editevent}>
+            Editar{" "}
+          </button>
         ) : (
           <button type="submit">Crear</button>
         )}
