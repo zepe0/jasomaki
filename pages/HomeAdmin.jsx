@@ -3,16 +3,17 @@ import Nav from "../src/components/Nav";
 
 import { jwtDecode } from "jwt-decode";
 import ListInsAdmin from "../src/components/Admin/ListInsAdmin";
+import { useNavigate } from "react-router-dom";
 function HomeAdmin() {
+  const goto = useNavigate();
+
   if (!sessionStorage.token) {
-    window.location.href = "/Login";
-    return;
+    goto("/Login");
+   
   }
   const decode = jwtDecode(sessionStorage.token);
-
-  if (decode.rol === 1) {
-    window.location.href = "/Admin";
-    return;
+  if (decode.rol == "0") {
+    goto("/");
   }
   return (
     <>

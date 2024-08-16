@@ -94,6 +94,7 @@ class EventIns extends Db
         $response = [];
         try {
             $result = $this->checkUser($user, $rol);
+
             if ($result['error'] == "1") {
                 $response['error'] = "El usuario no tiene permisos para editar eventos";
             } else {
@@ -115,7 +116,7 @@ class EventIns extends Db
             $response['error'] = $th->getMessage();
         }
 
-        echo json_encode($response);
+        return json_encode($response);
     }
 
 
@@ -155,23 +156,25 @@ class EventIns extends Db
     }
     public function editEvents($id, $nombre, $inicio, $hora, $rol, $idUser)
     {
+
         return $this->editEvent($id, $nombre, $inicio, $hora, $rol, $idUser);
     }
     public function delEvents($id, $rol, $iduser)
     {
         $res = [];
-        $res['fo'] = "fo";
+
+
         $admin = $this->checkUser($iduser, $rol);
         error_log("checkUser result: " . print_r($admin, true)); // Añade esta línea para depurar
 
         if ($admin['error'] == 0) {
             $res = $this->delEvent($id);
-            error_log("delEvent result: " . print_r($res, true)); // Añade esta línea para depurar
+            return $res;
         } else {
             $res['error'] = "No tienes permisos para hacer esto";
         }
 
-        return json_encode($res);
+        echo json_encode($res);
     }
 }
 

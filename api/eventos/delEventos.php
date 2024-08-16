@@ -11,17 +11,22 @@ $rol = $inputs['rol'];
 $user = $inputs['user'];
 
 
-try {
 
-    Validator::validateStringNotEmptyOrBlank($id);
-    Validator::validateId($id);
+try {
+    // Validaciones
+  /*   Validator::validateStringNotEmptyOrBlank($id);
+    Validator::validateId($id); */
     /* Validator::validateNumber($rol); */
 
+    
     $quey = new EventIns();
     $eventoEditado = $quey->delEvents($id, $rol, $user);
-} catch (Exception $e) {
-    return 'Error: ' . $e->getMessage();
-}
 
-return json_encode($eventoEditado);
+    
+    echo json_encode($eventoEditado);
+
+} catch (Exception $e) {
+ 
+    echo json_encode(['error' => 'Error: ' . $e->getMessage()]);
+};
 // TODO revisar respuestas

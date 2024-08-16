@@ -11,7 +11,7 @@ try {
     Validator::validateNumber($rol);
     $quey = new Inscripcion();
     $inscripciones = $quey->getInscripcionesAdmin($rol);
-    $response['data'] = $inscripciones;
+    $response = $inscripciones;
 
 } catch (PDOException $e) {
     http_response_code(500);

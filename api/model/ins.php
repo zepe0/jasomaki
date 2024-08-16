@@ -8,14 +8,14 @@ function generateUID()
 }
 class Inscripcion extends Db
 {
-    protected function userInscripcion($nombre, $apellido, $apellidos, $tel, $dni, $id_event, $id_user)
+    protected function userInscripcion($nombre, $apellido, $apellidos, $tel, $dni, $id_event, $id_user)//TODo arreglar conexion
     {
         $response = [];
         $idins = generateUID();
 
         try {
 
-            $stmt = $this->con()->prepare("SELECT COUNT(*) FROM inscripciones WHERE dni = ? AND id_event = ?");
+            $stmt = $this->con()->prepare("SELECT COUNT(*) FROM inscripciones WHERE dni = ? AND id = ?");
             $stmt->execute([$dni, $id_event]);
             $count = $stmt->fetchColumn();
 
@@ -158,7 +158,7 @@ class Inscripcion extends Db
 
 
         try {
-            $stmt = $this->con()->prepare("SELECT id_event FROM inscripciones  WHERE user_id = ?");
+            $stmt = $this->con()->prepare("SELECT id FROM inscripciones  WHERE participante_id = ?");
 
             if (!$stmt->execute(array($userid))) {
                 $response['error'] = "Error al ejecutar la consulta.";

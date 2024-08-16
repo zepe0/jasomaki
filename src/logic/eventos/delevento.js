@@ -12,8 +12,14 @@ export function delEvento(data) {
       console.log(response.success);
       return response.json();
     })
-    .then((data) => {
-      return data;
+    .then((res) => {
+      if(res.success){
+        toast.success('Evento eliminado con éxito');
+      }
+      if (res.error) {
+        toast.error(res.error);
+      }
+   
     })
     .catch((error) => {
       toast.error("Error fetching data: ", error);

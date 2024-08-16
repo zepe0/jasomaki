@@ -87,13 +87,12 @@ function ListEvents() {
     e.preventDefault();
     try {
       const decode = jwtDecode(sessionStorage.token);
-
-      
+   
       error.validateStringNotEmptyOrBlank(e.target[1].value);
-      error.validateStringNotEmptyOrBlank(e.target[2].value); 
-      error.validateStringNotEmptyOrBlank(e.target[3].value); 
-      error.validateStringNotEmptyOrBlank(e.target[4].value); 
-      error.validateStringNotEmptyOrBlank(e.target[5].value); 
+      error.validateStringNotEmptyOrBlank(e.target[2].value);
+      error.validateStringNotEmptyOrBlank(e.target[3].value);
+      error.validateStringNotEmptyOrBlank(e.target[4].value);
+      error.validateStringNotEmptyOrBlank(e.target[5].value);
       error.validateDNI(e.target[5].value);
       error.validateTel(e.target[4].value);
 
@@ -104,7 +103,7 @@ function ListEvents() {
         tel: e.target[4].value,
         dni: e.target[5].value,
         id_user: decode.id,
-        id_event: selectedEvent.id_event,
+        id: selectedEvent.id,
       };
 
       fetch(`${API}/inscripción/AgregarUsuario.php`, {
@@ -120,9 +119,9 @@ function ListEvents() {
             toast.error(data.error.message);
           }
           if (data.success) {
-            setInscrito(true); 
+            setInscrito(true);
             toast.success(data.msn);
-            handleCloseModal(); 
+            handleCloseModal();
           }
           if (data.message) toast.error(data.message);
         })
@@ -141,12 +140,13 @@ function ListEvents() {
           <button onClick={handleCloseModal}>X</button>
           <form onSubmit={handleAddUserInEvent}>
             <fieldset className="form">
-              <h2>{selectedEvent ? selectedEvent.titulo : ""}</h2>
+              <h2>{selectedEvent ? selectedEvent.nombre : ""}</h2>
               <input type="text" name="Nombre" placeholder="Nombre" />
               <input type="text" name="Apellido" placeholder="Apellido" />
               <input type="text" name="Apellidos" placeholder="Apellidos" />
               <input type="text" name="Tel" placeholder="Tel" />
               <input type="text" name="Dni" placeholder="Dni" />
+              
               <button type="submit">Guardar plaza</button>
             </fieldset>
           </form>
@@ -156,35 +156,34 @@ function ListEvents() {
         {events.length !== 0 ? (
           events
             .filter((ins) => {
-              const eventEndDate = new Date(ins.fin);
+              const eventEndDate = new Date(ins.fecha);
               eventEndDate.setHours(0, 0, 0, 0);
               return eventEndDate >= currentDate;
             })
             .map((ins) => {
-              const timeLeftText = getTimeLeftText(ins.fin);
+              const timeLeftText = getTimeLeftText(ins.fecha);
               const isUserEnrolled = myevents.some(
                 (event) => event.id_event === ins.id_event
               );
               return (
-                <li key={ins.id_event} className="itemListEvent">
+                <li key={ins.id} className="itemListEvent">
                   <h2 className="titulo">
-                    {ins.titulo}{" "}
+                    {ins.nombre}{" "}
                     {isUserEnrolled ? <i className="fas fa-check"></i> : ""}
                   </h2>
-                  <h4 className="desc">{ins.descr}</h4>
+
                   <div className="footerItem">
-                    <div className="times">
-                      <p>De {ins.inicio}</p>
-                      <p>a {ins.fin}</p>
-                    </div>
-                    <div>
-                      <p>Finaliza en {timeLeftText}</p>
-                    </div>
+                    <div className="times"></div>
                   </div>
                   {!isUserEnrolled && (
-                    <button onClick={(e) => handleOpenModal(e, ins)}>
-                      Inscribirme
-                    </button>
+                    <div className="footerItem">
+                      <button onClick={(e) => handleOpenModal(e, ins)}>
+                        Inscribirme
+                      </button>
+                      <p>
+                        Finaliza en {timeLeftText} <span>📲 {ins.fecha}</span>
+                      </p>
+                    </div>
                   )}
                 </li>
               );

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import error from "../../error";
 import "./FormInsc.css";
 import { generateUID } from "../utils/generateUid";
@@ -130,7 +130,7 @@ function FormInscAdmin({ onSuccess, selectedit }) {
           value={inputValue.hora}
           onChange={handleInputChange}
         />
-        {inputValue.Titulo != "" ? (
+        {inputValue.id ? (
           <button type="button" onClick={editevent}>
             Editar{" "}
           </button>
@@ -138,7 +138,7 @@ function FormInscAdmin({ onSuccess, selectedit }) {
           <button type="submit">Crear</button>
         )}
       </form>
-      <Toaster />
+     
     </div>
   );
 }

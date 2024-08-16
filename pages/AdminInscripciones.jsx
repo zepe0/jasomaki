@@ -35,13 +35,17 @@ function AdminInscripciones() {
     <>
       <Nav></Nav>
       <button onClick={openForm}>Añadir nuevas inscripciones</button>
-      <ListInsAdmin key={refresh} onSelect={handleSelect} />
+      <ListInsAdmin
+        key={refresh}
+        onSelect={handleSelect}
+        onSuccess={refreshList}
+      />
 
       <dialog id="formadd">
         <button onClick={closeForm}>X</button>
         <FormInscAdmin onSuccess={refreshList} selectedit={selectedEvent} />
       </dialog>
-      <Toaster />
+      <Toaster position="bottom-right" reverseOrder={true} />
     </>
   );
 }

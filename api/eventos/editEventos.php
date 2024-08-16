@@ -8,13 +8,19 @@ $inputs = json_decode($json_data, true);
 
 $id = $inputs['id'];
 
+$nombre = $inputs['titulo'];
+$inicio = $inputs['fecha'];
+$hora = $inputs['hora'];
+$rol = $inputs['rol'];
+$user = $inputs['user'];
+
 try {
-    Validator::validateStringNotEmptyOrBlank($id); 
-    Validator::validateId($id);
+ /*    Validator::validateStringNotEmptyOrBlank($id);
+    Validator::validateId($id); */
     $quey = new EventIns();
     $eventoEditado = $quey->editEvents($id, $nombre, $inicio, $hora, $rol, $user);
+   
+    echo $eventoEditado;
 } catch (Exception $e) {
-    return 'Error: ' . $e->getMessage();
+    echo 'Error: ' . $e->getMessage();
 }
-
-return json_encode($eventoEditado);

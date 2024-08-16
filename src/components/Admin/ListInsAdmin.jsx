@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { jwtDecode } from "jwt-decode";
 import "./ListInsAdmin.css";
-import utils from "../../utils/time";
+import { getInscripciones } from "../../logic/Admin/getInscripciones";
 import { getEventInscripciones } from "../../logic/Admin/getEventsInscripciones";
 import { delEvento } from "../../logic/eventos/delevento";
 
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 // eslint-disable-next-line react/prop-types
-function ListInsAdmin({ onSelect }) {
+function ListInsAdmin({ onSelect, onSuccess }) {
   if (!sessionStorage.token) {
     window.location.href = "/";
   }
@@ -41,6 +41,7 @@ function ListInsAdmin({ onSelect }) {
     onSelect(list.find((list) => list.id === id));
   };
   const handleClick = (id) => {
+  
     setSelectedId((prevId) => (prevId === id ? null : id));
   };
   const clikdelet = (e, id) => {
@@ -51,6 +52,8 @@ function ListInsAdmin({ onSelect }) {
       rol: decode.rol,
     };
     delEvento(fromData);
+    
+    onSuccess();
   };
 
   return (
@@ -104,7 +107,7 @@ function ListInsAdmin({ onSelect }) {
         </table>
       </div>
 
-      <Toaster />
+    
     </div>
   );
 }
@@ -113,11 +116,12 @@ function DetailComponent() {
   const [inscripciones, setInscripciones] = useState([]);
   useEffect(() => {
     getInscripciones()
-      .then((data) => {
-        if (!data) {
+      .then((res) => {
+        if (!res) {
           throw new Error("Error en la conexión a la base de datos");
         } else {
-          setInscripciones(data.data);
+          
+          setInscripciones(res.data);
         }
       })
       .catch((error) => {
@@ -138,7 +142,7 @@ function DetailComponent() {
         </tr>
       </thead>
       <tbody>
-        {inscripciones.length != 0 ? (
+        {inscripciones.length == 0 ? (
           <tr>
             <td
               colSpan="7"
@@ -157,7 +161,7 @@ function DetailComponent() {
               <td className="thTdStyle">{inscripcion.dni}</td>
               <td className="thTdStyle">{inscripcion.titulo}</td>
               <td className="thTdStyle">
-                {utils.formatDate(inscripcion.inscrito)}
+                {inscripcion.inscrito}
               </td>
             </tr>
           ))

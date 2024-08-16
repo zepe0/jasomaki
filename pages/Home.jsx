@@ -6,8 +6,8 @@ import { useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 
 function Home() {
- 
   useEffect(() => {
+   
     if (sessionStorage.token) {
       const decode = jwtDecode(sessionStorage.token);
       if (decode.rol === 1) {

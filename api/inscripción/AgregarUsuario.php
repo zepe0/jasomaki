@@ -5,14 +5,14 @@ require "../model/Validator.php";
 
 $json_data = file_get_contents('php://input');
 $inputs = json_decode($json_data, true);
-
+print_r($inputs);// TODO añadir id de evento
 $nombre = $inputs['nombre'];
 $Apellido = $inputs['Apellido'];
 $Apellidos = $inputs['Apellidos'];
 $tel = $inputs['tel'];
 $dni = $inputs['dni'];
 $id_user = $inputs['id_user'];
-$id_event = $inputs['id_event'];
+$id_event = $inputs['id'];
 
 
 try {
@@ -23,8 +23,8 @@ try {
     Validator::validateStringNotEmptyNoSpaces($dni);
     Validator::validateDNI($dni);
     Validator::validateTel($tel);
-    Validator::validateId($id_user);
-    Validator::validateId($id_event);
+ /*    Validator::validateId($id_user);
+    Validator::validateId($id_event); */
 
     $quey = new Inscripcion();
     $inscripcion = $quey->addIns($nombre, $Apellido, $Apellidos, $tel, $dni, $id_event, $id_user);
