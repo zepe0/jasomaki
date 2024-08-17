@@ -15,16 +15,15 @@ function Traje() {
     if (!sessionStorage.token) {
       goto("/login");
     }
-    if (token.rol === 1) {
+   
+    if (token.rol === "1") {
       goto("/Admin/traje");
     }
-  }, []);
+  }, [goto]);
   return (
     <>
       <Nav></Nav>
-      <h1>Traje</h1>
-      {/*  <VistaTraje></VistaTraje>
-       */}
+      <h1>Traje</h1>   
       <Todo></Todo>
     </>
   );

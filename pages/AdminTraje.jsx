@@ -3,6 +3,7 @@ import Nav from "../src/components/Nav";
 import FormTraje from "../src/components/FormTraje";
 import ListEventsTrajeADmin from "../src/components/eventosTraje/ListEventsTrajeAdmin";
 
+
 function AdminTraje() {
   const [openinscripcion, SetInscripcion] = useState();
   const handelOpenIscripcion = () => {
@@ -28,6 +29,7 @@ function AdminTraje() {
         ""
       )}
       <ListEventsTrajeADmin />
+     
     </>
   );
 }

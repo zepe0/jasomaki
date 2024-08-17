@@ -125,17 +125,7 @@ function DetailComponent({ id }) {
       });
   }, []);
   return (
-    <table className="tableStyle" style={{ minWidth: "800px" }}>
-      <thead>
-        <tr>
-          <th className="thTdStyle thStyle">Nombre</th>
-          <th className="thTdStyle thStyle">Apellido</th>
-          <th className="thTdStyle thStyle">Apellidos</th>
-          <th className="thTdStyle thStyle">Tel</th>
-          <th className="thTdStyle thStyle">DNI</th>
-        </tr>
-      </thead>
-
+    <table style={{ minWidth: "800px" }}>
       {inscripciones.length == 0 ? (
         <tr>
           <td
@@ -147,7 +137,12 @@ function DetailComponent({ id }) {
         </tr>
       ) : (
         inscripciones.map((inscripcion, index) => (
-          <tr key={index} id="fo">
+          <tr
+            key={index}
+            id="fo"
+            style={{ textAlign: "center", backgroundColor: "#f0f0f0" }}
+            colSpan= "5"
+          >
             <td className="thTdStyle">{inscripcion.nombre}</td>
             <td className="thTdStyle">{inscripcion.apellido}</td>
             <td className="thTdStyle">{inscripcion.apellidodos}</td>

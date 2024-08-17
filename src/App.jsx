@@ -32,6 +32,7 @@ function App() {
           <Route path="/Admin" element={<HomeAdmin />} />
           <Route path="/Admin/ins" element={<AdminInscripciones />} />
           <Route path="/Admin/traje" element={<AdminTraje />} />
+          <Route path="/Admin/pagos" element={<Pagos />} />
         </Routes>
       </BrowserRouter>
     </>

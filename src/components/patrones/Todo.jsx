@@ -1,14 +1,38 @@
 import "./Todo.css";
-
+import { PiPantsThin } from "react-icons/pi";
+import { GiSkirt } from "react-icons/gi";
+import { FaVest } from "react-icons/fa";
+import { FaTshirt } from "react-icons/fa";
+import { GiTiara } from "react-icons/gi";
 
 function Todo() {
+
   return (
     <section>
-      <div className="tshirt-container">
-        <div className="tshirt"></div>
+      <button>
+        <GiTiara className="prenda" />
+      </button>
+      <div>
+        <button>
+          <FaVest className="prenda" />
+        </button>
+        <button>
+          <FaTshirt className="prenda" />
+        </button>
+        <button>
+          <img
+            className="img"
+            src="../../src/img/body2.png
+          "
+          />
+        </button>
       </div>
-      <img src="../../public/falda.svg"></img>
-    
+      <button>
+        <PiPantsThin className="prenda" />
+      </button>
+      <button>
+        <GiSkirt className="prenda" />
+      </button>
      
     </section>
   );

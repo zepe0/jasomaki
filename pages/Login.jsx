@@ -45,7 +45,7 @@ function Login() {
         })
         .catch((error) => {
          
-          console.error("Hubo un problema con la solicitud:", error);
+          toast.error("Hubo un problema con la solicitud:", error);
         });
     } catch (error) {
       toast.error(error.message);
