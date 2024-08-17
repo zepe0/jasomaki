@@ -1,11 +1,12 @@
 import { jwtDecode } from "jwt-decode";
 import toast from "react-hot-toast";
 const API = import.meta.env.VITE_API_URL;
-export function getInscripciones() {
+export function getInscripciones(id) {
   const decode = jwtDecode(sessionStorage.token);
 
   const formData = {
     rol: decode.rol,
+    event_id: id
   };
 
   return fetch(`${API}/inscripción/getInscripciones.php`, {

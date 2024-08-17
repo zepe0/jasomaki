@@ -5,14 +5,14 @@ require "../model/Validator.php";
 
 $json_data = file_get_contents('php://input');
 $inputs = json_decode($json_data, true);
-print_r($inputs);// TODO añadir id de evento
+
 $nombre = $inputs['nombre'];
 $Apellido = $inputs['Apellido'];
 $Apellidos = $inputs['Apellidos'];
 $tel = $inputs['tel'];
 $dni = $inputs['dni'];
 $id_user = $inputs['id_user'];
-$id_event = $inputs['id'];
+$id_event = $inputs['id_event'];
 
 
 try {

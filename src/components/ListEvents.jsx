@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useEffect, useState } from "react";
 import {
   differenceInDays,
@@ -87,7 +88,7 @@ function ListEvents() {
     e.preventDefault();
     try {
       const decode = jwtDecode(sessionStorage.token);
-   
+
       error.validateStringNotEmptyOrBlank(e.target[1].value);
       error.validateStringNotEmptyOrBlank(e.target[2].value);
       error.validateStringNotEmptyOrBlank(e.target[3].value);
@@ -103,7 +104,7 @@ function ListEvents() {
         tel: e.target[4].value,
         dni: e.target[5].value,
         id_user: decode.id,
-        id: selectedEvent.id,
+        id_event: selectedEvent.id,
       };
 
       fetch(`${API}/inscripción/AgregarUsuario.php`, {
@@ -116,14 +117,16 @@ function ListEvents() {
         .then((response) => response.json())
         .then((data) => {
           if (data.error) {
-            toast.error(data.error.message);
+            toast.error(data.error);
           }
           if (data.success) {
-            setInscrito(true);
+            toast.promise(setInscrito(true), {
+              pending: "Inscribiendo...",
+              success: "Inscrito con exito",
+            });
             toast.success(data.msn);
             handleCloseModal();
           }
-          if (data.message) toast.error(data.message);
         })
         .catch((error) => {
           console.error("Hubo un problema con la solicitud:", error);
@@ -146,7 +149,7 @@ function ListEvents() {
               <input type="text" name="Apellidos" placeholder="Apellidos" />
               <input type="text" name="Tel" placeholder="Tel" />
               <input type="text" name="Dni" placeholder="Dni" />
-              
+
               <button type="submit">Guardar plaza</button>
             </fieldset>
           </form>
@@ -162,14 +165,25 @@ function ListEvents() {
             })
             .map((ins) => {
               const timeLeftText = getTimeLeftText(ins.fecha);
-              const isUserEnrolled = myevents.some(
-                (event) => event.id_event === ins.id_event
-              );
+
+              const isUserEnrolled =
+                myevents.length > 0
+                  ? myevents.some((event) => event.evento_id === ins.id)
+                  : null;
               return (
                 <li key={ins.id} className="itemListEvent">
                   <h2 className="titulo">
-                    {ins.nombre}{" "}
-                    {isUserEnrolled ? <i className="fas fa-check"></i> : ""}
+                    {ins.nombre}
+
+                    {isUserEnrolled ? (
+                      <span>
+                        {" "}
+                        <i className="fas fa-check"> </i>{" "}
+                        <span className="times">- {timeLeftText}</span>
+                      </span>
+                    ) : (
+                      ""
+                    )}
                   </h2>
 
                   <div className="footerItem">

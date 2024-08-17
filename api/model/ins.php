@@ -8,35 +8,96 @@ function generateUID()
 }
 class Inscripcion extends Db
 {
-    protected function userInscripcion($nombre, $apellido, $apellidos, $tel, $dni, $id_event, $id_user)//TODo arreglar conexion
+    protected function userInscripcion($nombre, $apellido, $apellidos, $tel, $dni, $id_event, $id_user)
     {
         $response = [];
         $idins = generateUID();
+        $participante_id = generateUID();
+        $fecha = new DateTime();
 
         try {
+            $this->con()->beginTransaction();
 
-            $stmt = $this->con()->prepare("SELECT COUNT(*) FROM inscripciones WHERE dni = ? AND id = ?");
-            $stmt->execute([$dni, $id_event]);
-            $count = $stmt->fetchColumn();
+            // Verificar si ya estás inscrito en el evento
+            $stmt = $this->con()->prepare("SELECT EXISTS (
+                SELECT 1
+                FROM participantes_eventos
+                WHERE participante_id = (
+                    SELECT id
+                    FROM participantes
+                    WHERE usuario_id = ?
+                ) AND evento_id = ?
+            )");
+            $stmt->execute([$id_user, $id_event]);
+            $result = $stmt->fetchColumn();
 
-            if ($count > 0) {
-
-                $response['message'] = "Ya estás inscrito en este evento.";
+            if ($result == 1) {
+                $response['error'] = 'Ya estás inscrito en este evento.';
             } else {
+                $estaInscrito = $this->con()->prepare("SELECT EXISTS (
+                    SELECT 1
+                    FROM participantes
+                    WHERE usuario_id = ?
+                )");
+                $estaInscrito->execute([$id_user]);
+                $result = $estaInscrito->fetchColumn();
 
-                $stmt = $this->con()->prepare("INSERT INTO ins (id_event, user_id) VALUES (?, ?)");
-                if (!$stmt->execute([$id_event, $id_user])) {
-                    $response['error'] = "Error al ejecutar la consulta.";
+                if ($result == 0) {
+
+                    $stmt1 = $this->con()->prepare("INSERT INTO participantes (id, nombre, apellido, apellidodos, dni, tel, usuario_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                    if ($stmt1->execute([$participante_id, $nombre, $apellido, $apellidos, $dni, $tel, $id_user])) {
+
+                        $stmt2 = $this->con()->prepare("INSERT INTO inscripciones (id, participante_id, fecha) VALUES (?, ?, ?)");
+                        if ($stmt2->execute([$idins, $participante_id, $fecha->format('Y-m-d H:i:s')])) {
+
+                            $stmt3 = $this->con()->prepare("INSERT INTO participantes_eventos (id, participante_id, evento_id) VALUES (?, ?, ?)");
+                            if ($stmt3->execute([$idins, $participante_id, $id_event])) {
+                                $response['success'] = true;
+                                $response['msn'] = "Inscripción exitosa.";
+                                $this->con()->commit();
+                            } else {
+                                $response['error'] = "Error al insertar en participantes_eventos.";
+                            }
+                        } else {
+                            $response['error'] = "Error al insertar en inscripciones.";
+                        }
+                    } else {
+                        $response['error'] = "Error al insertar en participantes.";
+                    }
                 } else {
-                    $response['success'] = true;
-                    $response['msn'] = "Inscrito con éxito.";
+
+                    // Obtener el id del participante ya existente
+                    $suparticipante_id = $this->con()->prepare("SELECT id FROM participantes WHERE usuario_id = ?");
+                    if ($suparticipante_id->execute([$id_user])) {
+                        $fo = $suparticipante_id->fetch(PDO::FETCH_ASSOC);
+                        if ($fo) {
+                            $id_participante = $fo['id'];
+
+                            // Insertar en `participantes_eventos`
+                            $stmt4 = $this->con()->prepare("INSERT INTO participantes_eventos (id, participante_id, evento_id) VALUES (?, ?, ?)");
+                            if ($stmt4->execute([$idins, $id_participante, $id_event])) {
+
+
+                                $response['success'] = true;
+                                $response['msn'] = "Inscripción exitosa.";
+                                $this->con()->commit();
+                            } else {
+                                $response['error'] = "Error al insertar en participantes_eventos.";
+                            }
+                        } else {
+                            $response['error'] = "No se encontró el participante.";
+                        }
+                    } else {
+                        $response['error'] = "Error al consultar el participante.";
+                    }
                 }
             }
         } catch (PDOException $e) {
+            // Revertir la transacción si hay un error
+            $this->con()->rollBack();
             $response['error'] = "Error en la base de datos: " . $e->getMessage();
         }
 
-        $stmt = null;
         return $response;
     }
 
@@ -112,16 +173,19 @@ class Inscripcion extends Db
         return $response;
     }
 
-    protected function getInscripciones()
+    protected function getInscripciones($event_id)
     {
         $response = [];
 
-        try {
-            $stmt = $this->con()->prepare("SELECT id, participante_id, evento_id nombre 
-                                           FROM inscripciones 
-                                          ");
 
-            if (!$stmt->execute()) {
+        try {
+            $stmt = $this->con()->prepare("SELECT p.id, p.nombre,p.apellido,p.apellidodos, p.tel, p.dni, e.nombre AS evento_nombre
+                FROM participantes p
+                JOIN participantes_eventos pe ON p.id = pe.participante_id
+                JOIN eventos e ON pe.evento_id = e.id
+                WHERE e.id = ?; ");
+
+            if (!$stmt->execute([$event_id])) {
                 // Si la ejecución falla por alguna razón que no sea una excepción, capturamos aquí.
                 $response['error'] = "Error al ejecutar la consulta.";
             } else {
@@ -143,12 +207,12 @@ class Inscripcion extends Db
         // Devolver la respuesta con datos o error
         return $response;
     }
-    public function getInscripcionesAdmin($rol)
+    public function getInscripcionesAdmin($rol, $event_id)
     {
         $response = [];
         if ($rol = 1) {
 
-            return $this->getInscripciones();
+            return $this->getInscripciones($event_id);
         }
         return $response['error'] = "No tienes permisos para la acción seleccionada";
     }
@@ -158,7 +222,7 @@ class Inscripcion extends Db
 
 
         try {
-            $stmt = $this->con()->prepare("SELECT id FROM inscripciones  WHERE participante_id = ?");
+            $stmt = $this->con()->prepare("SELECT evento_id FROM participantes_eventos  WHERE participante_id = (SELECT id from participantes where usuario_id=?)");
 
             if (!$stmt->execute(array($userid))) {
                 $response['error'] = "Error al ejecutar la consulta.";

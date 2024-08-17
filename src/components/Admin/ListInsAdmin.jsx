@@ -41,7 +41,6 @@ function ListInsAdmin({ onSelect, onSuccess }) {
     onSelect(list.find((list) => list.id === id));
   };
   const handleClick = (id) => {
-  
     setSelectedId((prevId) => (prevId === id ? null : id));
   };
   const clikdelet = (e, id) => {
@@ -52,7 +51,7 @@ function ListInsAdmin({ onSelect, onSuccess }) {
       rol: decode.rol,
     };
     delEvento(fromData);
-    
+
     onSuccess();
   };
 
@@ -106,26 +105,23 @@ function ListInsAdmin({ onSelect, onSuccess }) {
           </tbody>
         </table>
       </div>
-
-    
     </div>
   );
 }
 
-function DetailComponent() {
+function DetailComponent({ id }) {
   const [inscripciones, setInscripciones] = useState([]);
   useEffect(() => {
-    getInscripciones()
+    getInscripciones(id)
       .then((res) => {
         if (!res) {
           throw new Error("Error en la conexión a la base de datos");
         } else {
-          
           setInscripciones(res.data);
         }
       })
       .catch((error) => {
-        toast.error(error.message || "Ocurrió un error"); // Asegúrate de pasar una cadena
+        toast.error(error.message || "Ocurrió un error");
       });
   }, []);
   return (
@@ -137,36 +133,29 @@ function DetailComponent() {
           <th className="thTdStyle thStyle">Apellidos</th>
           <th className="thTdStyle thStyle">Tel</th>
           <th className="thTdStyle thStyle">DNI</th>
-          <th className="thTdStyle thStyle">Titulo Inscripción</th>
-          <th className="thTdStyle thStyle">Inscrito</th>
         </tr>
       </thead>
-      <tbody>
-        {inscripciones.length == 0 ? (
-          <tr>
-            <td
-              colSpan="7"
-              style={{ textAlign: "center", backgroundColor: "#f0f0f0" }}
-            >
-              Sin personas apuntadas aún
-            </td>
+
+      {inscripciones.length == 0 ? (
+        <tr>
+          <td
+            colSpan="2"
+            style={{ textAlign: "center", backgroundColor: "#f0f0f0" }}
+          >
+            Sin personas apuntadas aún
+          </td>
+        </tr>
+      ) : (
+        inscripciones.map((inscripcion, index) => (
+          <tr key={index} id="fo">
+            <td className="thTdStyle">{inscripcion.nombre}</td>
+            <td className="thTdStyle">{inscripcion.apellido}</td>
+            <td className="thTdStyle">{inscripcion.apellidodos}</td>
+            <td className="thTdStyle">{inscripcion.tel}</td>
+            <td className="thTdStyle">{inscripcion.dni}</td>
           </tr>
-        ) : (
-          inscripciones.map((inscripcion, index) => (
-            <tr key={index}>
-              <td className="thTdStyle">{inscripcion.nombre}</td>
-              <td className="thTdStyle">{inscripcion.apellido}</td>
-              <td className="thTdStyle">{inscripcion.apellidos}</td>
-              <td className="thTdStyle">{inscripcion.tel}</td>
-              <td className="thTdStyle">{inscripcion.dni}</td>
-              <td className="thTdStyle">{inscripcion.titulo}</td>
-              <td className="thTdStyle">
-                {inscripcion.inscrito}
-              </td>
-            </tr>
-          ))
-        )}
-      </tbody>
+        ))
+      )}
     </table>
   );
 }

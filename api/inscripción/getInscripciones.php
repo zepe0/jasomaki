@@ -1,5 +1,5 @@
 <?php
-include_once ("../headers.php");
+include_once("../headers.php");
 require "../model/ins.php";
 require "../model/Validator.php";
 $json_data = file_get_contents('php://input');
@@ -10,7 +10,7 @@ try {
 
     Validator::validateNumber($rol);
     $quey = new Inscripcion();
-    $inscripciones = $quey->getInscripcionesAdmin($rol);
+    $inscripciones = $quey->getInscripcionesAdmin($rol,$inputs['event_id']);
     $response = $inscripciones;
 
 } catch (PDOException $e) {
