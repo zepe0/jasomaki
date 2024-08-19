@@ -1,4 +1,4 @@
-import Nav from "../src/components/Nav";
+
 import error from "../error/index";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -54,7 +54,7 @@ function Login() {
 
   return (
     <>
-      <Nav></Nav>
+
       <h1>Login</h1>
       <div className="">
         <form className="FormInsc" onSubmit={handleSubmit}>

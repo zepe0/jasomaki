@@ -1,5 +1,5 @@
 <?php
-include_once ("../headers.php");
+include_once("../headers.php");
 require "../model/ins.php";
 require "../model/Validator.php";
 
@@ -12,8 +12,11 @@ $apellido = $inputs['Apellido'];
 $apellidos = $inputs['Apellidos'];
 $tel = $inputs['tel'];
 $dni = $inputs['dni'];
+$id_evento = $inputs['id_evento'];
+
 try {
     Validator::validateStringNotEmptyNoSpaces($id);
+    Validator::validateStringNotEmptyNoSpaces($id_evento);
     Validator::validateStringNotEmptyNoSpaces($nombre);
     Validator::validateStringNotEmptyNoSpaces($apellido);
     Validator::validateStringNotEmptyNoSpaces($apellidos);
@@ -26,5 +29,5 @@ try {
 }
 
 $quey = new Inscripcion();
-$inscripcion = $quey->addIns($id, $nombre, $apellido, $apellidos, $tel, $dni);
+$inscripcion = $quey->addIns($nombre, $apellido, $apellidos, $tel, $dni, $id_evento, $id);
 echo json_encode($inscripcion);

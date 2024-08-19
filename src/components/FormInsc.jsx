@@ -1,51 +1,12 @@
-import toast, { Toaster } from "react-hot-toast";
-import error from "../../error";
+/* eslint-disable react/prop-types */
+import  { Toaster } from "react-hot-toast";
 import "./FormInsc.css";
-import { jwtDecode } from "jwt-decode";
 
-function FormInsc() {
-  const API = import.meta.env.VITE_API_URL;
-  const inscripcion = (e) => {
-    e.preventDefault();
-    const decode = jwtDecode(sessionStorage.token);
-    const formData = {
-      nombre: e.target.nombre.value,
-      Apellido: e.target.Apellido.value,
-      Apellidos: e.target.Apellidos.value,
-      tel: e.target.tel.value,
-      dni: e.target.dni.value,
-      id: decode.id,
-    };
-    try {
-      error.validateStringNotEmptyNoSpaces(formData.nombre);
-      error.validateStringNotEmptyNoSpaces(formData.Apellido);
-      error.validateStringNotEmptyNoSpaces(formData.Apellidos);
-      error.validateStringNotEmptyNoSpaces(formData.tel);
-      error.validateStringNotEmptyNoSpaces(formData.dni);
-      error.validateDNI(formData.dni);
-      error.validateTel(formData.tel);
-      error.validateId(formData.id)
+import { RegistroEvento } from "../logic/User/addInscripcion";
+function FormInsc({ evento }) {
+ 
+  const inscripcion = (e) => RegistroEvento(e,evento);
 
-      fetch(`${API}/inscripción/ins.php`, {
-        // Usa la URL directa al servidor PHP
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-        })
-        .catch((error) => {
-          console.error("Hubo un problema con la solicitud:", error);
-        });
-    } catch (error) {
-     
-      toast.error(`error: ${error.message}`);
-    }
-  };
   return (
     <div className="">
       <h1>Inscripciones</h1>

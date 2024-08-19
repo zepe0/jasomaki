@@ -8,10 +8,11 @@ import { IoMdCard } from "react-icons/io";
 import { MdSearch } from "react-icons/md";
 
 import { FaRegCalendarPlus } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 function Nav() {
   const [isLogin, setLogin] = useState();
-
+  const goto = useNavigate();
   useEffect(() => {
     if (sessionStorage.token) {
       try {
@@ -22,8 +23,11 @@ function Nav() {
         setLogin(false);
       }
     }
-  }, []);
-
+  }, [isLogin]);
+  const logout = () => {
+    sessionStorage.removeItem("token");
+    goto("/login");
+  };
   return (
     <section className="top">
       <nav id="Nav">
@@ -32,7 +36,7 @@ function Nav() {
         </li>
         <li>Nombre Apartado</li>
         <li>
-          <CgProfile />
+          <CgProfile onClick={logout} />
         </li>
       </nav>
       <section id="botones">

@@ -11,15 +11,19 @@ import { FaVest } from "react-icons/fa";
 import { GiTiara } from "react-icons/gi"; */
 import { PiPantsFill } from "react-icons/pi";
 
+
+import FormInsc from "./FormInsc";
+
 function ListaEventos() {
   if (!sessionStorage.token) {
-    window.location.href = "/";
-    return null; // Asegúrate de que no renderice nada si no hay token
+    window.location.href = "/Login";
+    return null;
   }
 
   const [eventos, setEventos] = useState([]);
   const [myeventos, setMyEventos] = useState([]);
   const [mytraje, setMyTraje] = useState([]);
+  const [selectEvent, setSelectEvent] = useState([]);
   useEffect(() => {
     getEvents().then((res) => {
       setEventos(res);
@@ -32,10 +36,16 @@ function ListaEventos() {
       setMyEventos(res);
     });
   }, []);
+  const openform = (id) => {
+    setSelectEvent(id)   
+    const form = document.getElementById("forularioInscripcion");
 
+    form.showModal();
+  };
   return (
     <section id="lista">
-      {eventos.length > 0 ? (
+    
+      {eventos && eventos.length > 0 ? (
         eventos.map((evento) => {
           return (
             <div key={evento.id} id="card">
@@ -62,7 +72,7 @@ function ListaEventos() {
                   ) ? (
                     <p>Ya inscrito</p>
                   ) : (
-                    <button>Inscribirse</button>
+                    <button onClick={ ()=>{openform(evento.id)}}>Inscribirse</button>
                   )}
                 </div>
               </div>
@@ -96,6 +106,10 @@ function ListaEventos() {
           <p>NO hay nada programado aun </p>
         </div>
       )}
+      <dialog id="forularioInscripcion">
+        <button>X</button>
+        <FormInsc evento={selectEvent}></FormInsc>
+      </dialog>
     </section>
   );
 }

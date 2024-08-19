@@ -4,7 +4,7 @@ const API = import.meta.env.VITE_API_URL;
 export function getEventInscripciones() {
 
 
-  return fetch(`${API}inscripción/getEvents.php`, {
+  return fetch(`${API}eventos/getEvents.php`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

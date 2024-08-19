@@ -12,7 +12,6 @@ function HomeUser() {
   return (
     <section id="bodyPruevas">
       <Nav></Nav>
-
       <ListaEventos></ListaEventos>
     </section>
   );
