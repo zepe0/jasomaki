@@ -137,8 +137,8 @@ class Validator
     {
         self::validateString($id, $explain);
 
-        if (strlen($id) !== 24) {
-            throw new Exception("id length is not 24 characters");
+        if (strlen($id) !== 31) {
+            throw new Exception("tu id no es un id valido");
         }
     }
 

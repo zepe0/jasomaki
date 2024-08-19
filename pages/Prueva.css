@@ -1,9 +1,10 @@
 #imgevento {
- width: 98%;
+  width: 98%;
   height: 10vh;
   border: 1px solid;
   border-radius: 20px;
   object-fit: cover;
+  margin-top: 14px;
 }
 #bodyPruevas {
   display: flex;
@@ -17,12 +18,18 @@
   flex-direction: column;
   width: 70%;
   align-items: center;
-  background-color: aquamarine;
+  background-color: rgba(208, 224, 219, 0.308);
   padding: 8px;
+  border-radius: 40px;
 }
 #Nav {
   width: 100%;
   display: flex;
+  justify-content: space-between;
+  height: 5vh;
+  background-color: rgba(208, 224, 219, 0.308);
+  align-items: center;
+  list-style: none;
 }
 #botones {
   width: 100%;
@@ -30,10 +37,40 @@
   flex-direction: column;
   align-items: center;
 }
-#Cardinfo{
+#Cardinfo {
   display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 98%;
-    padding: 10px;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 93%;
+  padding: 10px;
+}
+#lista {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  overflow: auto;
+  height: 75vh;
+}
+
+.btnEvent {
+  width: 60vw;
+  margin-top: 8px;
+  border-radius: 40px;
+}
+.colum {
+  display: flex;
+  flex-direction: column;
+}
+.cardPagos {
+  display: flex;
+  flex-direction: row;
+  width: 93%;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.top {
+  position: sticky;
+  width: 98%;
 }

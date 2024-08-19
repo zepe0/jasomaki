@@ -20,6 +20,7 @@ class User extends Db
 
                 $payload['id'] = $id;
                 $payload['rol'] = 0;
+                $payload['name']=$email;
                 $token = createJwt($payload);
                 $response['success'] = "Usuario registrado con éxito.";
                 $response['token'] = $token;

@@ -1,3 +1,4 @@
+import { Toaster } from "react-hot-toast";
 import AdminInscripciones from "../pages/AdminInscripciones";
 import AdminTraje from "../pages/AdminTraje";
 import Home from "../pages/Home";
@@ -7,12 +8,13 @@ import Login from "../pages/Login";
 import Logout from "../pages/Logout";
 import Pagos from "../pages/Pagos";
 import Perfil from "../pages/Perfil";
-import Prueva from "../pages/Prueva";
+
 import Register from "../pages/Register";
 import Traje from "../pages/Traje";
 import "./App.css";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import HomeUser from "../pages/Prueva";
 
 function App() {
   return (
@@ -36,8 +38,9 @@ function App() {
           <Route path="/Admin/pagos" element={<Pagos />} />
 
           {/*         Pruevas */}
-          <Route path="/prueva" element={<Prueva />} />
+          <Route path="/prueva" element={<HomeUser />} />
         </Routes>
+          <Toaster/>
       </BrowserRouter>
     </>
   );
