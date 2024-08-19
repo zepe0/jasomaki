@@ -12,8 +12,8 @@ header('Content-Type: application/json');
 try {
     // Crea un PaymentIntent
     $paymentIntent = \Stripe\PaymentIntent::create([
-        'amount' => 1999, // Monto en centavos (por ejemplo, $19.99)
-        'currency' => 'eur', // Moneda (asegúrate de que Bizum esté disponible para la moneda que usas)
+        'amount' => 1999, // Cuantía (por ejemplo, $19.99)
+        'currency' => 'eur', // Moneda 
         'automatic_payment_methods' => [
             'enabled' => true, // Habilitar todos los métodos de pago automáticos
         ],

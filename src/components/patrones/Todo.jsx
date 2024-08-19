@@ -6,13 +6,16 @@ import { FaTshirt } from "react-icons/fa";
 import { GiTiara } from "react-icons/gi";
 
 function Todo() {
-
   return (
     <section>
-      <button>
-        <GiTiara className="prenda" />
-      </button>
       <div>
+        <h4>cabeza</h4>
+        <button>
+          <GiTiara className="prenda" />
+        </button>
+      </div>
+      <div>
+      <h4>Pecho</h4>
         <button>
           <FaVest className="prenda" />
         </button>
@@ -27,13 +30,15 @@ function Todo() {
           />
         </button>
       </div>
-      <button>
-        <PiPantsThin className="prenda" />
+      <div>
+      <h4>Piernas</h4>
+        <button>
+          <PiPantsThin className="prenda" />
+        </button>
+        <button>
+          <GiSkirt className="prenda" />
       </button>
-      <button>
-        <GiSkirt className="prenda" />
-      </button>
-     
+      </div>
     </section>
   );
 }

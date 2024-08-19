@@ -3,6 +3,7 @@ require_once 'Db.php';
 require_once 'User.php';
 require_once 'Validator.php';
 require_once '../utils/generateUID.php';
+require_once "Eventos.php";
 
 
 class EventoTraje extends Db
@@ -133,6 +134,32 @@ class EventoTraje extends Db
         return $response;
     }
 
+    private function SetMyTraje($id_traje, $fecha, $prcho, $pierna, $id_user, $rol)
+    {
+        $eventos = new EventIns();
+        $userCheck = $eventos->checkUser($id_user, $rol);
+
+        $response = [];
+        if ($userCheck['error'] == '1') {
+
+            $response['error'] = 'No tienes permisos para realizar esta acción.';
+        } else {
+
+            try {
+                $stmt = $this->con()->prepare("SELECT * FROM traje WHERE id_user = ?");
+                $stmt->execute([$_SESSION['id_user']]);
+                $response['trajes'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                $stmt->closeCursor();
+            } catch (PDOException $e) {
+                $response['status'] = 'error';
+                $response['message'] = 'Error en la base de datos: ' . $e->getMessage();
+            }
+        }
+        return $response;
+    }
+
+
+
     /* PUBLICAS */
     public function addEventoTraje($userid, $titulo, $ubicacion, $des, $dia, $inicio, $fin)
     {
@@ -167,6 +194,10 @@ class EventoTraje extends Db
             return ['status' => 'error', 'message' => 'No tienes permisos para realizar esta operación'];
         }
 
+    }
+    public function MyTraje($id_traje, $fecha, $prcho, $pierna, $id_user, $rol)
+    {
+        return $this->setMyTraje($id_traje, $fecha, $prcho, $pierna, $id_user, $rol);
     }
 
 }

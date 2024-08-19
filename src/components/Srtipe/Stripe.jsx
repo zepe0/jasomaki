@@ -16,7 +16,7 @@ const stripePromise = loadStripe(
 const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
-  const [errorMessage, setErrorMessage] = useState(null);
+
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (event) => {
@@ -34,8 +34,7 @@ const CheckoutForm = () => {
     });
 
     if (error) {
-    
-      toast.error(error.message)
+      toast.error(error.message);
       setIsLoading(false);
     } else {
       setIsLoading(false);
@@ -49,14 +48,13 @@ const CheckoutForm = () => {
       <button disabled={!stripe || isLoading}>
         {isLoading ? "Procesando..." : "Pagar ahora"}
       </button>
-      {errorMessage && <div>{errorMessage}</div>}
     </form>
   );
 };
 
-const Stripe = () => {
+const Stripe = ({ cuantia }) => {
   const [clientSecret, setClientSecret] = useState("");
-
+  console.log(cuantia);
   useEffect(() => {
     fetch(`${API}pagos/crearPaymentIntents.php`, {
       method: "POST",
@@ -67,11 +65,16 @@ const Stripe = () => {
       .then((response) => response.json())
       .then((data) => setClientSecret(data.clientSecret));
   }, []);
+  const closeModal = () => {
+    document.getElementById("pagar").close();
+  };
 
   return (
     <div>
       {clientSecret && (
         <Elements stripe={stripePromise} options={{ clientSecret }}>
+          <button onClick={closeModal}>X</button>
+          {cuantia ? cuantia : ""}
           <CheckoutForm />
         </Elements>
       )}

@@ -7,6 +7,7 @@ import Login from "../pages/Login";
 import Logout from "../pages/Logout";
 import Pagos from "../pages/Pagos";
 import Perfil from "../pages/Perfil";
+import Prueva from "../pages/Prueva";
 import Register from "../pages/Register";
 import Traje from "../pages/Traje";
 import "./App.css";
@@ -33,6 +34,9 @@ function App() {
           <Route path="/Admin/ins" element={<AdminInscripciones />} />
           <Route path="/Admin/traje" element={<AdminTraje />} />
           <Route path="/Admin/pagos" element={<Pagos />} />
+
+          {/*         Pruevas */}
+          <Route path="/prueva" element={<Prueva />} />
         </Routes>
       </BrowserRouter>
     </>

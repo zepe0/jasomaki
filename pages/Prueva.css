@@ -1,0 +1,39 @@
+#imgevento {
+ width: 98%;
+  height: 10vh;
+  border: 1px solid;
+  border-radius: 20px;
+  object-fit: cover;
+}
+#bodyPruevas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vw;
+  width: 100vw;
+}
+#card {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  align-items: center;
+  background-color: aquamarine;
+  padding: 8px;
+}
+#Nav {
+  width: 100%;
+  display: flex;
+}
+#botones {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#Cardinfo{
+  display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 98%;
+    padding: 10px;
+}
