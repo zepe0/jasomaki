@@ -11,7 +11,6 @@ import { FaVest } from "react-icons/fa";
 import { GiTiara } from "react-icons/gi"; */
 import { PiPantsFill } from "react-icons/pi";
 
-
 import FormInsc from "./FormInsc";
 
 function ListaEventos() {
@@ -24,6 +23,7 @@ function ListaEventos() {
   const [myeventos, setMyEventos] = useState([]);
   const [mytraje, setMyTraje] = useState([]);
   const [selectEvent, setSelectEvent] = useState([]);
+  const [Detalles, setDetalles] = useState(null);
   useEffect(() => {
     getEvents().then((res) => {
       setEventos(res);
@@ -37,14 +37,21 @@ function ListaEventos() {
     });
   }, []);
   const openform = (id) => {
-    setSelectEvent(id)   
+    setSelectEvent(id);
     const form = document.getElementById("forularioInscripcion");
 
     form.showModal();
   };
+  const verDetalles = (id) => {
+    const eEncontrado = eventos.find((evento) => evento.id == id);
+    if (eEncontrado) {
+      setDetalles(eEncontrado);
+     
+      console.log(Detalles);
+    }
+  };
   return (
     <section id="lista">
-    
       {eventos && eventos.length > 0 ? (
         eventos.map((evento) => {
           return (
@@ -72,7 +79,13 @@ function ListaEventos() {
                   ) ? (
                     <p>Ya inscrito</p>
                   ) : (
-                    <button onClick={ ()=>{openform(evento.id)}}>Inscribirse</button>
+                    <button
+                      onClick={() => {
+                        openform(evento.id);
+                      }}
+                    >
+                      Inscribirse
+                    </button>
                   )}
                 </div>
               </div>
@@ -93,8 +106,20 @@ function ListaEventos() {
                 <big>Total : 100 €</big>
                 <small>Efectuado : 30 €</small>
               </div>
+            
+                {Detalles != null ? (
+                  <div>
+                    <h2>{Detalles.nombre}</h2>
+                  </div>
+                ) : (
+                  "fo"
+                )}
+           
               <div>
-                <button className="btnEvent">
+                <button
+                  className="btnEvent"
+                  onClick={() => verDetalles(evento.id)}
+                >
                   <small>Ver Detalles</small>
                 </button>
               </div>

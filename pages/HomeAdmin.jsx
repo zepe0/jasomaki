@@ -5,6 +5,7 @@ import { jwtDecode } from "jwt-decode";
 import ListInsAdmin from "../src/components/Admin/ListInsAdmin";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import AdminInscripciones from "./AdminInscripciones";
 function HomeAdmin() {
   const goto = useNavigate();
   useEffect(() => {
@@ -18,9 +19,8 @@ function HomeAdmin() {
   }, [goto]);
   return (
     <>
-      <Nav></Nav>
-      <p>Home Admin</p>
-      <ListInsAdmin />
+      <Nav></Nav>     
+      <AdminInscripciones></AdminInscripciones>
       <Toaster />
     </>
   );

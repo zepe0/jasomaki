@@ -1,7 +1,7 @@
 import { Toaster } from "react-hot-toast";
 import ListInsAdmin from "../src/components/Admin/ListInsAdmin";
 import FormInscAdmin from "../src/components/FormInscAdmin";
-import Nav from "../src/components/Nav";
+
 import { useState } from "react";
 
 function AdminInscripciones() {
@@ -33,8 +33,11 @@ function AdminInscripciones() {
   }
   return (
     <>
-      <Nav></Nav>
-      <button onClick={openForm}>Añadir nuevas inscripciones</button>
+      <div>
+        <button onClick={openForm}>Añadir Evento</button>
+        <button onClick={openForm}>Crear Traje</button>
+        <button onClick={openForm}>Pagos</button>
+      </div>
       <ListInsAdmin
         key={refresh}
         onSelect={handleSelect}

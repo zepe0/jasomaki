@@ -18,9 +18,10 @@
   flex-direction: column;
   width: 70%;
   align-items: center;
-  background-color: rgba(208, 224, 219, 0.308);
+  background-color: rgba(122, 127, 199, 0.308);
   padding: 8px;
   border-radius: 40px;
+  margin-top: 10px;
 }
 #Nav {
   width: 100%;
@@ -45,13 +46,16 @@
   padding: 10px;
 }
 #lista {
-  width: 100%;
+  width: 90%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
   overflow: auto;
-  height: 75vh;
+  height: 85vh;
+  background-color: rgba(240, 248, 255, 0.486);
+  border-radius: 20px;
+
 }
 
 .btnEvent {
@@ -73,4 +77,5 @@
 .top {
   position: sticky;
   width: 100%;
+  margin-bottom: 10px;
 }

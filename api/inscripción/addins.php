@@ -1,5 +1,5 @@
 <?php
-include_once ("../headers.php");
+include_once("../headers.php");
 require "../model/Eventos.php";
 require "../model/Validator.php";
 
@@ -14,8 +14,8 @@ $hora = $inputs['hora'];
 
 try {
     Validator::validateStringNotEmptyOrBlank($Titulo);
-    /* Validator::validateStringNotEmptyOrBlank($id); */
-    Validator::validateStringNotEmptyOrBlank($inicio);//TODO mirar como enviar datos
+    Validator::validateStringNotEmptyOrBlank($id);
+    Validator::validateStringNotEmptyOrBlank($inicio);
 
     Validator::validateId($id);
 } catch (Exception $e) {
