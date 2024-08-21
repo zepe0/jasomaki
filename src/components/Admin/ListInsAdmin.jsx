@@ -69,36 +69,38 @@ function ListInsAdmin({ onSelect, onSuccess }) {
         {list.length > 0 ? (
           list.map((evento) => (
             <div id="card" key={evento.id}>
-              <button onClick={() => toggleDropdown( evento.id)}>
-                <IoMdMore />
-              </button>
-            
-                <div id="myDropdown" className="dropdown-content " ref={dropdownRef}>
-                  <a href="#">Opción 1</a>
-                  <a href="#">Opción 2</a>
-                  <a href="#">Opción 3</a>
-                </div>
-             
               <div id="Cardinfo" onClick={() => handleClick(evento.id)}>
                 {/*   <button onClick={(e) => clikdelet(e, evento.id)}>
                     <MdDelete />
                   </button> */}
-                {evento.img ? (
-                  <img
-                    src={`./src/img/${evento.img}`}
-                    id="imgevento"
-                    alt="Evento"
-                  />
-                ) : (
-                  <img src="./src/img/defaultevent.jpeg" id="imgevento"></img>
-                )}
-                <div id="Cardinfo">
-                  <div className="colum">
-                    <big>{evento.nombre}</big>
-                    <small>
-                      Rua Summer <span>{getYear(evento.fecha)}</span>
-                    </small>
+                <div>
+                  {evento.img ? (
+                    <img
+                      src={`./src/img/${evento.img}`}
+                      id="imgevento"
+                      alt="Evento"
+                    />
+                  ) : (
+                    <img src="./src/img/defaultevent.jpeg" id="imgevento"></img>
+                  )}
+                  
+                    <IoMdMore onClick={() => toggleDropdown(evento.id)} />
+                 
+                  <div
+                    id="myDropdown"
+                    className="dropdown-content "
+                    ref={dropdownRef}
+                  >
+                    <a href="#">Opción 1</a>
+                    <a href="#">Opción 2</a>
+                    <a href="#">Opción 3</a>
                   </div>
+                </div>
+                <div className="colum">
+                  <big>{evento.nombre}</big>
+                  <small>
+                    Rua Summer <span>{getYear(evento.fecha)}</span>
+                  </small>
                 </div>
               </div>
               {selectedId === evento.id && <DetailComponent id={selectedId} />}
@@ -135,7 +137,9 @@ function DetailComponent({ id }) {
       });
   }, []);
   return (
-    <table> <h3>Inscripciones</h3>
+    <table>
+      {" "}
+      <h3>Inscripciones</h3>
       {inscripciones.length == 0 ? (
         <tr>
           <td
@@ -146,7 +150,6 @@ function DetailComponent({ id }) {
           </td>
         </tr>
       ) : (
-       
         inscripciones.map((inscripcion, index) => (
           <tr
             key={index}
