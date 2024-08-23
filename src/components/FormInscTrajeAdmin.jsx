@@ -15,7 +15,11 @@ import { MdBlockFlipped } from "react-icons/md";
 const API = import.meta.env.VITE_API_URL;
 
 function FormInscTrajeAdmin({ onSuccess, selectedit }) {
-  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedGender, setSelectedGender] = useState("");
+  const [selectedHeadwear, setSelectedHeadwear] = useState("");
+  const [selectedTops, setSelectedTops] = useState([]);
+  const [selectedBottoms, setSelectedBottoms] = useState([]);
+
   const [inputValue, setInputValue] = useState({
     Titulo: selectedit ? selectedit.nombre : "",
     inicio: selectedit ? selectedit.fecha : "",
@@ -39,29 +43,41 @@ function FormInscTrajeAdmin({ onSuccess, selectedit }) {
     }
   }, [selectedit]);
 
-  const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
+  const handleGenderChange = (event) => {
+    setSelectedGender(event.target.value);
+  };
+
+  const handleHeadwearChange = (event) => {
+    setSelectedHeadwear(event.target.value);
+  };
+
+  const handleTopsChange = (event) => {
+    const { value, checked } = event.target;
+    setSelectedTops((prev) =>
+      checked ? [...prev, value] : prev.filter((item) => item !== value)
+    );
+  };
+
+  const handleBottomsChange = (event) => {
+    const { value, checked } = event.target;
+    setSelectedBottoms((prev) =>
+      checked ? [...prev, value] : prev.filter((item) => item !== value)
+    );
   };
 
   const inscripcion = (e) => {
     e.preventDefault();
 
-    const inicio = new Date(inputValue.inicio);
-
     const formData = {
-      Titulo: inputValue.Titulo,
-      hora: inputValue.hora,
-      inicio: inicio,
-      id: generateUID(),
+      genero: selectedGender,
+      cabeza: selectedHeadwear,
+      pecho: selectedTops,
+      pierna: selectedBottoms,
+      id_user: jwtDecode(sessionStorage.token).id,
     };
-
+   
     try {
-      error.validateStringNotEmptyOrBlank(formData.Titulo);
-      error.validateStringNotEmptyOrBlank(formData.id);
-      error.validateDate(formData.inicio);
-      error.validateId(formData.id);
-
-      fetch(`${API}/inscripción/addins.php`, {
+      fetch(`${API}/traje/setTraje.php`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -72,15 +88,17 @@ function FormInscTrajeAdmin({ onSuccess, selectedit }) {
         .then((data) => {
           if (data.success) {
             onSuccess();
-            return toast.success(data.msn);
+            toast.success(data.msn);
+          } else {
+            toast.error(data.error);
           }
-          toast.error(data.error);
         })
         .catch((error) => {
           console.error("Hubo un problema con la solicitud:", error);
+          toast.error("Error de red.");
         });
     } catch (error) {
-      toast.error(`error: ${error.message}`);
+      toast.error(`Error: ${error.message}`);
     }
   };
   const editevent = (e) => {
@@ -107,24 +125,21 @@ function FormInscTrajeAdmin({ onSuccess, selectedit }) {
   };
 
   return (
-    <div className="">
+    <div>
       <h1>Añadir Traje</h1>
-      <form className="FormInsc" onSubmit={inscripcion} id={inputValue.id}>
-        Traje
-        {/*        Todo cambiar estilo a lelect añadiendo dos selects por pierna y
-        pecho dejando en -- en vacio */}
+      <form className="FormInsc" onSubmit={inscripcion}>
         <div>
           <label
             className={`custom-checkbox ${
-              selectedOption === "hombre" ? "selected" : ""
+              selectedGender === "hombre" ? "selected" : ""
             }`}
           >
             <input
               type="radio"
               name="gender"
               value="hombre"
-              checked={selectedOption === "hombre"}
-              onChange={handleOptionChange}
+              checked={selectedGender === "hombre"}
+              onChange={handleGenderChange}
               className="hidden-checkbox"
             />
             <AiOutlineMan />
@@ -132,15 +147,15 @@ function FormInscTrajeAdmin({ onSuccess, selectedit }) {
 
           <label
             className={`custom-checkbox ${
-              selectedOption === "mujer" ? "selected" : ""
+              selectedGender === "mujer" ? "selected" : ""
             }`}
           >
             <input
               type="radio"
               name="gender"
               value="mujer"
-              checked={selectedOption === "mujer"}
-              onChange={handleOptionChange}
+              checked={selectedGender === "mujer"}
+              onChange={handleGenderChange}
               className="hidden-checkbox"
             />
             <AiOutlineWoman />
@@ -148,117 +163,127 @@ function FormInscTrajeAdmin({ onSuccess, selectedit }) {
 
           <label
             className={`custom-checkbox ${
-              selectedOption === "nino" ? "selected" : ""
+              selectedGender === "nino" ? "selected" : ""
             }`}
           >
             <input
               type="radio"
               name="gender"
               value="nino"
-              checked={selectedOption === "nino"}
-              onChange={handleOptionChange}
+              checked={selectedGender === "nino"}
+              onChange={handleGenderChange}
               className="hidden-checkbox"
             />
             <MdChildCare />
           </label>
         </div>
-        cabeza
-        <div id="cabeza">
+
+        <div>
           <label
             className={`custom-checkbox ${
-              selectedOption === "Sombrero" ? "selected" : ""
+              selectedHeadwear === "Sombrero" ? "selected" : ""
             }`}
           >
             <input
               type="radio"
               name="cabeza"
               value="Sombrero"
-              checked={selectedOption === "Sombrero"}
-              onChange={handleOptionChange}
+              checked={selectedHeadwear === "Sombrero"}
+              onChange={handleHeadwearChange}
               className="hidden-checkbox"
             />
             <FaRedhat />
           </label>
           <label
             className={`custom-checkbox ${
-              selectedOption === "Tiara" ? "selected" : ""
+              selectedHeadwear === "Tiara" ? "selected" : ""
             }`}
           >
             <input
               type="radio"
               name="cabeza"
               value="Tiara"
-              checked={selectedOption === "Tiara"}
-              onChange={handleOptionChange}
+              checked={selectedHeadwear === "Tiara"}
+              onChange={handleHeadwearChange}
               className="hidden-checkbox"
             />
             <GiTiara />
           </label>
           <label
             className={`custom-checkbox ${
-              selectedOption === "nada" ? "selected" : ""
+              selectedHeadwear === "nada" ? "selected" : ""
             }`}
           >
             <input
-              className="hidden-checkbox"
               type="radio"
               name="cabeza"
               value="nada"
-              checked={selectedOption === "nada"}
-              onChange={handleOptionChange}
+              checked={selectedHeadwear === "nada"}
+              onChange={handleHeadwearChange}
+              className="hidden-checkbox"
             />
             <MdBlockFlipped />
           </label>
         </div>
-        <big>Pecho</big>
-        <div id="cabeza">
-          <div>
-            <label>
-              <input
-                className="inputFormIns"
-                type="checkbox"
-                name="Body"
-                value="Body"
-              />
-              Body
-            </label>
-            <label>
-              <input
-                className="inputFormIns"
-                type="checkbox"
-                name="Chaleco"
-                value="Chaleco"
-              />
-              Chaleco
-            </label>
-            <label>
-              <input
-                className="inputFormIns"
-                type="checkbox"
-                name="Camiseta"
-                value="Camiseta"
-              />
-              Camiseta
-            </label>
-            <label>
-              <input
-                className="inputFormIns"
-                type="checkbox"
-                name="Casaca"
-                value="Casaca"
-              />
-              Casaca
-            </label>
-          </div>
-        </div>
-        <big>Pierna</big>
-        <div id="cabeza">
+
+        <div>
+          <big>Pecho</big>
           <label>
             <input
               className="inputFormIns"
               type="checkbox"
-              name="Pantalon"
+              name="tops"
+              value="Body"
+              checked={selectedTops.includes("Body")}
+              onChange={handleTopsChange}
+            />
+            Body
+          </label>
+          <label>
+            <input
+              className="inputFormIns"
+              type="checkbox"
+              name="tops"
+              value="Chaleco"
+              checked={selectedTops.includes("Chaleco")}
+              onChange={handleTopsChange}
+            />
+            Chaleco
+          </label>
+          <label>
+            <input
+              className="inputFormIns"
+              type="checkbox"
+              name="tops"
+              value="Camiseta"
+              checked={selectedTops.includes("Camiseta")}
+              onChange={handleTopsChange}
+            />
+            Camiseta
+          </label>
+          <label>
+            <input
+              className="inputFormIns"
+              type="checkbox"
+              name="tops"
+              value="Casaca"
+              checked={selectedTops.includes("Casaca")}
+              onChange={handleTopsChange}
+            />
+            Casaca
+          </label>
+        </div>
+
+        <div>
+          <big>Pierna</big>
+          <label>
+            <input
+              className="inputFormIns"
+              type="checkbox"
+              name="bottoms"
               value="Pantalon"
+              checked={selectedBottoms.includes("Pantalon")}
+              onChange={handleBottomsChange}
             />
             Pantalon
           </label>
@@ -266,15 +291,18 @@ function FormInscTrajeAdmin({ onSuccess, selectedit }) {
             <input
               className="inputFormIns"
               type="checkbox"
-              name="Falda"
+              name="bottoms"
               value="Falda"
+              checked={selectedBottoms.includes("Falda")}
+              onChange={handleBottomsChange}
             />
             Falda
           </label>
         </div>
+
         {inputValue.id ? (
           <button type="button" onClick={editevent}>
-            Editar{" "}
+            Editar
           </button>
         ) : (
           <button type="submit">Crear</button>

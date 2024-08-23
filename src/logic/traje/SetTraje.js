@@ -1,16 +1,19 @@
 import { jwtDecode } from "jwt-decode";
 import toast from "react-hot-toast";
 const API = import.meta.env.VITE_API_URL;
-export function getInscripciones(id) {
+
+export function SetTraje(id,pecho,pierna) {
   const decode = jwtDecode(sessionStorage.token);
 
   const formData = {
     rol: decode.rol,
-    event_id: id,
+    user_id: decode.user_id,
+    pecho: pecho,
+    pierna: pierna,
+ 
   };
 
-
-  return fetch(`${API}/inscripción/getInscripciones.php`, {
+  return fetch(`${API}/traje/setTraje.php`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -18,7 +21,9 @@ export function getInscripciones(id) {
     body: JSON.stringify(formData),
   })
     .then((response) => {
+     
       return response.text().then((text) => {
+      
         try {
           return JSON.parse(text);
         } catch (e) {

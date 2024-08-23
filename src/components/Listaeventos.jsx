@@ -12,6 +12,8 @@ import { GiTiara } from "react-icons/gi"; */
 import { PiPantsFill } from "react-icons/pi";
 
 import FormInsc from "./FormInsc";
+import FormTraje from "./FormTraje";
+import { FaVest } from "react-icons/fa6";
 
 function ListaEventos() {
   if (!sessionStorage.token) {
@@ -32,6 +34,7 @@ function ListaEventos() {
     user = {
       id_user: user.id,
     };
+
     getMyEvents(user).then((res) => {
       setMyEventos(res);
     });
@@ -46,7 +49,7 @@ function ListaEventos() {
     const eEncontrado = eventos.find((evento) => evento.id == id);
     if (eEncontrado) {
       setDetalles(eEncontrado);
-     
+
       console.log(Detalles);
     }
   };
@@ -70,7 +73,7 @@ function ListaEventos() {
                 <div className="colum">
                   <big>{evento.nombre}</big>
                   <small>
-                    Rua Summer <span>{getYear(evento.fecha)}</span>
+                    {evento.tipo} <span>{getYear(evento.fecha)}</span>
                   </small>
                 </div>
                 <div className="colum">
@@ -90,31 +93,31 @@ function ListaEventos() {
                 </div>
               </div>
               <div className="cardPagos">
-                <big>Traje</big>
-                {mytraje.length > 0 ? (
-                  <small>
-                    {" "}
-                    <FaVest className="prenda" />
-                    <span>L</span> <PiPantsFill className="prenda" />
-                    <span>L</span>{" "}
-                  </small>
+                {evento.tipo.includes("Rua") ? (
+                  mytraje.length > 0 ? (
+                    <small>
+                      {" "}
+                      <FaVest className="prenda" />
+                      <span>L</span> <PiPantsFill className="prenda" />
+                      <span>L</span>{" "}
+                    </small>
+                  ) : (
+                    <div>
+                      <big>Traje</big>
+                      <small>
+                        <FormTraje></FormTraje>
+                      </small>
+                      <div className="cardPagos">
+                        <big>Total : 100 €</big>
+                        <small>Efectuado : 30 €</small>
+                      </div>
+                    </div>
+                  )
                 ) : (
-                  <small>Sin asignar</small>
+                  ""
                 )}
               </div>
-              <div className="cardPagos">
-                <big>Total : 100 €</big>
-                <small>Efectuado : 30 €</small>
-              </div>
-            
-                {Detalles != null ? (
-                  <div>
-                    <h2>{Detalles.nombre}</h2>
-                  </div>
-                ) : (
-                  "fo"
-                )}
-           
+
               <div>
                 <button
                   className="btnEvent"

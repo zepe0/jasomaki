@@ -68,39 +68,47 @@ function ListInsAdmin({ onSelect, onSuccess }) {
       <section id="lista">
         {list.length > 0 ? (
           list.map((evento) => (
-            <div id="card" key={evento.id}>
-              <div id="Cardinfo" onClick={() => handleClick(evento.id)}>
-                {/*   <button onClick={(e) => clikdelet(e, evento.id)}>
-                    <MdDelete />
-                  </button> */}
+            <div id="card" className="bgimg" key={evento.id}>
+              <IoMdMore onClick={() => toggleDropdown(evento.id)} />
+              <div id="Cardinfo " onClick={() => handleClick(evento.id)}>
+            
                 <div>
                   {evento.img ? (
-                    <img
-                      src={`./src/img/${evento.img}`}
-                      id="imgevento"
-                      alt="Evento"
-                    />
+                    <div className="">
+                      <img
+                        src={`./src/img/${evento.img}`}
+                        id="imgevento"
+                        alt="Evento"
+                      />
+                      <div className="colum">
+                        <big>{evento.nombre}</big>
+                        <small>
+                          {evento.tipo} <span>{getYear(evento.fecha)}</span>
+                        </small>
+                      </div>
+                    </div>
                   ) : (
-                    <img src="./src/img/defaultevent.jpeg" id="imgevento"></img>
+                    <div className="">
+                      {/*    <img
+                        src="./src/img/defaultevent.jpeg"
+                        id="imgevento"
+                      ></img> */}
+                      <div className="colum">
+                        <big>{evento.nombre}</big>
+                        <small>
+                          {evento.tipo} <span>{getYear(evento.fecha)}</span>
+                        </small>
+                        <div id="buttons">
+                          <button onClick={(e) => clikdelet(e, evento.id)}>
+                                              <MdDelete />
+                                            </button>
+                                            <button onClick={(e) => clikedit(e, evento.id)}>
+                                              <CiEdit />
+                                            </button>
+                        </div>
+                      </div>
+                    </div>
                   )}
-                  
-                    <IoMdMore onClick={() => toggleDropdown(evento.id)} />
-                 
-                  <div
-                    id="myDropdown"
-                    className="dropdown-content "
-                    ref={dropdownRef}
-                  >
-                    <a href="#">Opción 1</a>
-                    <a href="#">Opción 2</a>
-                    <a href="#">Opción 3</a>
-                  </div>
-                </div>
-                <div className="colum">
-                  <big>{evento.nombre}</big>
-                  <small>
-                    Rua Summer <span>{getYear(evento.fecha)}</span>
-                  </small>
                 </div>
               </div>
               {selectedId === evento.id && <DetailComponent id={selectedId} />}
@@ -139,8 +147,9 @@ function DetailComponent({ id }) {
   return (
     <table>
       {" "}
-      <h3>Inscripciones</h3>
-      {inscripciones.length == 0 ? (
+     
+      {/*  TODO cambiar vista para ver participantes segun sexo */}
+      {inscripciones == 0 ? (
         <tr>
           <td
             colSpan="2"
@@ -150,20 +159,10 @@ function DetailComponent({ id }) {
           </td>
         </tr>
       ) : (
-        inscripciones.map((inscripcion, index) => (
-          <tr
-            key={index}
-            id="fo"
-            style={{ textAlign: "center", backgroundColor: "#f0f0f0" }}
-            colSpan="5"
-          >
-            <td className="thTdStyle">{inscripcion.nombre}</td>
-            <td className="thTdStyle">{inscripcion.apellido}</td>
-            <td className="thTdStyle">{inscripcion.apellidodos}</td>
-            <td className="thTdStyle">{inscripcion.tel}</td>
-            <td className="thTdStyle">{inscripcion.dni}</td>
-          </tr>
-        ))
+        <p>
+          <small>Participantes :</small>
+          <span>{inscripciones.length}</span>
+        </p>
       )}
     </table>
   );

@@ -10,6 +10,7 @@ $id = $inputs['id'];
 $Titulo = $inputs['Titulo'];
 $inicio = $inputs['inicio'];
 $hora = $inputs['hora'];
+$tipo = $inputs['tipo'];
 
 
 try {
@@ -19,10 +20,11 @@ try {
 
     Validator::validateId($id);
 } catch (Exception $e) {
+   
     echo 'Error: ' . $e->getMessage();
 }
 
 $quey = new EventIns();
-$inscripcion = $quey->addEvents($id, $Titulo, $inicio, $hora);
+$inscripcion = $quey->addEvents($id, $Titulo, $inicio, $tipo);
 
 echo json_encode($inscripcion);

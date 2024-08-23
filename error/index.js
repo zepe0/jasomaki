@@ -98,7 +98,7 @@ function validateEmail(email, explain = "email") {
 
 function validateId(id, explain = "id") {
   validateString(id, explain);
-console.log(id.length)
+
   if (id.length !== 31 && id.length !== 24) throw new Error("id length is not 24 characters");
 }
 function validateTel(phone) {

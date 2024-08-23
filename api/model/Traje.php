@@ -133,28 +133,33 @@ class EventoTraje extends Db
 
         return $response;
     }
-
-    private function SetMyTraje($id_traje, $fecha, $prcho, $pierna, $id_user, $rol)
+    private function checkUserEvent($id_user, $id_event)
     {
-        $eventos = new EventIns();
-        $userCheck = $eventos->checkUser($id_user, $rol);
+        Validator::validateId($id_event);
+        Validator::validateId($id_user);
 
+    }
+    private function SetMyTraje($id_user, $pecho, $pierna)
+    {
+        $id_traje = generateUID();
         $response = [];
-        if ($userCheck['error'] == '1') {
 
-            $response['error'] = 'No tienes permisos para realizar esta acción.';
-        } else {
 
-            try {
-                $stmt = $this->con()->prepare("SELECT * FROM traje WHERE id_user = ?");
-                $stmt->execute([$_SESSION['id_user']]);
-                $response['trajes'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                $stmt->closeCursor();
-            } catch (PDOException $e) {
-                $response['status'] = 'error';
-                $response['message'] = 'Error en la base de datos: ' . $e->getMessage();
+        try {
+            $stmt = $this->con()->prepare("INSERT INTO trajes (id,pecho,pierna,participante_id) values (?,?,?,(SELECT id FROM participantes WHERE usuario_id = ?))");
+            if ($stmt->execute([$id_traje, $pecho, $pierna, $id_user]))
+                $response['success'] = true;
+            $response['message'] = 'Traje Asignado correctamente.';
+        } catch (PDOException $e) {
+            if ($e->getCode() == 23000) {
+      
+                $response['error'] = 'No tienes permisos para modificar el Traje Ponte en contacto con un administrador';
+            } else {
+             
+                $response['error'] = 'Error en la base de datos: ' . $e->getMessage();
             }
         }
+
         return $response;
     }
 
@@ -195,9 +200,9 @@ class EventoTraje extends Db
         }
 
     }
-    public function MyTraje($id_traje, $fecha, $prcho, $pierna, $id_user, $rol)
+    public function MyTraje($iduser, $pecho, $piernas)
     {
-        return $this->setMyTraje($id_traje, $fecha, $prcho, $pierna, $id_user, $rol);
+        return $this->SetMyTraje($iduser, $pecho, $piernas);
     }
 
 }

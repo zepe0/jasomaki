@@ -20,7 +20,7 @@ class User extends Db
 
                 $payload['id'] = $id;
                 $payload['rol'] = 0;
-                $payload['name']=$email;
+                $payload['name'] = $email;
                 $token = createJwt($payload);
                 $response['success'] = "Usuario registrado con éxito.";
                 $response['token'] = $token;
@@ -129,7 +129,7 @@ class User extends Db
     }
     public function getUsers()
     {
-        $stmt = $this->con()->prepare("SELECT * FROM usuarios ");
+        $stmt = $this->con()->prepare("SELECT id,email,rol FROM usuarios ");
         $res = $stmt->execute();
         if (!$res) {
             return 1;

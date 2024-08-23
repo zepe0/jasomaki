@@ -207,6 +207,42 @@ class Inscripcion extends Db
         // Devolver la respuesta con datos o error
         return $response;
     }
+
+    private function getAllParticipante()
+    {
+        $response = [];
+        $tipo = "Rua Summer";
+        $fecha = "2024";
+        try {
+            $stmt = $this->con()->prepare("SELECT p.nombre, p.apellido, p.tel, p.dni
+                FROM participantes p
+                JOIN participantes_eventos pe ON p.id = pe.participante_id
+                JOIN eventos e ON pe.evento_id = e.id
+                WHERE e.tipo = ? AND EXTRACT(YEAR FROM e.fecha) = ? ");
+
+            if (!$stmt->execute([$tipo, $fecha])) {
+
+                $response['error'] = "Error al ejecutar la consulta.";
+            } else {
+
+                $response['data'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
+        } catch (PDOException $e) {
+
+            if ($e->getCode() == 23000 && strpos($e->getMessage(), '1062') !== false) {
+                $response['error'] = "Registro duplicado: " . $e->getMessage();
+            } else {
+                $response['error'] = "Error en la base de datos : " . $e->getMessage();
+            }
+        }
+
+        // Liberar el recurso del statement
+        $stmt = null;
+
+        // Devolver la respuesta con datos o error
+        return $response;
+
+    }
     public function getInscripcionesAdmin($rol, $event_id)
     {
         $response = [];
@@ -249,5 +285,9 @@ class Inscripcion extends Db
     public function addIns($nombre, $apelido, $apellidos, $tel, $dni, $id_event, $id_user)
     {
         return $this->userInscripcion($nombre, $apelido, $apellidos, $tel, $dni, $id_event, $id_user);
+    }
+    public function getAllParticipantes()
+    {
+        return $this->getAllParticipante();
     }
 }

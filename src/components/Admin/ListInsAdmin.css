@@ -66,3 +66,6 @@ td .detailComponent {
 .show {
   display: block;
 }
+.bgimg {
+  background-image: url("../../img/defaultevent.jpeg");
+}

@@ -22,12 +22,14 @@ function FormInscAdmin({ onSuccess, selectedit }) {
         inicio: selectedit.fecha,
         hora: selectedit.hora,
         id: selectedit.id,
+        tipo: selectedit.tipo,
       });
     } else {
       setInputValue({
         Titulo: "",
         inicio: "",
         hora: "",
+        tipo: "---",
       });
     }
   }, [selectedit]);
@@ -42,7 +44,16 @@ function FormInscAdmin({ onSuccess, selectedit }) {
 
   const inscripcion = (e) => {
     e.preventDefault();
+    if (!inputValue.Titulo) {
+      return toast.error("Seleccione un Nombre ");
+    }
+    if (!inputValue.tipo) {
+      return toast.error("Seleccione un tipo de evento");
+    }
 
+    if (!inputValue.inicio) {
+      return toast.error("Seleccione una fecha ");
+    }
     const inicio = new Date(inputValue.inicio);
 
     const formData = {
@@ -50,6 +61,7 @@ function FormInscAdmin({ onSuccess, selectedit }) {
       hora: inputValue.hora,
       inicio: inicio,
       id: generateUID(),
+      tipo: inputValue.tipo,
     };
 
     try {
@@ -69,6 +81,15 @@ function FormInscAdmin({ onSuccess, selectedit }) {
         .then((data) => {
           if (data.success) {
             onSuccess();
+            setInputValue({
+              Titulo: "",
+              inicio: "",
+              hora: "",
+              tipo: "",
+            });
+            const form = document.getElementById("forularioInscripcion");
+
+            form.showModal();
             return toast.success(data.msn);
           }
           toast.error(data.error);
@@ -82,13 +103,13 @@ function FormInscAdmin({ onSuccess, selectedit }) {
   };
   const editevent = (e) => {
     e.preventDefault();
-    const form = e.target.closest("form");
 
+    const form = e.target.closest("form");
     const formData = {
       id: form.id,
       titulo: form.Titulo.value,
       fecha: form.inicio.value,
-      hora: form.hora.value,
+      tipo: form.tipo.value,
       rol: jwtDecode(sessionStorage.token).rol,
       user: jwtDecode(sessionStorage.token).id,
     };
@@ -113,8 +134,22 @@ function FormInscAdmin({ onSuccess, selectedit }) {
           name="Titulo"
           value={inputValue.Titulo}
           onChange={handleInputChange}
+          placeholder="Nombre"
         />
 
+        <select
+          className="inputFormIns"
+          type="text"
+          name="tipo"
+          value={inputValue.tipo}
+          onChange={handleInputChange}
+        >
+          <option className="inputFormIns">---</option>
+          <option className="inputFormIns">Rua Summer</option>
+          <option className="inputFormIns">Rua Winter</option>
+          <option className="inputFormIns">Maquillaje Winter</option>
+          <option className="inputFormIns">Maquillaje Summer</option>
+        </select>
         <input
           className="inputFormIns"
           type="date"
@@ -123,13 +158,6 @@ function FormInscAdmin({ onSuccess, selectedit }) {
           onChange={handleInputChange}
         />
 
-        <input
-          className="inputFormIns"
-          type="time"
-          name="hora"
-          value={inputValue.hora}
-          onChange={handleInputChange}
-        />
         {inputValue.id ? (
           <button type="button" onClick={editevent}>
             Editar{" "}
@@ -138,7 +166,6 @@ function FormInscAdmin({ onSuccess, selectedit }) {
           <button type="submit">Crear</button>
         )}
       </form>
-     
     </div>
   );
 }

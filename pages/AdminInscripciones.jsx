@@ -4,10 +4,12 @@ import FormInscAdmin from "../src/components/FormInscAdmin";
 
 import { useState } from "react";
 import FormInscTraje from "../src/components/FormInscTrajeAdmin";
+import { useNavigate } from "react-router-dom";
 
 function AdminInscripciones() {
   const [refresh, setRefresh] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const goto = useNavigate();
   if (!sessionStorage.token) {
     window.location.href = "/";
   }
@@ -19,11 +21,7 @@ function AdminInscripciones() {
     }
   }
   function openFormTraje(e) {
-    const dialog = document.getElementById("formaddTraje");
-    dialog.showModal();
-    if (e) {
-      setSelectedEvent(null); // Resetea el estado a null
-    }
+  goto("/Admin/Participantes")
   }
   function closeForm() {
     const dialog = document.getElementById("formadd");
@@ -43,7 +41,7 @@ function AdminInscripciones() {
     <>
       <div>
         <button onClick={openForm}>Añadir Evento</button>
-        <button onClick={openFormTraje}>Crear Traje</button>
+        <button onClick={openFormTraje}>Ver Participantes</button>
         <button onClick={openForm}>Pagos</button>
       </div>
       <ListInsAdmin
@@ -58,10 +56,9 @@ function AdminInscripciones() {
       </dialog>
       <dialog id="formaddTraje">
         <button onClick={closeForm}>X</button>
-        
+
         <FormInscTraje onSuccess={refreshList} selectedit={selectedEvent} />
       </dialog>
-      <Toaster position="bottom-right" reverseOrder={true} />
     </>
   );
 }

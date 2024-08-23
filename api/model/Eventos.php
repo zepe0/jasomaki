@@ -1,27 +1,21 @@
 <?php
 require_once 'Db.php';
-
-function generateUID()
-{
-
-    return uniqid(bin2hex(random_bytes(4)), true);
-}
-
+require_once '../utils/generateUID.php';
 
 
 
 class EventIns extends Db
 {
     // PRIVADAS
-    private function addEvent($id, $nombre, $fecha, $hora)
+    private function addEvent($id, $nombre, $fecha, $tipo)
     {
         $response = [];
         $id = generateUID();
 
         try {
-            $stmt = $this->con()->prepare("INSERT INTO eventos (id,nombre,fecha,hora) VALUES (?,?,?,?)");
+            $stmt = $this->con()->prepare("INSERT INTO eventos (id,nombre,fecha,tipo) VALUES (?,?,?,?)");
 
-            if (!$stmt->execute(array($id, $nombre, $fecha, $hora))) {
+            if (!$stmt->execute(array($id, $nombre, $fecha, $tipo))) {
                 $response['error'] = "Error al ejecutar la consulta.";
             } else {
                 $response['success'] = true;
@@ -30,8 +24,8 @@ class EventIns extends Db
             }
         } catch (PDOException $e) {
 
-            if ($e->getCode() == '45000' && strpos($e->getMessage(), 'No se pueden crear más de 3 eventos en la misma fecha') !== false) {
-                $response['error'] = 'No se pueden crear más de 3 eventos en la misma fecha';
+            if ($e->getCode() == '45000' ) {
+                $response['error'] = 'Máximo  de 4 eventos por año y tipo de salida';
             } else if ($e->getCode() == 23000 && strpos($e->getMessage(), '1062') !== false) {
                 $response['error'] = "Error en la base de datos   34: " . $e->getMessage();
             } else {
@@ -105,7 +99,7 @@ class EventIns extends Db
             if ($result['error'] == "1") {
                 $response['error'] = "El usuario no tiene permisos para editar eventos";
             } else {
-                $stmt = $this->con()->prepare("UPDATE eventos SET nombre = ?, fecha = ?, hora = ? WHERE id = ?");
+                $stmt = $this->con()->prepare("UPDATE eventos SET nombre = ?, fecha = ?, tipo = ? WHERE id = ?");
 
                 if ($stmt->execute(array($nombre, $fecha, $hora, $id))) {
                     $affectedRows = $stmt->rowCount();
@@ -128,9 +122,9 @@ class EventIns extends Db
 
 
 
-    public function addEvents($id, $Titulo, $inicio, $hora)
+    public function addEvents($id, $Titulo, $inicio, $tipo)
     {
-        return $this->addEvent($id, $Titulo, $inicio, $hora);
+        return $this->addEvent($id, $Titulo, $inicio, $tipo);
     }
     public function getAllEvents()
     {
@@ -161,10 +155,10 @@ class EventIns extends Db
         return $response;
 
     }
-    public function editEvents($id, $nombre, $inicio, $hora, $rol, $idUser)
+    public function editEvents($id, $nombre, $inicio, $tipo, $rol, $idUser)
     {
 
-        return $this->editEvent($id, $nombre, $inicio, $hora, $rol, $idUser);
+        return $this->editEvent($id, $nombre, $inicio, $tipo, $rol, $idUser);
     }
     public function delEvents($id, $rol, $iduser)
     {

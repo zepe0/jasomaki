@@ -10,16 +10,16 @@ $id = $inputs['id'];
 
 $nombre = $inputs['titulo'];
 $inicio = $inputs['fecha'];
-$hora = $inputs['hora'];
+$tipo = $inputs['tipo'];
 $rol = $inputs['rol'];
 $user = $inputs['user'];
 
 try {
- /*    Validator::validateStringNotEmptyOrBlank($id);
-    Validator::validateId($id); */
+    /*    Validator::validateStringNotEmptyOrBlank($id);
+       Validator::validateId($id); */
     $quey = new EventIns();
-    $eventoEditado = $quey->editEvents($id, $nombre, $inicio, $hora, $rol, $user);
-   
+    $eventoEditado = $quey->editEvents($id, $nombre, $inicio, $tipo, $rol, $user);
+
     echo $eventoEditado;
 } catch (Exception $e) {
     echo 'Error: ' . $e->getMessage();
