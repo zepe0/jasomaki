@@ -31,10 +31,12 @@ function App() {
           {/*  Rutas Admin */}
 
           <Route path="/Admin" element={<HomeAdmin />} />
+          <Route path="/Admin/Participantes" element={<Participantes />} />
+
+          
           <Route path="/Admin/ins" element={<AdminInscripciones />} />
           <Route path="/Admin/traje" element={<AdminTraje />} />
           <Route path="/Admin/pagos" element={<Pagos />} />
-          <Route path="/Admin/Participantes" element={<Participantes />} />
 
           {/*         Pruevas */}
           <Route path="/prueva" element={<HomeUser />} />

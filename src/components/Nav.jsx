@@ -26,21 +26,25 @@ function Nav() {
     sessionStorage.removeItem("token");
     goto("/login");
   };
+  const goBack = () => {
+    goto(-1); // Navega a la página anterior
+  };
   return (
     <section className="top">
       <nav id="Nav">
         <li>
-          <MdOutlineArrowBackIosNew />
+          <MdOutlineArrowBackIosNew onClick={goBack} />
         </li>
-        <li><input type="search" name="" id="" />
+        <li>
+          <input type="search" name="" id="" />
           <button>
             <MdSearch />
-          </button></li>
+          </button>
+        </li>
         <li>
           <CgProfile onClick={logout} className="btnLogout" />
         </li>
       </nav>
-     
     </section>
   );
 }

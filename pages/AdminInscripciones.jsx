@@ -32,6 +32,7 @@ function AdminInscripciones() {
   function refreshList() {
     closeForm();
     setRefresh((prev) => !prev);
+   
   }
   function handleSelect(id) {
     setSelectedEvent(id);

@@ -7,6 +7,9 @@ import ListaEventos from "../src/components/Listaeventos";
 
 function HomeUser() {
   const goto = useNavigate();
+  if(!sessionStorage.token){
+   goto("/Login")
+  }
 
   useEffect(() => {}, [goto]);
   return (

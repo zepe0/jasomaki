@@ -208,17 +208,16 @@ class Inscripcion extends Db
         return $response;
     }
 
-    private function getAllParticipante()
+    private function getAllParticipante($tipo, $fecha)
     {
         $response = [];
-        $tipo = "Rua Summer";
-        $fecha = "2024";
+
         try {
-            $stmt = $this->con()->prepare("SELECT p.nombre, p.apellido, p.tel, p.dni
-                FROM participantes p
-                JOIN participantes_eventos pe ON p.id = pe.participante_id
-                JOIN eventos e ON pe.evento_id = e.id
-                WHERE e.tipo = ? AND EXTRACT(YEAR FROM e.fecha) = ? ");
+            $stmt = $this->con()->prepare("SELECT p.id,pe.id as idevento, p.nombre, p.apellido, p.tel, p.dni, e.tipo, EXTRACT(YEAR FROM e.fecha) AS anio
+FROM participantes p
+JOIN participantes_eventos pe ON p.id = pe.participante_id
+JOIN eventos e ON pe.evento_id = e.id
+WHERE e.tipo = ? AND EXTRACT(YEAR FROM e.fecha) = ? ");
 
             if (!$stmt->execute([$tipo, $fecha])) {
 
@@ -243,6 +242,37 @@ class Inscripcion extends Db
         return $response;
 
     }
+
+    private function delParticipantes($id)
+    {
+
+        try {
+            $stmt = $this->con()->prepare("DELETE from participantes_eventos WHERE id=?");
+
+            if (!$stmt->execute([$id])) {
+
+                $response['error'] = "Error al ejecutar la consulta.";
+            } else {
+
+                $response['data'] = $stmt->rowCount();
+            }
+        } catch (PDOException $e) {
+
+            if ($e->getCode() == 23000 && strpos($e->getMessage(), '1062') !== false) {
+                $response['error'] = "Registro duplicado: " . $e->getMessage();
+            } else {
+                $response['error'] = "Error en la base de datos : " . $e->getMessage();
+            }
+        }
+
+        // Liberar el recurso del statement
+        $stmt = null;
+
+        // Devolver la respuesta con datos o error
+        return $response;
+
+    }
+
     public function getInscripcionesAdmin($rol, $event_id)
     {
         $response = [];
@@ -286,8 +316,19 @@ class Inscripcion extends Db
     {
         return $this->userInscripcion($nombre, $apelido, $apellidos, $tel, $dni, $id_event, $id_user);
     }
-    public function getAllParticipantes()
+    public function getAllParticipantes($rol, $tipo, $fecha)
     {
-        return $this->getAllParticipante();
+        if ($rol == 1)
+            return $this->getAllParticipante($tipo, $fecha);
+    }
+    public function delParticipante($rol, $idevento)
+    { {
+            $response = [];
+            if ($rol = 1) {
+
+                return $this->delParticipantes($idevento);
+            }
+            return $response['error'] = "No tienes permisos para la acción seleccionada";
+        }
     }
 }
