@@ -23,14 +23,7 @@
   background-color: #2b821aab;
 }
 /* Estilo para filas impares */
-tr:nth-child(odd) {
-  background-color: #8fcdbe;
-}
 
-/* Estilo para filas pares */
-tr:nth-child(even) {
-  background-color: #c72e5d;
-}
 .divtable {
   padding: 20px;
   background-color: #8fcdbe5b;
@@ -68,4 +61,25 @@ td .detailComponent {
 }
 .bgimg {
   background-image: url("../../img/defaultevent.jpeg");
+  background-repeat: no-repeat; /* Evita que la imagen se repita */
+  background-size: cover;
+  height: 100px;
+}
+.bgimgW {
+  background-image: url("../../img/winter2.jpg");
+  background-repeat: no-repeat; /* Evita que la imagen se repita */
+  background-size: cover;
+  color: #e9e8eb;
+  height: 100px;
+}
+.maquillaje {
+  background-image: url("../../img/maquillaje2.jpg");
+  background-repeat: no-repeat; /* Evita que la imagen se repita */
+  background-size: cover;
+  color: #e9e8eb;
+  height: 100px;
+
+}
+.w-98{
+  width: 93%!important
 }

@@ -27,7 +27,7 @@ export function RegistroEvento(e, evento) {
     error.validateId(formData.id);
     error.validateId(evento);
 
-    fetch(`${API}/inscripción/ins.php`, {
+    return fetch(`${API}/inscripción/ins.php`, {
       // Usa la URL directa al servidor PHP
       method: "POST",
       headers: {
@@ -39,15 +39,21 @@ export function RegistroEvento(e, evento) {
       .then((data) => {
         if (data.success) {
           toast.success(data.msn);
+          const form = document.getElementById("forularioInscripcion");
+          form.close();
+          return "success";
         }
         if (data.error) {
           toast.error(data.error);
         }
+        return null;
       })
       .catch((error) => {
         console.error("Hubo un problema con la solicitud:", error);
+        return null;
       });
   } catch (error) {
     toast.error(`error: ${error.message}`);
+    return null;
   }
 }

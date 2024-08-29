@@ -35,12 +35,12 @@ function Nav() {
         <li>
           <MdOutlineArrowBackIosNew onClick={goBack} />
         </li>
-        <li>
+       {/*  <li>
           <input type="search" name="" id="" />
           <button>
             <MdSearch />
           </button>
-        </li>
+        </li> */}
         <li>
           <CgProfile onClick={logout} className="btnLogout" />
         </li>

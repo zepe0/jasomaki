@@ -1,11 +1,16 @@
 /* eslint-disable react/prop-types */
-import  { Toaster } from "react-hot-toast";
+
 import "./FormInsc.css";
 
 import { RegistroEvento } from "../logic/User/addInscripcion";
-function FormInsc({ evento }) {
- 
-  const inscripcion = (e) => RegistroEvento(e,evento);
+
+function FormInsc({ evento, onInscripcionSuccess }) {
+  const inscripcion = (e) =>
+    RegistroEvento(e, evento).then((res) => {
+     if(res == "success"){
+      onInscripcionSuccess()
+     }
+    });
 
   return (
     <div className="">
@@ -45,7 +50,6 @@ function FormInsc({ evento }) {
         ></input>
         <button type="submit">Inscribirme</button>
       </form>
-      <Toaster />
     </div>
   );
 }

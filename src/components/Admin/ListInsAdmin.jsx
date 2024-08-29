@@ -68,25 +68,21 @@ function ListInsAdmin({ onSelect, onSuccess }) {
       <section id="lista">
         {list.length > 0 ? (
           list.map((evento) => (
-            <div id="card" className="bgimg" key={evento.id}>
-              <IoMdMore onClick={() => toggleDropdown(evento.id)} />
+            <div id="card" className={` w-98 ${evento.tipo.includes('Maquillaje') ? 'maquillaje' : evento.tipo.includes('Summer') ?"bgimg":'bgimgW'}  `}key={evento.id}>
+          {/*     <IoMdMore onClick={() => toggleDropdown(evento.id)} /> */}
               <div id="Cardinfo " onClick={() => handleClick(evento.id)}>
             
                 <div>
                   {evento.img ? (
-                    <div className="">
-                      <img
-                        src={`./src/img/${evento.img}`}
-                        id="imgevento"
-                        alt="Evento"
-                      />
+                    
+                    
                       <div className="colum">
                         <big>{evento.nombre}</big>
                         <small>
                           {evento.tipo} <span>{getYear(evento.fecha)}</span>
                         </small>
                       </div>
-                    </div>
+                    
                   ) : (
                     <div className="">
                       {/*    <img
@@ -94,10 +90,12 @@ function ListInsAdmin({ onSelect, onSuccess }) {
                         id="imgevento"
                       ></img> */}
                       <div className="colum">
-                        <big>{evento.nombre}</big>
-                        <small>
-                          {evento.tipo} <span>{getYear(evento.fecha)}</span>
-                        </small>
+                        <div>
+                          <big>{evento.nombre}</big>
+                          <small>
+                            {evento.tipo} <span>{getYear(evento.fecha)}</span>
+                          </small>
+                        </div>
                         <div id="buttons">
                           <button onClick={(e) => clikdelet(e, evento.id)}>
                                               <MdDelete />
@@ -111,7 +109,7 @@ function ListInsAdmin({ onSelect, onSuccess }) {
                   )}
                 </div>
               </div>
-              {selectedId === evento.id && <DetailComponent id={selectedId} />}
+             
             </div>
           ))
         ) : (
@@ -129,43 +127,7 @@ function ListInsAdmin({ onSelect, onSuccess }) {
   );
 }
 
-function DetailComponent({ id }) {
-  const [inscripciones, setInscripciones] = useState([]);
-  useEffect(() => {
-    getInscripciones(id)
-      .then((res) => {
-        if (!res) {
-          throw new Error("Error en la conexión a la base de datos");
-        } else {
-          setInscripciones(res.data);
-        }
-      })
-      .catch((error) => {
-        toast.error(error.message || "Ocurrió un error");
-      });
-  }, []);
-  return (
-    <table>
-      {" "}
-     
-      {/*  TODO cambiar vista para ver participantes segun sexo */}
-      {inscripciones == 0 ? (
-        <tr>
-          <td
-            colSpan="2"
-            style={{ textAlign: "center", backgroundColor: "#f0f0f0" }}
-          >
-            Sin personas apuntadas aún
-          </td>
-        </tr>
-      ) : (
-        <p>
-          <small>Participantes :</small>
-          <span>{inscripciones.length}</span>
-        </p>
-      )}
-    </table>
-  );
-}
+
+
 
 export default ListInsAdmin;

@@ -47,33 +47,30 @@ class Inscripcion extends Db
                     $stmt1 = $this->con()->prepare("INSERT INTO participantes (id, nombre, apellido, apellidodos, dni, tel, usuario_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
                     if ($stmt1->execute([$participante_id, $nombre, $apellido, $apellidos, $dni, $tel, $id_user])) {
 
-                        $stmt2 = $this->con()->prepare("INSERT INTO inscripciones (id, participante_id, fecha) VALUES (?, ?, ?)");
-                        if ($stmt2->execute([$idins, $participante_id, $fecha->format('Y-m-d H:i:s')])) {
 
-                            $stmt3 = $this->con()->prepare("INSERT INTO participantes_eventos (id, participante_id, evento_id) VALUES (?, ?, ?)");
-                            if ($stmt3->execute([$idins, $participante_id, $id_event])) {
-                                $response['success'] = true;
-                                $response['msn'] = "Inscripción exitosa.";
-                                $this->con()->commit();
-                            } else {
-                                $response['error'] = "Error al insertar en participantes_eventos.";
-                            }
+
+                        $añadeevento = $this->con()->prepare("INSERT INTO participantes_eventos (id, participante_id, evento_Id) VALUES (?, ?, ?)");
+                        if ($añadeevento->execute([$idins, $participante_id, $id_event])) {
+                            $response['success'] = true;
+                            $response['msn'] = "Inscripción exitosa.";
+                            $this->con()->commit();
                         } else {
-                            $response['error'] = "Error al insertar en inscripciones.";
+                            $response['error'] = "Error al insertar en participantes_eventos.";
                         }
                     } else {
-                        $response['error'] = "Error al insertar en participantes.";
+                        $response['error'] = "Error al insertar en inscripciones.";
                     }
+
                 } else {
 
-                    // Obtener el id del participante ya existente
+
                     $suparticipante_id = $this->con()->prepare("SELECT id FROM participantes WHERE usuario_id = ?");
                     if ($suparticipante_id->execute([$id_user])) {
                         $fo = $suparticipante_id->fetch(PDO::FETCH_ASSOC);
                         if ($fo) {
                             $id_participante = $fo['id'];
 
-                            // Insertar en `participantes_eventos`
+
                             $stmt4 = $this->con()->prepare("INSERT INTO participantes_eventos (id, participante_id, evento_id) VALUES (?, ?, ?)");
                             if ($stmt4->execute([$idins, $id_participante, $id_event])) {
 
@@ -93,10 +90,15 @@ class Inscripcion extends Db
                 }
             }
         } catch (PDOException $e) {
-            // Revertir la transacción si hay un error
-            $this->con()->rollBack();
-            $response['error'] = "Error en la base de datos: " . $e->getMessage();
+            if ($e->getCode() == 23000) {
+                $response['error'] = "su DNI ya esta regristado ";
+            } else {
+
+                $this->con()->rollBack();
+                $response['error'] = "Error en la base de datos: " . $e->getMessage() . $e->getLine() . $e->getCode();
+            }
         }
+        // Revertir la transacción si hay un error
 
         return $response;
     }
@@ -212,27 +214,31 @@ class Inscripcion extends Db
     {
         $response = [];
 
+        // Depuración: Imprimir valores de $tipo y $fecha
+
+
         try {
-            $stmt = $this->con()->prepare("SELECT p.id,pe.id as idevento, p.nombre, p.apellido, p.tel, p.dni, e.tipo, EXTRACT(YEAR FROM e.fecha) AS anio
-FROM participantes p
-JOIN participantes_eventos pe ON p.id = pe.participante_id
-JOIN eventos e ON pe.evento_id = e.id
-WHERE e.tipo = ? AND EXTRACT(YEAR FROM e.fecha) = ? ");
+            $stmt = $this->con()->prepare("SELECT p.id, pe.id as idevento, p.nombre, p.apellido, p.tel, p.dni, e.tipo, EXTRACT(YEAR FROM e.fecha) AS anio
+    FROM participantes p
+    JOIN participantes_eventos pe ON p.id = pe.participante_id
+    JOIN eventos e ON pe.evento_id = e.id
+    WHERE e.tipo = ? AND EXTRACT(YEAR FROM e.fecha) = ?");
 
-            if (!$stmt->execute([$tipo, $fecha])) {
-
+            // Convertir $fecha a entero antes de ejecutarla
+            if (!$stmt->execute([$tipo, (int) $fecha])) {
                 $response['error'] = "Error al ejecutar la consulta.";
             } else {
-
                 $response['data'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
             }
         } catch (PDOException $e) {
-
+            // Manejo de errores
             if ($e->getCode() == 23000 && strpos($e->getMessage(), '1062') !== false) {
                 $response['error'] = "Registro duplicado: " . $e->getMessage();
             } else {
-                $response['error'] = "Error en la base de datos : " . $e->getMessage();
+                $response['error'] = "Error en la base de datos: " . $e->getMessage();
             }
+            // Registrar el error para depuración
+
         }
 
         // Liberar el recurso del statement
@@ -240,9 +246,7 @@ WHERE e.tipo = ? AND EXTRACT(YEAR FROM e.fecha) = ? ");
 
         // Devolver la respuesta con datos o error
         return $response;
-
     }
-
     private function delParticipantes($id)
     {
 
@@ -318,6 +322,7 @@ WHERE e.tipo = ? AND EXTRACT(YEAR FROM e.fecha) = ? ");
     }
     public function getAllParticipantes($rol, $tipo, $fecha)
     {
+
         if ($rol == 1)
             return $this->getAllParticipante($tipo, $fecha);
     }

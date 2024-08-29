@@ -22,18 +22,17 @@ function App() {
         <Routes>
           <Route path="/" element={<HomeUser />} />
           <Route path="/ins" element={<Inscripciones />} />
+          <Route path="/Login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
           <Route path="/pagos" element={<Pagos />} />
           <Route path="/Perfil" element={<Perfil />} />
-          <Route path="/Login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
 
           {/*  Rutas Admin */}
 
           <Route path="/Admin" element={<HomeAdmin />} />
           <Route path="/Admin/Participantes" element={<Participantes />} />
 
-          
           <Route path="/Admin/ins" element={<AdminInscripciones />} />
           <Route path="/Admin/traje" element={<AdminTraje />} />
           <Route path="/Admin/pagos" element={<Pagos />} />

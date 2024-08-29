@@ -28,7 +28,7 @@ function Participantes() {
       }, 3000);
     }
     const intialdata = {
-      rol: jwtDecode(sessionStorage.token).id,
+      rol: jwtDecode(sessionStorage.token).rol,
       tipo: "Rua Summer",
       fecha: getYear(new Date()),
     };
@@ -45,7 +45,7 @@ function Participantes() {
     e.preventDefault();
     setLoading(true);
     const data = {
-      rol: jwtDecode(sessionStorage.token).id,
+      rol: jwtDecode(sessionStorage.token).rol,
       tipo: e.target.rua.value,
       fecha: e.target.año.value,
     };
