@@ -218,11 +218,12 @@ class Inscripcion extends Db
 
 
         try {
-            $stmt = $this->con()->prepare("SELECT p.id, pe.id as idevento, p.nombre, p.apellido, p.tel, p.dni, e.tipo, EXTRACT(YEAR FROM e.fecha) AS anio
-    FROM participantes p
-    JOIN participantes_eventos pe ON p.id = pe.participante_id
-    JOIN eventos e ON pe.evento_id = e.id
-    WHERE e.tipo = ? AND EXTRACT(YEAR FROM e.fecha) = ?");
+            $stmt = $this->con()->prepare("SELECT p.id, p.nombre, p.apellido, p.tel, p.dni, e.tipo, EXTRACT(YEAR FROM e.fecha) AS anio, t.pecho, t.pierna, t.fecha as fechaTraje
+FROM participantes p
+JOIN participantes_eventos pe ON p.id = pe.participante_id
+JOIN eventos e ON pe.evento_id = e.id
+JOIN trajes t ON p.id = t.participante_id AND EXTRACT(YEAR FROM t.fecha) = EXTRACT(YEAR FROM e.fecha)
+WHERE e.tipo = ? AND EXTRACT(YEAR FROM e.fecha) = ?");
 
             // Convertir $fecha a entero antes de ejecutarla
             if (!$stmt->execute([$tipo, (int) $fecha])) {

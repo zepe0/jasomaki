@@ -74,16 +74,8 @@ function ListaEventos() {
     <section id="lista">
       {eventos && eventos.length > 0 ? (
         eventos.map((evento) => (
-          <div key={evento.id} id="card">
-            {evento.img ? (
-              <img
-                src={`./src/img/${evento.img}`}
-                id="imgevento"
-                alt="Evento"
-              />
-            ) : (
-              <img src="./src/img/defaultevent.jpeg" id="imgevento" alt="" />
-            )}
+          <div id="card" className={` w-98 ${evento.tipo.includes('Maquillaje') ? 'maquillaje' : evento.tipo.includes('Summer') ?"bgimg":'bgimgW'}  `}key={evento.id}>
+           
 
             <div id="Cardinfo">
               <div className="colum">

@@ -83,3 +83,7 @@ td .detailComponent {
 .w-98{
   width: 93%!important
 }
+section #lista{
+  overflow-y: auto;
+
+}

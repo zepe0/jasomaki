@@ -14,17 +14,50 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
 }
 body {
   background-image: url("../src/img/fondo.jpeg");
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: center ;
+  background-position: center;
   height: 100vh;
   overflow: hidden;
 }
 
-#lista section{
+#lista section {
   overflow: scroll;
+}
+#table-to-pdf {
+  margin-top: 20px;
+  width: 100%;
+  padding: 16px;
+ 
+}
+.table-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+table {
+  width: 80%;
+  border-collapse: collapse;  
+}
+
+th,
+td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: center;
+}
+.none{
+  display: none;
+}
+.font-large {
+  font-size: 40px; 
+}
+@media print {
+  .btn-container {
+    display: none;
+  }
 }

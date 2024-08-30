@@ -1,5 +1,7 @@
 import Nav from "../src/components/Nav";
 import { useEffect, useState } from "react";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 import { jwtDecode } from "jwt-decode";
 import { getAllParticipantes } from "../src/logic/Admin/users/getAllPArticipantes";
@@ -64,6 +66,37 @@ function Participantes() {
   function onDelete(id) {
     delParticipantes(sessionStorage.token, id);
   }
+
+  function exportPDF() {
+    setLoading(true);
+    const btnContainers = document.querySelectorAll(".btn-container");
+    btnContainers.forEach((container) => container.classList.add("none"));
+    const input = document.getElementById("table-to-pdf");
+    input.classList.add("font-large");
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF();
+      pdf.setFontSize(32);
+      const imgWidth = 210;
+      const pageHeight = 295;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+      btnContainers.forEach((container) => container.classList.remove("none"));
+      input.classList.remove("font-large");
+      pdf.save("Lista.pdf");
+    });
+  }
   return (
     <>
       <Nav></Nav>
@@ -81,35 +114,56 @@ function Participantes() {
         </select>
         <button type="submit">serch</button>
       </form>
+      <button onClick={exportPDF}>Generar PDF</button>
       {loading ? (
         <Loading></Loading>
       ) : participantes.length > 0 ? (
-        participantes.map((participante) => {
-          return (
-            <div key={participante.id} style={{ display: "flex" }}>
+        <div id="table-to-pdf" className="table-container">
+          <table>
+            <thead>
               <tr>
-                <td>{participante.nombre}</td>
-                <td>{participante.apellido}</td>
-                <td>{participante.dni}</td>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>DNI</th>
+                <th>Teléfono</th>
+                <th>Camiseta</th>
+                <th>Pantalón</th>
+                <th>Fecha de elección</th>
+                <th>Acciones</th>
               </tr>
-              <tr>
-                <td>
-                  <button
-                    onClick={() => onEdit(participante.id)}
-                    style={{ marginRight: "10px" }}
-                  >
-                    Editar
-                  </button>
-                  <button onClick={() => onDelete(participante.idevento)}>
-                    Eliminar
-                  </button>
-                </td>
-              </tr>
-            </div>
-          );
-        })
+            </thead>
+            <tbody>
+              {participantes.map((participante) => (
+                <tr key={participante.id}>
+                  <td>{participante.nombre}</td>
+                  <td>{participante.apellido}</td>
+                  <td>{participante.dni}</td>
+                  <td>{participante.tel}</td>
+                  <td>{participante.pecho}</td>
+                  <td>{participante.pierna}</td>
+                  <td>{participante.fechaTraje}</td>
+                  <td>
+                    <button
+                      onClick={() => onEdit(participante.id)}
+                      style={{ marginRight: "10px" }}
+                      className="btn-container"
+                    >
+                      Editar
+                    </button>
+                    <button
+                      className="btn-container"
+                      onClick={() => onDelete(participante.idevento)}
+                    >
+                      Eliminar
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : (
-        "Sin Participantes aun "
+        <p>Sin participantes aún</p>
       )}
     </>
   );
