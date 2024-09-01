@@ -218,7 +218,7 @@ class Inscripcion extends Db
 
 
         try {
-            $stmt = $this->con()->prepare("SELECT p.id, p.nombre, p.apellido, p.tel, p.dni, e.tipo, EXTRACT(YEAR FROM e.fecha) AS anio, t.pecho, t.pierna, t.fecha as fechaTraje
+            $stmt = $this->con()->prepare("SELECT p.id, p.nombre, p.apellido, p.tel, p.dni, e.tipo, EXTRACT(YEAR FROM e.fecha) AS anio, t.pecho, t.pierna, t.fecha as fechaTraje,t.sexo
 FROM participantes p
 JOIN participantes_eventos pe ON p.id = pe.participante_id
 JOIN eventos e ON pe.evento_id = e.id

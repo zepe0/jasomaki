@@ -34,6 +34,9 @@ section #lista #card:nth-last-child(2) {
   margin-top: 20px;
   width: 100%;
   padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 .table-container {
   display: flex;
@@ -44,6 +47,7 @@ section #lista #card:nth-last-child(2) {
 table {
   width: 80%;
   border-collapse: collapse;
+  background: #faebd787;
 }
 
 th,
@@ -57,6 +61,9 @@ td {
 }
 .font-large {
   font-size: 40px;
+}
+.noborder{
+  border: none 
 }
 @media print {
   .btn-container {

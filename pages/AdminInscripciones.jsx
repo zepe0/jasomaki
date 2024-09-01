@@ -1,4 +1,4 @@
-import { Toaster } from "react-hot-toast";
+
 import ListInsAdmin from "../src/components/Admin/ListInsAdmin";
 import FormInscAdmin from "../src/components/FormInscAdmin";
 
@@ -11,7 +11,7 @@ function AdminInscripciones() {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const goto = useNavigate();
   if (!sessionStorage.token) {
-    window.location.href = "/";
+    goto("/")
   }
   function openForm(e) {
     const dialog = document.getElementById("formadd");
@@ -20,9 +20,7 @@ function AdminInscripciones() {
       setSelectedEvent(null); // Resetea el estado a null
     }
   }
-  function openFormTraje(e) {
-  goto("/Admin/Participantes")
-  }
+
   function closeForm() {
     const dialog = document.getElementById("formadd");
     setSelectedEvent(null);
@@ -42,8 +40,7 @@ function AdminInscripciones() {
     <>
       <div>
         <button onClick={openForm}>Añadir Evento</button>
-        <button onClick={openFormTraje}>Ver Participantes</button>
-        <button onClick={openForm}>Pagos</button>
+       
       </div>
       <ListInsAdmin
         key={refresh}

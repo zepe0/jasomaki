@@ -1,4 +1,4 @@
-import { Toaster } from "react-hot-toast";
+
 import Nav from "../src/components/Nav";
 
 import { jwtDecode } from "jwt-decode";

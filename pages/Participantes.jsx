@@ -9,10 +9,12 @@ import Loading from "../src/components/Loading";
 import { useNavigate } from "react-router-dom";
 import { delParticipantes } from "../src/logic/Admin/participantes/delParticipante";
 import { getYear } from "date-fns";
+import toast from "react-hot-toast";
 
 function Participantes() {
   const [participantes, setParticipantes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [totalPersona, setTotalPersonas] = useState([]);
   const goto = useNavigate();
 
   useEffect(() => {
@@ -36,13 +38,20 @@ function Participantes() {
     };
     getAllParticipantes(intialdata).then((res) => {
       if (res && res.data) {
+        setLoading(false);
         setParticipantes(res.data);
+        res.data.reduce((acum, persona) => {
+          if (!acum[persona.sexo]) {
+            acum[persona.sexo] = 0;
+          }
+
+          acum[persona.sexo]++;
+          setTotalPersonas(acum);
+        }, {});
       }
       if (res === null) setParticipantes([]);
-
-      setLoading(false);
     });
-  }, [setParticipantes]);
+  }, [setParticipantes, setLoading]);
   const filtrar = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -53,60 +62,61 @@ function Participantes() {
     };
     getAllParticipantes(data).then((res) => {
       if (res && res.data) {
+        setLoading(false);
         setParticipantes(res.data);
       }
       if (res === null) setParticipantes([]);
-
-      setLoading(false);
     });
   };
   function onEdit(id) {
     console.log(participantes.find((participantes) => participantes.id === id));
   }
   function onDelete(id) {
-   
     delParticipantes(sessionStorage.token, id);
-
   }
 
   function exportPDF() {
     setLoading(true);
-    const btnContainers = document.querySelectorAll(".btn-container");
-    btnContainers.forEach((container) => container.classList.add("none"));
     const input = document.getElementById("table-to-pdf");
-    input.classList.add("font-large");
-    html2canvas(input).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF();
-      pdf.setFontSize(32);
-      const imgWidth = 210;
-      const pageHeight = 295;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      let heightLeft = imgHeight;
-      let position = 0;
+    if (input != null) {
+      const btnContainers = document.querySelectorAll(".btn-container");
+      btnContainers.forEach((container) => container.classList.add("none"));
+      input.classList.add("font-large");
+      html2canvas(input).then((canvas) => {
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF();
+        pdf.setFontSize(32);
+        const imgWidth = 210;
+        const pageHeight = 295;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        let heightLeft = imgHeight;
+        let position = 0;
 
-      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
-
-      while (heightLeft >= 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
         pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
         heightLeft -= pageHeight;
-      }
-      btnContainers.forEach((container) => container.classList.remove("none"));
-      input.classList.remove("font-large");
-      pdf.save("Lista.pdf");
-    });
+
+        while (heightLeft >= 0) {
+          position = heightLeft - imgHeight;
+          pdf.addPage();
+          pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+          heightLeft -= pageHeight;
+        }
+        btnContainers.forEach((container) =>
+          container.classList.remove("none")
+        );
+        input.classList.remove("font-large");
+        pdf.save("Lista.pdf");
+        setLoading(false);
+      });
+    } else {
+      toast.error("no hay datos a imprimir");
+      setLoading(false);
+    }
   }
   return (
     <>
       <Nav></Nav>
-      <div>
-        <button>Añadir Evento</button>
-        <button>Ver Participantes</button>
-        <button>Pagos</button>
-      </div>
+
       <form onSubmit={filtrar}>
         <input type="text" placeholder="año" name="año" />
         <select name="rua">
@@ -116,11 +126,29 @@ function Participantes() {
         </select>
         <button type="submit">serch</button>
       </form>
+
       <button onClick={exportPDF}>Generar PDF</button>
       {loading ? (
         <Loading></Loading>
       ) : participantes.length > 0 ? (
         <div id="table-to-pdf" className="table-container">
+          <table>
+            <tr className="noborder">
+              <td className="noborder">
+                Chicos :{totalPersona.Chicho ? totalPersona.Chicho : "0"}
+              </td>
+
+              <td className="noborder">
+                Chicas :{totalPersona.Chica ? totalPersona.Chica : "0"}
+              </td>
+              <td className="noborder">
+                Niño :{totalPersona.niño ? totalPersona.niño : "0"}
+              </td>
+              <td className="noborder">
+                Niña :{totalPersona.niña ? totalPersona.niña : "0"}
+              </td>
+            </tr>
+          </table>
           <table>
             <thead>
               <tr>
@@ -131,6 +159,7 @@ function Participantes() {
                 <th>Camiseta</th>
                 <th>Pantalón</th>
                 <th>Fecha de elección</th>
+                <th>Traje</th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -144,6 +173,7 @@ function Participantes() {
                   <td>{participante.pecho}</td>
                   <td>{participante.pierna}</td>
                   <td>{participante.fechaTraje}</td>
+                  <td>{participante.sexo}</td>
                   <td>
                     <button
                       onClick={() => onEdit(participante.id)}
