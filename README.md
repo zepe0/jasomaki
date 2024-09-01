@@ -2,17 +2,17 @@
 
 **Ja Som Aki** es una aplicación de gestión de eventos donde los administradores pueden organizar eventos y gestionar la inscripción de participantes, incluyendo la gestión de las tallas de trajes para cada evento.
 
-## Descripción
+## 📰 Descripción
 
 La aplicación permite a los administradores crear y gestionar eventos, mientras que los usuarios pueden inscribirse en estos eventos. Los administradores también pueden asignar y observar las tallas de los trajes que los participantes usarán en los eventos e descargarlo en PDF. La aplicación está construida con React y Vite en el frontend pensada, y una API en PHP con MySQL en el backend.
 
-### Diseño y Responsividad
-- **Usuarios  (Mobile-First)** :La sección de usuarios está diseñada pensando en la experiencia móvil primero. Esto significa que la interfaz se adapta y optimiza principalmente para dispositivos móviles, garantizando que todas las funcionalidades sean accesibles y usables en pantallas pequeñas.
+### 🎨 Diseño y Responsividad
+- **Usuarios  (Mobile-First) 📱** :La sección de usuarios está diseñada pensando en la experiencia móvil primero. Esto significa que la interfaz se adapta y optimiza principalmente para dispositivos móviles, garantizando que todas las funcionalidades sean accesibles y usables en pantallas pequeñas.
 
-- **Administradores (Desktop-First)** :La parte administrativa de la aplicación está optimizada para pantallas de escritorio. Esto permite una mejor organización de las funcionalidades y una interfaz más completa para la gestión de eventos y participantes en un entorno de escritorio.
+- **Administradores (Desktop-First) 🗔** :La parte administrativa de la aplicación está optimizada para pantallas de escritorio. Esto permite una mejor organización de las funcionalidades y una interfaz más completa para la gestión de eventos y participantes en un entorno de escritorio.
 
 
-## Tecnologías utilizadas
+## ⚡ Tecnologías utilizadas
 
 - **Frontend**: React con Vite
 - **Backend**: PHP con MySQL
@@ -21,7 +21,7 @@ La aplicación permite a los administradores crear y gestionar eventos, mientras
 - **Entorno de desarrollo**: Node.js, Vite
 - **Despliegue**: Puede ser desplegado en cualquier servidor que soporte PHP y MySQL
 
-## Requisitos previos
+## 🛠️ Requisitos previos
 
 Antes de empezar, asegúrate de tener instalado:
 
@@ -31,9 +31,9 @@ Antes de empezar, asegúrate de tener instalado:
 - Composer
 - MySQL o MariaDB
 
-## Instalación
+## ⚙️ Instalación
 
-### Frontend
+### 🌐 Frontend
 
 1. Clona este repositorio:
 
@@ -64,7 +64,7 @@ Antes de empezar, asegúrate de tener instalado:
    npm run dev
    ```
 
-### Backend
+### 💻 Backend 
 
 1. Configura tu servidor web para que apunte a la carpeta `api` en el directorio del proyecto.
    ```bash
@@ -79,22 +79,21 @@ Antes de empezar, asegúrate de tener instalado:
 
 4. Asegúrate de que las rutas de la API estén configuradas correctamente en tu servidor para responder a las solicitudes desde el frontend.
 
-## Uso
-
-### Para usuarios
+## 🚀 Uso 
+### Para usuarios 📱
 
 - Los usuarios pueden registrarse en los eventos creados por el administrador.
 - Los usuarios deben estar autenticados para inscribirse en un evento.
 - Después de la inscripción, pueden gestionar el traje que se usara en los eventos en los que están registrados.
 
-### Para administradores
+### Para administradores 💻
 
 - Los administradores pueden crear, editar y eliminar eventos.
 - También pueden ver las tallas de los trajes para cada participante en los eventos.
 - También pueden eliminar participante.
 - Los administradores tienen acceso a la gestión completa de los participantes y sus datos.
 
-## TODO's
+## 📋 TODO's
 
 `- []`Implementar Pagos.
 
@@ -104,7 +103,7 @@ Antes de empezar, asegúrate de tener instalado:
 
 `- []`Horarios para maquillajes.
 
-## Contribuciones
+## 🤝 Contribuciones
 
 Las contribuciones son bienvenidas. Por favor, sigue estos pasos para contribuir:
 
@@ -113,9 +112,9 @@ Las contribuciones son bienvenidas. Por favor, sigue estos pasos para contribuir
 3. Realiza tus cambios y haz commit (`git commit -m 'Añadir nueva característica'`).
 4. Sube tu rama (`git push origin feature/nueva-caracteristica`).
 5. Crea un Pull Request.
-## Autor
+## 📝 Autor
 
 [Aitor Arpa](https://github.com/zepe0)
-## Contacto
+## 📧 Contacto
 
 Para cualquier consulta o problema, puedes contactar con el autor Aitor a través del correo electrónico: [aitor.zepe@gmail.com](mailto:aitor.zepe@gmail.com).
