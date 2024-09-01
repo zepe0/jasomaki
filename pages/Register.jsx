@@ -10,10 +10,10 @@ const API = import.meta.env.VITE_API_URL;
 function Register() {
   const goto = useNavigate();
   useEffect(() => {
-    if (sessionStorage.getItem("token")) {
+    if (sessionStorage.token) {
       goto("../");
     }
-  }, []);
+  }, [goto]);
   
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -64,7 +64,7 @@ function Register() {
   };
   return (
     <>
-      <Nav></Nav>
+    
       <h1>
         Únete a la Familia<span> Ja Som Aki</span>
       </h1>

@@ -126,6 +126,7 @@ function ListEvents() {
             });
             toast.success(data.msn);
             handleCloseModal();
+            
           }
         })
         .catch((error) => {

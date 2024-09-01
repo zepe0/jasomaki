@@ -21,11 +21,15 @@ function FormTraje( {onInscripcionSuccess}) {
   };
   const handelRegisterEventTraje = (e) => {
     e.preventDefault();
-    if (selectedOptionPecho == "---") {
+  
+    if (selectedOptionPecho == "---" ||selectedOptionPecho == ""  ) {
       return toast.error("Seleciona la talla de pecho");
     }
-    if (selectedOptionPierna == "---") {
+    if (selectedOptionPierna == "---" ||selectedOptionPierna == "" ) {
       return toast.error("Seleciona la talla de piernas");
+    }
+    if (selectedOptiontraje == "---" ||selectedOptiontraje == "" ) {
+      return toast.error("Seleciona tu traje");
     }
     const formData = {
       pecho: selectedOptionPecho,

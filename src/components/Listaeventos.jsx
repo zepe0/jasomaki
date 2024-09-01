@@ -15,7 +15,7 @@ import FormInsc from "./FormInsc";
 import FormTraje from "./FormTraje";
 import { getMyTraje } from "../logic/traje/getMyTraje";
 
-function ListaEventos() {
+function ListaEventos({onEventChange }) {
   if (!sessionStorage.token) {
     window.location.href = "/Login";
     return null;
@@ -68,6 +68,7 @@ function ListaEventos() {
     fetchMyEventos();
     fetchTraje();
     closeForm();
+    onEventChange();
   };
 
   return (
@@ -127,7 +128,12 @@ function ListaEventos() {
                           }
                         </span>{" "}
                         <PiPantsFill className="prenda" />
-                        <span>L</span>{" "}
+                        <span>{
+                            mytraje.find(
+                              (traje) =>
+                                traje.anio == Number(getYear(evento.fecha))
+                            ).pierna
+                          }</span>{" "}
                       </div>
                     ) : (
                       <FormTraje

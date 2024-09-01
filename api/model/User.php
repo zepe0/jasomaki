@@ -180,5 +180,15 @@ class User extends Db
     {
         return $this->verifyLoginUser($email, $pas);
     }
+    public function getName($id){
+        $stmt = $this->con()->prepare(" SELECT nombre FROM participantes  WHERE usuario_id = ?");
+        $res = $stmt->execute(array($id));
+        if (!$res) {
+            return 1;
+            } else {    
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+                }
+                
+    }
 
 }

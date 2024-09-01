@@ -1,8 +1,10 @@
+import { useState } from "react";
 import ListEvents from "../src/components/ListEvents";
 import Nav from "../src/components/Nav";
 import { jwtDecode } from "jwt-decode";
 
 function Inscripciones() {
+ 
   if (!sessionStorage.token) {
     window.location.href = "/";
     return
@@ -12,11 +14,12 @@ function Inscripciones() {
     window.location.href = "/Admin/ins";
     return
   }
+  
 
   return (
     <>
-      <Nav></Nav>
-      <ListEvents />
+      <Nav ></Nav>
+      <ListEvents  />
     </>
   );
 }

@@ -6,16 +6,19 @@ import Nav from "../src/components/Nav";
 import ListaEventos from "../src/components/Listaeventos";
 
 function HomeUser() {
+  const [navUpdate, setNavUpdate] = useState(false);
   const goto = useNavigate();
   if(!sessionStorage.token){
    goto("/Login")
   }
-
+  const handleEventChange = () => {
+    setNavUpdate((prev) => !prev); 
+  };
   useEffect(() => {}, [goto]);
   return (
     <section id="bodyPruevas">
-      <Nav></Nav>
-      <ListaEventos></ListaEventos>
+      <Nav update={navUpdate}></Nav>
+      <ListaEventos onEventChange={handleEventChange}></ListaEventos>
     </section>
   );
 }
