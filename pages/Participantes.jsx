@@ -64,7 +64,9 @@ function Participantes() {
     console.log(participantes.find((participantes) => participantes.id === id));
   }
   function onDelete(id) {
+   
     delParticipantes(sessionStorage.token, id);
+
   }
 
   function exportPDF() {
@@ -152,7 +154,7 @@ function Participantes() {
                     </button>
                     <button
                       className="btn-container"
-                      onClick={() => onDelete(participante.idevento)}
+                      onClick={() => onDelete(participante.id)}
                     >
                       Eliminar
                     </button>

@@ -139,23 +139,28 @@ class EventoTraje extends Db
         Validator::validateId($id_user);
 
     }
-    private function SetMyTraje($id_user, $pecho, $pierna)
+    private function SetMyTraje($id_user, $pecho, $pierna, $sexo)
     {
         $id_traje = generateUID();
         $response = [];
 
 
         try {
-            $stmt = $this->con()->prepare("INSERT INTO trajes (id,pecho,pierna,participante_id) values (?,?,?,(SELECT id FROM participantes WHERE usuario_id = ?))");
-            if ($stmt->execute([$id_traje, $pecho, $pierna, $id_user]))
+            $stmt = $this->con()->prepare("INSERT INTO trajes (id,pecho,pierna,sexo,participante_id) values (?,?,?,?,(SELECT id FROM participantes WHERE usuario_id = ?))");
+            if ($stmt->execute([$id_traje, $pecho, $pierna, $sexo, $id_user]))
                 $response['success'] = true;
             $response['message'] = 'Traje Asignado correctamente.';
         } catch (PDOException $e) {
-            if ($e->getCode() == 23000) {
-      
-                $response['error'] = 'No tienes permisos para modificar el Traje Ponte en contacto con un administrador';
+            if ($e->getCode() == 45000) {
+                if (preg_match('/1644\s+(.*)$/', $e->getMessage(), $matches)) {
+                    $customMessage = $matches[1];
+                    $response['error'] = $customMessage;
+                } else {
+                    $response['error'] = $e->getMessage();
+                }
+
             } else {
-             
+
                 $response['error'] = 'Error en la base de datos: ' . $e->getMessage();
             }
         }
@@ -163,7 +168,28 @@ class EventoTraje extends Db
         return $response;
     }
 
+    private function getmytraje($id)
+    {
+        Validator::validateId($id);
+        $response = [];
 
+
+        try {
+            $stmt = $this->con()->prepare("SELECT pecho,pierna,sexo,anio from trajes where participante_id= (SELECT id FROM participantes WHERE usuario_id = ?)");
+            if ($stmt->execute([$id]))
+                $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            if ($e->getCode() == 23000) {
+
+                $response['error'] = 'No tienes permisos para modificar el Traje Ponte en contacto con un administrador';
+            } else {
+
+                $response['error'] = 'Error en la base de datos: ' . $e->getMessage();
+            }
+        }
+
+        return $response;
+    }
 
     /* PUBLICAS */
     public function addEventoTraje($userid, $titulo, $ubicacion, $des, $dia, $inicio, $fin)
@@ -200,9 +226,13 @@ class EventoTraje extends Db
         }
 
     }
-    public function MyTraje($iduser, $pecho, $piernas)
+    public function MyTraje($iduser, $pecho, $piernas, $sexo)
     {
-        return $this->SetMyTraje($iduser, $pecho, $piernas);
+        return $this->SetMyTraje($iduser, $pecho, $piernas, $sexo);
+    }
+    public function GetMyTrajes($id)
+    {
+        return $this->getmytraje($id);
     }
 
 }

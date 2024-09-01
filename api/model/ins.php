@@ -252,7 +252,7 @@ WHERE e.tipo = ? AND EXTRACT(YEAR FROM e.fecha) = ?");
     {
 
         try {
-            $stmt = $this->con()->prepare("DELETE from participantes_eventos WHERE id=?");
+            $stmt = $this->con()->prepare("DELETE from participantes WHERE id=?");
 
             if (!$stmt->execute([$id])) {
 

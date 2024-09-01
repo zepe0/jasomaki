@@ -29,18 +29,22 @@ function Nav() {
   const goBack = () => {
     goto(-1); // Navega a la página anterior
   };
+  const goevent = ()=>{
+    goto("/Admin");
+  }
+  const goparticipantes = ()=>{
+    goto("/Admin/Participantes");
+  }
+  const gopagos = ()=>{
+    goto("/pagos");
+  }
   return (
     <section className="top">
       <nav id="Nav">
         <li>
           <MdOutlineArrowBackIosNew onClick={goBack} />
         </li>
-       {/*  <li>
-          <input type="search" name="" id="" />
-          <button>
-            <MdSearch />
-          </button>
-        </li> */}
+       {  jwtDecode(sessionStorage.token).rol == 1 ? <div><button onClick={goevent}>Eventos</button>  <button onClick={goparticipantes}>Participantes</button>  <button onClick={gopagos}>Pagos</button></div> :""}
         <li>
           <CgProfile onClick={logout} className="btnLogout" />
         </li>

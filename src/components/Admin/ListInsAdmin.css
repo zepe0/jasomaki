@@ -63,21 +63,21 @@ td .detailComponent {
   background-image: url("../../img/defaultevent.jpeg");
   background-repeat: no-repeat; /* Evita que la imagen se repita */
   background-size: cover;
-  height: 100px;
+
 }
 .bgimgW {
   background-image: url("../../img/winter2.jpg");
   background-repeat: no-repeat; /* Evita que la imagen se repita */
   background-size: cover;
   color: #e9e8eb;
-  height: 100px;
+
 }
 .maquillaje {
   background-image: url("../../img/maquillaje2.jpg");
   background-repeat: no-repeat; /* Evita que la imagen se repita */
   background-size: cover;
   color: #e9e8eb;
-  height: 100px;
+
 
 }
 .w-98{

@@ -74,3 +74,13 @@ dialog::backdrop {
 background-color: #c453c841;
   padding: 8px;
 }
+.check{
+  color: black;
+  background: rgba(172, 255, 47, 0.356);
+  border: 2px solid rgb(172, 255, 47);
+  border-radius: 20px;
+  text-align: center;
+  width: 23px;/* 
+  box-shadow: 2px 2px 7px 3px rgba(81, 238, 42, 0.726); */
+  
+}

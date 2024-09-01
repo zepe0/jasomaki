@@ -4,16 +4,16 @@ import { getEvents } from "../logic/eventos/geteventos";
 import { getMyEvents } from "../logic/eventos/getMisEventos";
 import { jwtDecode } from "jwt-decode";
 import { getYear } from "../utils/time";
-/* import { FaTshirt } from "react-icons/fa";
+/*  import { FaTshirt } from "react-icons/fa";
 import { PiPantsThin } from "react-icons/pi";
-import { GiSkirt } from "react-icons/gi";
+import { GiSkirt } from "react-icons/gi"; */
 import { FaVest } from "react-icons/fa";
-import { GiTiara } from "react-icons/gi"; */
+
 import { PiPantsFill } from "react-icons/pi";
 
 import FormInsc from "./FormInsc";
 import FormTraje from "./FormTraje";
-import { FaVest } from "react-icons/fa6";
+import { getMyTraje } from "../logic/traje/getMyTraje";
 
 function ListaEventos() {
   if (!sessionStorage.token) {
@@ -25,10 +25,11 @@ function ListaEventos() {
   const [myeventos, setMyEventos] = useState([]);
   const [mytraje, setMyTraje] = useState([]);
   const [selectEvent, setSelectEvent] = useState([]);
-  const [Detalles, setDetalles] = useState(null);
+
   useEffect(() => {
     fetchEventos();
     fetchMyEventos();
+    fetchTraje();
   }, []);
 
   const fetchEventos = () => {
@@ -36,7 +37,12 @@ function ListaEventos() {
       setEventos(res);
     });
   };
-
+  const fetchTraje = () => {
+    getMyTraje(jwtDecode(sessionStorage.token).id).then((res) => {
+    
+      setMyTraje(res);
+    });
+  };
   const fetchMyEventos = () => {
     let user = jwtDecode(sessionStorage.token);
     user = { id_user: user.id };
@@ -56,27 +62,29 @@ function ListaEventos() {
     form.close();
   };
 
-  const verDetalles = (id) => {
-    const eEncontrado = eventos.find((evento) => evento.id === id);
-    if (eEncontrado) {
-      setDetalles(eEncontrado);
-    }
-  };
-
-  // Esta función se pasará como callback a FormInsc
   const handleInscripcionSuccess = () => {
-    fetchEventos(); // Actualiza la lista de eventos
-    fetchMyEventos(); // Actualiza la lista de eventos del usuario
-    closeForm(); // Cierra el formulario de inscripción
+    
+    fetchEventos();
+    fetchMyEventos();
+    fetchTraje();
+    closeForm();
   };
 
   return (
     <section id="lista">
       {eventos && eventos.length > 0 ? (
         eventos.map((evento) => (
-          <div id="card" className={` w-98 ${evento.tipo.includes('Maquillaje') ? 'maquillaje' : evento.tipo.includes('Summer') ?"bgimg":'bgimgW'}  `}key={evento.id}>
-           
-
+          <div
+            id="card"
+            className={` w-98 ${
+              evento.tipo.includes("Maquillaje")
+                ? "maquillaje"
+                : evento.tipo.includes("Summer")
+                ? "bgimg"
+                : "bgimgW"
+            }  `}
+            key={evento.id}
+          >
             <div id="Cardinfo">
               <div className="colum">
                 <big>{evento.nombre}</big>
@@ -88,7 +96,7 @@ function ListaEventos() {
                 {myeventos.some(
                   (myevento) => myevento.evento_id === evento.id
                 ) ? (
-                  <p>Ya inscrito</p>
+                  <p className="check"> ✔ </p>
                 ) : (
                   <button
                     onClick={() => {
@@ -105,19 +113,35 @@ function ListaEventos() {
               myeventos.some((myevento) => myevento.evento_id === evento.id) ? (
                 mytraje.length > 0 ? (
                   <small>
-                    {" "}
-                    <FaVest className="prenda" />
-                    <span>L</span> <PiPantsFill className="prenda" />
-                    <span>L</span>{" "}
+                    {mytraje.some(
+                      (traje) => traje.anio == Number(getYear(evento.fecha))
+                    ) ? (
+                      <div>
+                        <FaVest className="prenda" />
+                        <span>
+                          {
+                            mytraje.find(
+                              (traje) =>
+                                traje.anio == Number(getYear(evento.fecha))
+                            ).pecho
+                          }
+                        </span>{" "}
+                        <PiPantsFill className="prenda" />
+                        <span>L</span>{" "}
+                      </div>
+                    ) : (
+                      <FormTraje
+                        onInscripcionSuccess={handleInscripcionSuccess}
+                      ></FormTraje>
+                    )}
                   </small>
                 ) : (
-                  <div style={{display: "flex"}}>
-                    <big>Traje</big>
-                    <small>
-                      <FormTraje></FormTraje>
-                    </small>
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <FormTraje
+                      onInscripcionSuccess={handleInscripcionSuccess}
+                    ></FormTraje>
+
                     <div className="cardPagos">
-                      
                       {/* <big>Total : 100 €</big>
                       <small>Efectuado : 30 €</small> */}
                     </div>
@@ -127,9 +151,6 @@ function ListaEventos() {
                 ""
               )}
             </div>
-
-          
-            
           </div>
         ))
       ) : (
@@ -141,7 +162,7 @@ function ListaEventos() {
         <button onClick={closeForm}>X</button>
         <FormInsc
           evento={selectEvent}
-          onInscripcionSuccess={handleInscripcionSuccess} // Pasar el callback aquí
+          onInscripcionSuccess={handleInscripcionSuccess}
         ></FormInsc>
       </dialog>
     </section>

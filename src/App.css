@@ -27,11 +27,13 @@ body {
 #lista section {
   overflow: scroll;
 }
+section #lista #card:nth-last-child(2) {
+  margin-bottom: 20px;
+}
 #table-to-pdf {
   margin-top: 20px;
   width: 100%;
   padding: 16px;
- 
 }
 .table-container {
   display: flex;
@@ -41,7 +43,7 @@ body {
 }
 table {
   width: 80%;
-  border-collapse: collapse;  
+  border-collapse: collapse;
 }
 
 th,
@@ -50,11 +52,11 @@ td {
   padding: 8px;
   text-align: center;
 }
-.none{
+.none {
   display: none;
 }
 .font-large {
-  font-size: 40px; 
+  font-size: 40px;
 }
 @media print {
   .btn-container {

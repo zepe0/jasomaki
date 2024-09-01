@@ -10,11 +10,12 @@ $inputs = json_decode($json_data, true);
 $userid = $inputs['id_user'];
 $pecho = $inputs['pecho'];
 $pierna = $inputs['pierna'];
+$sexo = $inputs['traje'];
 
 $query = new EventoTraje();
 
 
-$result = $query->MyTraje($userid, $pecho, $pierna);
+$result = $query->MyTraje($userid, $pecho, $pierna,$sexo);
 
 echo json_encode($result);
 

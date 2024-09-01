@@ -59,3 +59,19 @@ label {
   width: 48%;
   text-align: center;
 }
+.center{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+}
+.btnform{
+  width: 100%;
+  display: flex;
+  gap: 8px;
+  flex-direction: row;
+  margin-top: 4px; 
+}
+.btnform label{
+  color: #0d0d0e;
+}

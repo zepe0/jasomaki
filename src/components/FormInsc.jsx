@@ -8,7 +8,7 @@ function FormInsc({ evento, onInscripcionSuccess }) {
   const inscripcion = (e) =>
     RegistroEvento(e, evento).then((res) => {
      if(res == "success"){
-      onInscripcionSuccess()
+      onInscripcionSuccess();
      }
     });
 
