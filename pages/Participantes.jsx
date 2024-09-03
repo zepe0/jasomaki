@@ -2,6 +2,7 @@ import Nav from "../src/components/Nav";
 import { useEffect, useState } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import { SlOptionsVertical } from "react-icons/sl";
 
 import { jwtDecode } from "jwt-decode";
 import { getAllParticipantes } from "../src/logic/Admin/users/getAllPArticipantes";
@@ -10,6 +11,10 @@ import { useNavigate } from "react-router-dom";
 import { delParticipantes } from "../src/logic/Admin/participantes/delParticipante";
 import { getYear } from "date-fns";
 import toast from "react-hot-toast";
+import { FaUserEdit } from "react-icons/fa";
+import { GiClothes } from "react-icons/gi";
+import { BsTrash3 } from "react-icons/bs";
+import ConfirmationDialog from "../src/components/ConfirmDialog";
 
 function Participantes() {
   const [participantes, setParticipantes] = useState([]);
@@ -20,6 +25,9 @@ function Participantes() {
     tipo: "Rua Summer",
     fecha: getYear(new Date()),
   });
+  const [selectedParticipantId, setSelectedParticipantId] = useState(null);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+
   const goto = useNavigate();
 
   useEffect(() => {
@@ -75,20 +83,34 @@ function Participantes() {
   };
   function onEdit(id) {
     console.log(participantes.find((participantes) => participantes.id === id));
+    setSelectedParticipantId((prevId) => (prevId === id ? null : id));
   }
   function onDelete(id) {
+    setSelectedParticipantId(id);
+    setShowConfirmDialog(true);
     setLoading(true);
-    delParticipantes(sessionStorage.token, id).then((res) => {
+ /*    delParticipantes(sessionStorage.token, id).then((res) => {
       if (res == 1) {
         getAllParticipantes(init).then((nuevalist) => {
           setParticipantes(nuevalist.data);
         });
       }
-    });
+    }); */
+   
     setLoading(false);
 
     /* TODO reload list */
   }
+  const handleConfirmDelete = () => {
+    if (selectedParticipantId) {
+      onDelete(selectedParticipantId);
+      setShowConfirmDialog(false);
+    }
+  };
+  const handleCancelDelete = () => {
+    setShowConfirmDialog(false);
+    /* TODO Conectar con back */
+  };
 
   function exportPDF() {
     setLoading(true);
@@ -147,22 +169,23 @@ function Participantes() {
         <Loading></Loading>
       ) : participantes.length > 0 ? (
         <div id="table-to-pdf" className="table-container">
-          <table>
-            <tr className="noborder">
-              <td className="noborder">
-                Chicos :{totalPersona.Chicho ? totalPersona.Chicho : "0"}
-              </td>
-
-              <td className="noborder">
-                Chicas :{totalPersona.Chica ? totalPersona.Chica : "0"}
-              </td>
-              <td className="noborder">
-                Niño :{totalPersona.niño ? totalPersona.niño : "0"}
-              </td>
-              <td className="noborder">
-                Niña :{totalPersona.niña ? totalPersona.niña : "0"}
-              </td>
-            </tr>
+          <table className="table-container">
+            <tbody>
+              <tr className="noborder">
+                <td className="noborder">
+                  Chicos :{totalPersona.Chicho ? totalPersona.Chicho : "0"}
+                </td>
+                <td className="noborder">
+                  Chicas :{totalPersona.Chica ? totalPersona.Chica : "0"}
+                </td>
+                <td className="noborder">
+                  Niño :{totalPersona.niño ? totalPersona.niño : "0"}
+                </td>
+                <td className="noborder">
+                  Niña :{totalPersona.niña ? totalPersona.niña : "0"}
+                </td>
+              </tr>
+            </tbody>
           </table>
           <table>
             <thead>
@@ -189,20 +212,38 @@ function Participantes() {
                   <td>{participante.pierna}</td>
                   <td>{participante.fechaTraje}</td>
                   <td>{participante.sexo}</td>
-                  <td>
+                  <td style={{ position: "relative" }}>
                     <button
                       onClick={() => onEdit(participante.id)}
                       style={{ marginRight: "10px" }}
                       className="btn-container"
                     >
-                      Editar
+                      <SlOptionsVertical />
                     </button>
-                    <button
-                      className="btn-container"
-                      onClick={() => onDelete(participante.id)}
-                    >
-                      Eliminar
-                    </button>
+                    {selectedParticipantId === participante.id && (
+                      <div className="opciones">
+                        <button
+                          onClick={() =>
+                            alert(`Opción 1 para ${participante.nombre}`)
+                          }
+                        >
+                         <GiClothes />
+                        </button>
+                        <button
+                          onClick={() =>
+                            alert(`Opción 1 para ${participante.nombre}`)
+                          }
+                        >
+                         <FaUserEdit />
+                        </button>
+                        <button
+                          className="btn-container"
+                          onClick={() => onDelete(participante.id)}
+                        >
+                          <BsTrash3 />
+                        </button>
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -212,6 +253,12 @@ function Participantes() {
       ) : (
         <p>Sin participantes aún</p>
       )}
+        <ConfirmationDialog
+        isOpen={showConfirmDialog}
+        message="¿Estás seguro de que quieres eliminar este participante?"
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+      />
     </>
   );
 }
