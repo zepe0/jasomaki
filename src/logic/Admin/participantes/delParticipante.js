@@ -3,12 +3,10 @@ import toast from "react-hot-toast";
 
 const API = import.meta.env.VITE_API_URL;
 export function delParticipantes(token, id) {
-
-  const fromData ={
+  const fromData = {
     idUser: jwtDecode(token).rol,
     idParticipante: id,
-    
-  }
+  };
   return fetch(`${API}Admin/participantes/delParticipantes.php`, {
     method: "POST",
     headers: {
@@ -20,7 +18,12 @@ export function delParticipantes(token, id) {
       return response.json();
     })
     .then((data) => {
-      return data;
+      if (data.data == 1) {
+        toast.success("Eliminado Correctamente");
+        return 1
+      } else {
+        toast.error("Error al eliminar");
+      }
     })
     .catch((error) => {
       toast.error("Error fetching data: ", error);

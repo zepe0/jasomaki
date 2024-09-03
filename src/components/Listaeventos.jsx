@@ -138,6 +138,7 @@ function ListaEventos({onEventChange }) {
                     ) : (
                       <FormTraje
                         onInscripcionSuccess={handleInscripcionSuccess}
+                        idevento = {evento.id}
                       ></FormTraje>
                     )}
                   </small>

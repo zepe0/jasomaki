@@ -1,12 +1,11 @@
 const API = import.meta.env.VITE_API_URL;
 import { jwtDecode } from "jwt-decode";
 import error from "../../error";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import "./FormTraje.css";
 import { useState } from "react";
 
-
-function FormTraje( {onInscripcionSuccess}) {
+function FormTraje({ onInscripcionSuccess }) {
   const [selectedOptionPecho, setPecho] = useState("");
   const [selectedOptionPierna, setPierna] = useState("");
   const [selectedOptiontraje, setTraje] = useState("");
@@ -18,17 +17,18 @@ function FormTraje( {onInscripcionSuccess}) {
   };
   const handeltrajaSelect = (event) => {
     setTraje(event.target.value);
+   
   };
   const handelRegisterEventTraje = (e) => {
     e.preventDefault();
-  
-    if (selectedOptionPecho == "---" ||selectedOptionPecho == ""  ) {
+   
+    if (selectedOptionPecho == "---" || selectedOptionPecho == "") {
       return toast.error("Seleciona la talla de pecho");
     }
-    if (selectedOptionPierna == "---" ||selectedOptionPierna == "" ) {
+    if (selectedOptionPierna == "---" || selectedOptionPierna == "") {
       return toast.error("Seleciona la talla de piernas");
     }
-    if (selectedOptiontraje == "---" ||selectedOptiontraje == "" ) {
+    if (selectedOptiontraje == "---" || selectedOptiontraje == "") {
       return toast.error("Seleciona tu traje");
     }
     const formData = {
@@ -52,7 +52,7 @@ function FormTraje( {onInscripcionSuccess}) {
           }
           if (data.success) {
             toast.success(data.message);
-            onInscripcionSuccess()
+            onInscripcionSuccess();
           }
         })
         .catch((error) => {
@@ -65,7 +65,7 @@ function FormTraje( {onInscripcionSuccess}) {
   return (
     <>
       <form onSubmit={handelRegisterEventTraje}>
-        <div style={{textAlign:"center"}}>Selecciona tu traje</div>
+        <div style={{ textAlign: "center" }}>Selecciona tu traje</div>
         <div className="btnform">
           <label htmlFor="traje">
             Traje : {""}
@@ -105,7 +105,6 @@ function FormTraje( {onInscripcionSuccess}) {
           <button type="submit">Añadir </button>
         </div>
       </form>
-      <Toaster />
     </>
   );
 }

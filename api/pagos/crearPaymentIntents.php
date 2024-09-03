@@ -3,9 +3,12 @@
 include_once("../headers.php");
 require '../../vendor/autoload.php';
 require_once '../model/Env.php';
+$dotenv = Dotenv\Dotenv::createImmutable("../../");
+$dotenv->load();
 
 // Clave secreta de Stripe
-\Stripe\Stripe::setApiKey(Env::STRIPE_KEY);
+/* \Stripe\Stripe::setApiKey(Env::STRIPE_KEY); */
+\Stripe\Stripe::setApiKey($_ENV['STRIPE_KEY']);
 
 header('Content-Type: application/json');
 

@@ -15,6 +15,11 @@ function Participantes() {
   const [participantes, setParticipantes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [totalPersona, setTotalPersonas] = useState([]);
+  const [init, setInit] = useState({
+    rol: jwtDecode(sessionStorage.token).rol,
+    tipo: "Rua Summer",
+    fecha: getYear(new Date()),
+  });
   const goto = useNavigate();
 
   useEffect(() => {
@@ -51,7 +56,7 @@ function Participantes() {
       }
       if (res === null) setParticipantes([]);
     });
-  }, [setParticipantes, setLoading]);
+  }, [setParticipantes, setLoading, goto, setInit]);
   const filtrar = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -72,7 +77,17 @@ function Participantes() {
     console.log(participantes.find((participantes) => participantes.id === id));
   }
   function onDelete(id) {
-    delParticipantes(sessionStorage.token, id);
+    setLoading(true);
+    delParticipantes(sessionStorage.token, id).then((res) => {
+      if (res == 1) {
+        getAllParticipantes(init).then((nuevalist) => {
+          setParticipantes(nuevalist.data);
+        });
+      }
+    });
+    setLoading(false);
+
+    /* TODO reload list */
   }
 
   function exportPDF() {

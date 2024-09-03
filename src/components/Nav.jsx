@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { BiExit } from "react-icons/bi";
 import { getName } from "../logic/User/getname";
 
-function Nav({update}) {
+function Nav({ update }) {
   const [isLogin, setLogin] = useState();
   const [name, setName] = useState();
   const goto = useNavigate();
@@ -20,14 +20,14 @@ function Nav({update}) {
         jwtDecode(sessionStorage.token);
         setLogin(true);
         getName(jwtDecode(sessionStorage.token).id).then((name) => {
-          setName(name[0].nombre);
+          if (name.length > 0) setName(name[0].nombre);
         });
       } catch (error) {
         console.error("Token decoding failed:", error);
         setLogin(false);
       }
     }
-  }, [ update]);
+  }, [update]);
   const logout = () => {
     sessionStorage.removeItem("token");
     goto("/login");
@@ -59,14 +59,15 @@ function Nav({update}) {
         ) : (
           ""
         )}
-        <li>
-          {" "}
-          {name
-            ? name
-            : jwtDecode(sessionStorage.token).rol == 1
-            ? "admin"
-            : "Inscribete en un evento para guardar tu nombre"}{" "}
-        </li>
+
+        {name ? (
+          name
+        ) : jwtDecode(sessionStorage.token).rol == 1 ? (
+          ""
+        ) : (
+          <li>Inscribete en un evento para guardar tu nombre</li>
+        )}
+
         <li>
           <BiExit onClick={logout} className="btnLogout" />
         </li>
