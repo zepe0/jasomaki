@@ -214,38 +214,43 @@ class Inscripcion extends Db
     {
         $response = [];
 
-        // Depuración: Imprimir valores de $tipo y $fecha
+        
 
 
         try {
-            $stmt = $this->con()->prepare("SELECT p.id, p.nombre, p.apellido, p.tel, p.dni, e.tipo, EXTRACT(YEAR FROM e.fecha) AS anio, t.pecho, t.pierna, t.fecha as fechaTraje,t.sexo
+             $stmt = $this->con()->prepare("SELECT p.id, p.nombre, p.apellido, p.tel, p.dni, e.tipo, EXTRACT(YEAR FROM e.fecha) AS anio, t.pecho, t.pierna, t.fecha as fechaTraje,t.sexo
 FROM participantes p
 JOIN participantes_eventos pe ON p.id = pe.participante_id
 JOIN eventos e ON pe.evento_id = e.id
-JOIN trajes t ON p.id = t.participante_id AND EXTRACT(YEAR FROM t.fecha) = EXTRACT(YEAR FROM e.fecha)
-WHERE e.tipo = ? AND EXTRACT(YEAR FROM e.fecha) = ?");
+LEFT JOIN  trajes t ON p.id = t.participante_id AND EXTRACT(YEAR FROM t.fecha) = EXTRACT(YEAR FROM e.fecha)
+WHERE e.tipo = ? AND EXTRACT(YEAR FROM e.fecha) = ?"); 
+/* $stmt = $this->con()->prepare("SELECT p.id, p.nombre, p.apellido, p.tel, p.dni, e.tipo, EXTRACT(YEAR FROM e.fecha) AS anio
+FROM participantes p
+JOIN participantes_eventos pe ON p.id = pe.participante_id
+JOIN eventos e ON pe.evento_id = e.id
 
-            // Convertir $fecha a entero antes de ejecutarla
+WHERE e.tipo = ? AND EXTRACT(YEAR FROM e.fecha) = ?"); */
+        
             if (!$stmt->execute([$tipo, (int) $fecha])) {
                 $response['error'] = "Error al ejecutar la consulta.";
             } else {
                 $response['data'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
             }
         } catch (PDOException $e) {
-            // Manejo de errores
+           
             if ($e->getCode() == 23000 && strpos($e->getMessage(), '1062') !== false) {
                 $response['error'] = "Registro duplicado: " . $e->getMessage();
             } else {
                 $response['error'] = "Error en la base de datos: " . $e->getMessage();
             }
-            // Registrar el error para depuración
+           
 
         }
 
-        // Liberar el recurso del statement
+      
         $stmt = null;
 
-        // Devolver la respuesta con datos o error
+     
         return $response;
     }
     private function delParticipantes($id)
