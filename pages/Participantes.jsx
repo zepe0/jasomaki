@@ -27,6 +27,14 @@ function Participantes() {
   });
   const [selectedParticipantId, setSelectedParticipantId] = useState(null);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [formState, setFormState] = useState({});
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormState({
+      ...formState,
+      [name]: value,
+    });
+  };
 
   const goto = useNavigate();
 
@@ -64,7 +72,7 @@ function Participantes() {
       }
       if (res === null) setParticipantes([]);
     });
-  }, [setParticipantes, setLoading, goto, setInit]);
+  }, [setParticipantes, setLoading, goto, setInit ,setFormState],);
   const filtrar = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -117,10 +125,17 @@ function Participantes() {
   const handleCancelDelete = () => {
     setShowConfirmDialog(false);
   };
-function onEditParticipante(participante){
-  document.getElementById("eParticipante").showModal()
 
-}
+  function onEditParticipante(participante) {
+    document.getElementById("eParticipante").showModal();
+  }
+  function onEditTraje(participante) {
+    document.getElementById("eTraje").showModal();
+  }
+  function closeForm(form) {
+    if (form == "traje") document.getElementById("eTraje").close();
+    else document.getElementById("eParticipante").close();
+  }
   function exportPDF() {
     setLoading(true);
     const input = document.getElementById("table-to-pdf");
@@ -233,17 +248,11 @@ function onEditParticipante(participante){
                       selectedParticipantId.id === participante.id && (
                         <div className="opciones">
                           <button
-                            onClick={() =>
-                              onEditParticipante({participante})
-                            }
+                            onClick={() => onEditParticipante({ participante })}
                           >
                             <GiClothes />
                           </button>
-                          <button
-                            onClick={() =>
-                              alert(`Opción 1 para ${participante.nombre}`)
-                            }
-                          >
+                          <button onClick={() => onEditTraje({ participante })}>
                             <FaUserEdit />
                           </button>
                           <button
@@ -270,31 +279,61 @@ function onEditParticipante(participante){
         onCancel={handleCancelDelete}
       />
       <dialog id="eParticipante">
+        <button onClick={() => closeForm("p")}>X</button>
         <form>
           <label>Editar Participante</label>
           <input
+            onChange={handleChange}
             type="text"
             name="nombre"
-            value={
-              selectedParticipantId? selectedParticipantId.nombre :""
-            } /* onChange={handleInputChange} */
+            value={formState ? formState.nombre :  selectedParticipantId ? selectedParticipantId.nombre : "No asignado"}
           />
           <input
+            onChange={handleChange}
             type="text"
             name="apellido"
-            value={
-              selectedParticipantId? selectedParticipantId.apellido :""
-            } /* onChange={handleInputChange} */
+            value={formState ? formState.apellido :  selectedParticipantId ? selectedParticipantId.apellido : "No asignado"}
           />
           <input
+            onChange={handleChange}
             type="text"
             name="tel"
-            value={selectedParticipantId? selectedParticipantId.tel :""} /* onChange={handleInputChange} */
+            value={formState ? formState.tel :  selectedParticipantId ? selectedParticipantId.tel : "No asignado"}
           />
           <input
+            onChange={handleChange}
             type="text"
             name="dni"
-            value={selectedParticipantId? selectedParticipantId.dni :""} /* onChange={handleInputChange} */
+            value={formState ? formState.dni :  selectedParticipantId ? selectedParticipantId.dni : "No asignado"}
+          />
+
+          <button type="submit">Guardar</button>
+        </form>
+      </dialog>
+      <dialog id="eTraje">
+        <button onClick={() => closeForm("traje")}>X</button>
+        <form>
+          <label>
+            Editar Traje de{" "}
+            { formState ? formState.nombre :  selectedParticipantId ? selectedParticipantId.nombre : "No asignado"}
+          </label>
+          <input
+            onChange={handleChange}
+            type="text"
+            name="pecho"
+            value={formState ? formState.pecho :  selectedParticipantId ? selectedParticipantId.pecho : "No asignado"}
+          />
+          <input
+            onChange={handleChange}
+            type="text"
+            name="apepierna"
+            value={formState ? formState.pierna :  selectedParticipantId ? selectedParticipantId.pierna : "No asignado"}
+          />
+          <input
+            onChange={handleChange}
+            type="text"
+            name="sexo"
+            value={formState ? formState.sexo :  selectedParticipantId ? selectedParticipantId.sexo : "No asignado"}
           />
 
           <button type="submit">Guardar</button>

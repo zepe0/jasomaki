@@ -23,7 +23,7 @@ body {
   height: 100vh;
   overflow: hidden;
 }
-
+/* Estilos listas de eventos */
 #lista section {
   overflow: scroll;
 }

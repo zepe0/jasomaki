@@ -14,7 +14,7 @@ $sexo = $inputs['traje'];
 
 $query = new EventoTraje();
 
-
+/* TODO -> crear el edit */
 $result = $query->MyTraje($userid, $pecho, $pierna,$sexo);
 
 echo json_encode($result);

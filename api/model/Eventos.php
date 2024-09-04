@@ -105,9 +105,9 @@ class EventIns extends Db
                     $affectedRows = $stmt->rowCount();
                     if ($affectedRows > 0) {
                         $response['success'] = true;
-                        $response['msn'] = "Modificado con éxito. datos modificados : $affectedRows";
+                        $response['msn'] = "Modificado con éxito";
                     } else {
-                        $response['error'] = "No se modificó ninguna fila. Es posible que el evento no exista o que los datos proporcionados sean los mismos que ya existen.";
+                        $response['error'] = "Error es posible que el evento no exista o que los datos proporcionados sean los mismos que ya existen.";
                     }
                 } else {
                     $response['error'] = "Error al ejecutar la consulta.";
@@ -166,7 +166,7 @@ class EventIns extends Db
 
 
         $admin = $this->checkUser($iduser, $rol);
-        error_log("checkUser result: " . print_r($admin, true)); // Añade esta línea para depurar
+    
 
         if ($admin['error'] == 0) {
             $res = $this->delEvent($id);
