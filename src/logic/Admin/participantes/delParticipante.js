@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 
 const API = import.meta.env.VITE_API_URL;
 export function delParticipantes(token, id) {
+ 
   const fromData = {
     idUser: jwtDecode(token).rol,
     idParticipante: id,

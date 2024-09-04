@@ -81,37 +81,46 @@ function Participantes() {
       if (res === null) setParticipantes([]);
     });
   };
-  function onEdit(id) {
-    console.log(participantes.find((participantes) => participantes.id === id));
-    setSelectedParticipantId((prevId) => (prevId === id ? null : id));
+  function onclickOption(id) {
+    if (selectedParticipantId == null) {
+      setSelectedParticipantId((prevId) =>
+        prevId === id
+          ? null
+          : participantes.find((participantes) => participantes.id === id)
+      );
+    } else {
+      setSelectedParticipantId(null);
+    }
   }
   function onDelete(id) {
     setSelectedParticipantId(id);
     setShowConfirmDialog(true);
-    setLoading(true);
- /*    delParticipantes(sessionStorage.token, id).then((res) => {
-      if (res == 1) {
-        getAllParticipantes(init).then((nuevalist) => {
-          setParticipantes(nuevalist.data);
-        });
-      }
-    }); */
-   
-    setLoading(false);
-
-    /* TODO reload list */
   }
   const handleConfirmDelete = () => {
     if (selectedParticipantId) {
-      onDelete(selectedParticipantId);
+      setLoading(true);
+
+      delParticipantes(sessionStorage.token, selectedParticipantId).then(
+        (res) => {
+          if (res == 1) {
+            getAllParticipantes(init).then((nuevalist) => {
+              setParticipantes(nuevalist.data);
+              setLoading(false);
+            });
+          }
+        }
+      );
+      setSelectedParticipantId(null);
       setShowConfirmDialog(false);
     }
   };
   const handleCancelDelete = () => {
     setShowConfirmDialog(false);
-    /* TODO Conectar con back */
   };
+function onEditParticipante(participante){
+  document.getElementById("eParticipante").showModal()
 
+}
   function exportPDF() {
     setLoading(true);
     const input = document.getElementById("table-to-pdf");
@@ -214,36 +223,37 @@ function Participantes() {
                   <td>{participante.sexo}</td>
                   <td style={{ position: "relative" }}>
                     <button
-                      onClick={() => onEdit(participante.id)}
+                      onClick={() => onclickOption(participante.id)}
                       style={{ marginRight: "10px" }}
                       className="btn-container"
                     >
                       <SlOptionsVertical />
                     </button>
-                    {selectedParticipantId === participante.id && (
-                      <div className="opciones">
-                        <button
-                          onClick={() =>
-                            alert(`Opción 1 para ${participante.nombre}`)
-                          }
-                        >
-                         <GiClothes />
-                        </button>
-                        <button
-                          onClick={() =>
-                            alert(`Opción 1 para ${participante.nombre}`)
-                          }
-                        >
-                         <FaUserEdit />
-                        </button>
-                        <button
-                          className="btn-container"
-                          onClick={() => onDelete(participante.id)}
-                        >
-                          <BsTrash3 />
-                        </button>
-                      </div>
-                    )}
+                    {selectedParticipantId &&
+                      selectedParticipantId.id === participante.id && (
+                        <div className="opciones">
+                          <button
+                            onClick={() =>
+                              onEditParticipante({participante})
+                            }
+                          >
+                            <GiClothes />
+                          </button>
+                          <button
+                            onClick={() =>
+                              alert(`Opción 1 para ${participante.nombre}`)
+                            }
+                          >
+                            <FaUserEdit />
+                          </button>
+                          <button
+                            className="btn-container"
+                            onClick={() => onDelete(participante.id)}
+                          >
+                            <BsTrash3 />
+                          </button>
+                        </div>
+                      )}
                   </td>
                 </tr>
               ))}
@@ -253,12 +263,43 @@ function Participantes() {
       ) : (
         <p>Sin participantes aún</p>
       )}
-        <ConfirmationDialog
+      <ConfirmationDialog
         isOpen={showConfirmDialog}
         message="¿Estás seguro de que quieres eliminar este participante?"
         onConfirm={handleConfirmDelete}
         onCancel={handleCancelDelete}
       />
+      <dialog id="eParticipante">
+        <form>
+          <label>Editar Participante</label>
+          <input
+            type="text"
+            name="nombre"
+            value={
+              selectedParticipantId? selectedParticipantId.nombre :""
+            } /* onChange={handleInputChange} */
+          />
+          <input
+            type="text"
+            name="apellido"
+            value={
+              selectedParticipantId? selectedParticipantId.apellido :""
+            } /* onChange={handleInputChange} */
+          />
+          <input
+            type="text"
+            name="tel"
+            value={selectedParticipantId? selectedParticipantId.tel :""} /* onChange={handleInputChange} */
+          />
+          <input
+            type="text"
+            name="dni"
+            value={selectedParticipantId? selectedParticipantId.dni :""} /* onChange={handleInputChange} */
+          />
+
+          <button type="submit">Guardar</button>
+        </form>
+      </dialog>
     </>
   );
 }

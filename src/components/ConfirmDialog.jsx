@@ -1,3 +1,6 @@
+import "./ConfirmDialog.css";
+
+// eslint-disable-next-line react/prop-types
 function ConfirmationDialog({ isOpen, message, onConfirm, onCancel }) {
     if (!isOpen) return null;
   
