@@ -142,7 +142,7 @@ function Participantes() {
     if (input != null) {
       const btnContainers = document.querySelectorAll(".btn-container");
       btnContainers.forEach((container) => container.classList.add("none"));
-      input.classList.add("font-large");
+     /*  input.classList.add("font-large"); */
       html2canvas(input).then((canvas) => {
         const imgData = canvas.toDataURL("image/png");
         const pdf = new jsPDF();
