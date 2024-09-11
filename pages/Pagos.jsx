@@ -20,11 +20,7 @@ function Pagos() {
       <Nav></Nav>
       <h1>Pagos</h1>
       <button onClick={pagar} value={30}>30€</button>
-      <button onClick={pagar} value={40}>40€</button>
-      <button onClick={pagar} value={50}>50€</button>
-      <button onClick={pagar} value={60}>60€</button>
-      <button onClick={pagar} value={70}>70€</button>
-      <button onClick={pagar} value={80}>80€</button>
+    
       <button onClick={pagar} value={90}>90€</button>
       <dialog id="pagar">
         <Stripe cuantia={selecQuantia}></Stripe>

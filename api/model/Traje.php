@@ -151,7 +151,11 @@ class EventoTraje extends Db
                 $response['success'] = true;
             $response['message'] = 'Traje Asignado correctamente.';
         } catch (PDOException $e) {
-            if ($e->getCode() == 45000) {
+            if ($e->getCode() == 23000) {
+                $response['error'] = "No se puede seleccionar el traje asta el año del evento";
+            }
+           /*  if ($e->getCode() == 45000) {
+                
                 if (preg_match('/1644\s+(.*)$/', $e->getMessage(), $matches)) {
                     $customMessage = $matches[1];
                     $response['error'] = $customMessage;
@@ -159,9 +163,9 @@ class EventoTraje extends Db
                     $response['error'] = $e->getMessage();
                 }
 
-            } else {
+            } */ else {
 
-                $response['error'] = 'Error en la base de datos: ' . $e->getMessage();
+                $response['error'] = 'Error en la base de datos: ' . $e->getCode();
             }
         }
 
