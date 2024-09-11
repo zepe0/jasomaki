@@ -2,14 +2,15 @@
 
 **Ja Som Aki** es una aplicación de gestión de eventos donde los administradores pueden organizar eventos y gestionar la inscripción de participantes, incluyendo la gestión de las tallas de trajes para cada evento.
 
-## 📰 Descripción
+La idea nace para digitalizar todo el papeleo y hojas de excels que llegamos a modificar un grupo de personas por una cuenta compartida.
 
-La aplicación permite a los administradores crear y gestionar eventos, mientras que los usuarios pueden inscribirse en estos eventos. Los administradores también pueden asignar y observar las tallas de los trajes que los participantes usarán en los eventos e descargarlo en PDF. La aplicación está construida con React y Vite en el frontend pensada, y una API en PHP con MySQL en el backend.
+## 📰 Descripción
+La aplicación permite a los administradores crear y gestionar eventos, mientras que los usuarios pueden inscribirse en estos eventos. Los administradores también pueden asignar y observar las tallas de los trajes que los participantes usarán en los eventos e descargarlo en PDF. La aplicación está construida con React y Vite en el frontend, y una API en PHP con MySQL en el backend.
 
 ### 🎨 Diseño y Responsividad
 - **Usuarios  (Mobile-First) 📱** :La sección de usuarios está diseñada pensando en la experiencia móvil primero. Esto significa que la interfaz se adapta y optimiza principalmente para dispositivos móviles, garantizando que todas las funcionalidades sean accesibles y usables en pantallas pequeñas.
 
-- **Administradores (Desktop-First) 🗔** :La parte administrativa de la aplicación está optimizada para pantallas de escritorio. Esto permite una mejor organización de las funcionalidades y una interfaz más completa para la gestión de eventos y participantes en un entorno de escritorio.
+- **Administradores (Desktop-First) 🗔** :La parte administrativa de la aplicación está optimizada para pantallas de escritorio. Esto permite una mejor organización de las funcionalidades y una interfaz más completa para la gestión de eventos y participantes en un entorno de escritorio con la idea de convertila en un PWA (App Web Progresiva)
 
 
 ## ⚡ Tecnologías utilizadas
@@ -57,6 +58,11 @@ Antes de empezar, asegúrate de tener instalado:
 
    ```bash
    VITE_API_URL=http://tu-servidor/api
+   ...
+   CONEXIONES A BD =..
+   SECRETOS =...
+   STRIPE KEYS = ...
+   ....
    ```
 
 5. Inicia la aplicación en modo desarrollo:
@@ -102,6 +108,7 @@ Antes de empezar, asegúrate de tener instalado:
 `- []`Añadir Inscripciones para los menores asociados al Usuario Mayor( Padre/ Madre / Tutor).
 
 `- []`Horarios para maquillajes.
+
 
 ## 🤝 Contribuciones
 

@@ -74,7 +74,7 @@ const Stripe = ({ cuantia }) => {
       {clientSecret && (
         <Elements stripe={stripePromise} options={{ clientSecret }}>
           <button onClick={closeModal}>X</button>
-          {cuantia ? cuantia : ""}
+          {cuantia ?<p style={{color:"black",withd:"100%",textAlign :"center"}}> {cuantia}€</p> : ""}
           <CheckoutForm />
         </Elements>
       )}
