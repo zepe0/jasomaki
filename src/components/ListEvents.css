@@ -1,16 +1,15 @@
 .itemListEvent {
-  display: flex;
-  flex-direction: column;
-  width: 100vw;
-  max-width: 80vw;
+  flex: 0 0 80vw; /* Las tarjetas ocuparán el 80% del ancho de la ventana para dar espacio a ver parte de la siguiente */
+  width: 80vw; /* Define el ancho de las tarjetas */
   padding: 10px;
   box-sizing: border-box;
-  margin-bottom: 10px;
+  margin-right: 20px; /* Añade espacio entre las tarjetas */
   border: 1px solid #ddd;
   border-radius: 8px;
   overflow: hidden;
   background: #e89df062;
   box-shadow: 6px 6px 6px 5px rgba(23, 24, 24, 0.822);
+  scroll-snap-align: start; /* Cada tarjeta se alinea al principio al hacer scroll */
 }
 .footerItem {
   display: flex;
@@ -63,24 +62,31 @@ dialog {
 
 dialog::backdrop {
   background: rgba(0, 0, 0, 0.5);
-  z-index: 999; 
+  z-index: 999;
 }
 .listEvent {
-  max-height: 89vh; /* Altura máxima del contenedor */
-  overflow-y: auto;  /* Habilitar el desplazamiento vertical */
+  display: flex;
+  flex-direction: row; /* Las tarjetas se organizan en fila */
+  overflow-x: scroll; /* Habilita el desplazamiento horizontal */
+  scroll-snap-type: x mandatory; /* Ajusta el scroll para que se detenga en cada tarjeta */
+  scroll-behavior: smooth; /* Suaviza el scroll */
+  width: 100vw; /* Ocupa el 100% del ancho de la ventana */
   padding: 0;
   margin: 0;
-  list-style: none;  /* Elimina el estilo de lista predeterminado */
-background-color: #c453c841;
-  padding: 8px;
+  list-style: none;
+  background-color: #c453c841;
+  scrollbar-width: none; /* Oculta el scrollbar en Firefox */
+} 
+
+.listEvent::-webkit-scrollbar {
+  display: none; /* Oculta el scrollbar en navegadores como Chrome */
 }
-.check{
+.check {
   color: black;
   background: rgba(172, 255, 47, 0.356);
   border: 2px solid rgb(172, 255, 47);
   border-radius: 20px;
   text-align: center;
-  width: 23px;/* 
+  width: 23px; /* 
   box-shadow: 2px 2px 7px 3px rgba(81, 238, 42, 0.726); */
-  
 }

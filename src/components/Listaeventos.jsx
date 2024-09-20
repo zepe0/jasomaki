@@ -73,17 +73,18 @@ function ListaEventos({onEventChange }) {
 
   return (
     <section id="lista">
-      {eventos && eventos.length > 0 ? (
-        eventos.map((evento) => (
+    {eventos && eventos.length > 0 ? (
+      <div className="listEvent">  
+        {eventos.map((evento) => (
           <div
-            id="card"
-            className={` w-98 ${
+          
+            className={` ${
               evento.tipo.includes("Maquillaje")
                 ? "maquillaje"
                 : evento.tipo.includes("Summer")
                 ? "bgimg"
                 : "bgimgW"
-            }  `}
+            }   itemListEvent` } 
             key={evento.id}
           >
             <div id="Cardinfo">
@@ -147,7 +148,7 @@ function ListaEventos({onEventChange }) {
                     <FormTraje
                       onInscripcionSuccess={handleInscripcionSuccess}
                     ></FormTraje>
-
+  
                     <div className="cardPagos">
                       {/* <big>Total : 100 €</big>
                       <small>Efectuado : 30 €</small> */}
@@ -159,20 +160,22 @@ function ListaEventos({onEventChange }) {
               )}
             </div>
           </div>
-        ))
-      ) : (
-        <div id="card">
-          <p>NO hay nada programado aun </p>
-        </div>
-      )}
-      <dialog id="forularioInscripcion">
-        <button onClick={closeForm}>X</button>
-        <FormInsc
-          evento={selectEvent}
-          onInscripcionSuccess={handleInscripcionSuccess}
-        ></FormInsc>
-      </dialog>
-    </section>
+        ))}
+      </div>  
+    ) : (
+      <div id="card">
+        <p>NO hay nada programado aun </p>
+      </div>
+    )}
+    <dialog id="forularioInscripcion">
+      <button onClick={closeForm}>X</button>
+      <FormInsc
+        evento={selectEvent}
+        onInscripcionSuccess={handleInscripcionSuccess}
+      ></FormInsc>
+    </dialog>
+  </section>
+  
   );
 }
 

@@ -14,6 +14,7 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomeUser from "../pages/Prueva";
 import Participantes from "../pages/Participantes";
+import Slider from "./components/Slider/Slider";
 
 function App() {
   return (
@@ -38,7 +39,7 @@ function App() {
           <Route path="/Admin/pagos" element={<Pagos />} />
 
           {/*         Pruevas */}
-          <Route path="/prueva" element={<HomeUser />} />
+          <Route path="/prueva" element={<Slider />} />
         </Routes>
         <Toaster />
       </BrowserRouter>

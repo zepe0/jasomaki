@@ -63,6 +63,7 @@ td .detailComponent {
   background-image: url("../../img/defaultevent.jpeg");
   background-repeat: no-repeat; /* Evita que la imagen se repita */
   background-size: cover;
+  
 
 }
 .bgimgW {
@@ -73,12 +74,25 @@ td .detailComponent {
 
 }
 .maquillaje {
-  background-image: url("../../img/maquillaje2.jpg");
+  background-image: url("../../img/maquillaje.jpg");
   background-repeat: no-repeat; /* Evita que la imagen se repita */
   background-size: cover;
   color: #e9e8eb;
 
 
+}
+.maquillaje:before ,.bgimgW:before ,.bgimg:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('https://via.placeholder.com/600x400'); /* Reemplaza con la URL de tu imagen */
+  background-size: cover;
+  background-position: center;
+  opacity: 0.1; /* Controla la opacidad aquí */
+  z-index: -1; /* Asegúrate de que la imagen esté detrás del contenido */
 }
 .w-98{
   width: 93%!important

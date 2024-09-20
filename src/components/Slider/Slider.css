@@ -1,0 +1,58 @@
+.slider-container {
+  display: flex;
+  align-items: center; /* Centrar verticalmente los botones y tarjetas */
+  justify-content: center; /* Centrar horizontalmente */
+  overflow: hidden; /* Ocultar el desbordamiento */
+  width: 100%;
+  margin-top: 40px; 
+  height: 500px;
+
+}
+
+.cards-wrapper {
+  display: flex;
+  overflow-x: hidden; /* Ocultar las barras de desplazamiento */
+  overflow-y: hidden;
+  width: 80%; /* Ajusta el ancho según sea necesario */
+  margin: 0 10px; /* Espaciado entre botones y tarjetas */
+  gap: 40px; /* Espacio entre las tarjetas */
+  border-radius: 40px;
+
+}
+
+.card {
+  flex: 0 0 calc(80% + 20%); /* Ajusta el tamaño para tener en cuenta el gap */
+  scroll-snap-align: center; /* Alinear al centro al hacer scroll */
+  height: 200px;
+  background-color: lightblue;
+  border-radius: 10px; /* Bordes redondeados */
+  display: flex;
+  flex-direction: column; /* Alinear el contenido verticalmente */
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  height: 500px;
+  transition: transform 0.3s, flex 0.3s;
+}
+
+.card.selected {
+  flex: 0 0 100%; /* Tarjeta seleccionada ocupa el 100% */
+  transform: scale(1.1); /* Aumentar el tamaño de la tarjeta seleccionada */
+  z-index: 1; /* Asegurar que la tarjeta seleccionada esté encima */
+  width: 80%;
+}
+
+.nav-button {
+  background-color: #007bff88; /* Color del botón */
+  color: white;
+  border: none;
+  padding:  10px;
+  margin: 0 5px; /* Espaciado entre botones */
+  cursor: pointer;
+  border-radius: 30px; /* Bordes redondeados */
+}
+
+.nav-button:hover {
+  background-color: #F69BC3; /* Color al pasar el mouse */
+}
