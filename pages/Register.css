@@ -10,6 +10,7 @@
   margin-top: 10px;
   text-align: center;
   color: blueviolet;
+  font-family: 'Arial', sans-serif; 
 }
 .FormReg {
   display: flex;
@@ -29,10 +30,4 @@ h1 {
   height: 30px;
   border-radius: 20px;
   margin-top: 10px;
-}
-.password-input {
-  font-family: 'Arial', sans-serif; /* Asegúrate de usar una fuente estándar */
-  color: black; /* Color del texto */
-  letter-spacing: 1px; /* Espaciado entre caracteres */
-  text-align: center;
 }

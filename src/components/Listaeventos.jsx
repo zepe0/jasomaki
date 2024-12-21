@@ -15,7 +15,7 @@ import FormInsc from "./FormInsc";
 import FormTraje from "./FormTraje";
 import { getMyTraje } from "../logic/traje/getMyTraje";
 
-function ListaEventos({onEventChange }) {
+function ListaEventos({ onEventChange }) {
   if (!sessionStorage.token) {
     window.location.href = "/Login";
     return null;
@@ -39,7 +39,6 @@ function ListaEventos({onEventChange }) {
   };
   const fetchTraje = () => {
     getMyTraje(jwtDecode(sessionStorage.token).id).then((res) => {
-    
       setMyTraje(res);
     });
   };
@@ -63,7 +62,6 @@ function ListaEventos({onEventChange }) {
   };
 
   const handleInscripcionSuccess = () => {
-    
     fetchEventos();
     fetchMyEventos();
     fetchTraje();
@@ -73,109 +71,111 @@ function ListaEventos({onEventChange }) {
 
   return (
     <section id="lista">
-    {eventos && eventos.length > 0 ? (
-      <div className="listEvent">  
-        {eventos.map((evento) => (
-          <div
-          
-            className={` ${
-              evento.tipo.includes("Maquillaje")
-                ? "maquillaje"
-                : evento.tipo.includes("Summer")
-                ? "bgimg"
-                : "bgimgW"
-            }   itemListEvent` } 
-            key={evento.id}
-          >
-            <div id="Cardinfo">
-              <div className="colum">
-                <big>{evento.nombre}</big>
-                <small>
-                  {evento.tipo} <span>{getYear(evento.fecha)}</span>
-                </small>
+      {eventos && eventos.length > 0 ? (
+        <div className="listEvent">
+          {eventos.map((evento) => (
+            <div
+              className={` ${
+                evento.tipo.includes("Maquillaje")
+                  ? "maquillaje"
+                  : evento.tipo.includes("Summer")
+                  ? "bgimg"
+                  : "bgimgW"
+              }   itemListEvent`}
+              key={evento.id}
+            >
+              <div id="Cardinfo" className="colum">
+                <div className="colum">
+                  <big>{evento.nombre} </big>
+                  <small>
+                    {evento.tipo} <span>{getYear(evento.fecha)}</span>
+                  </small>
+                </div>
+                <div className="colum">
+                  {myeventos.some(
+                    (myevento) => myevento.evento_id === evento.id
+                  ) ? (
+                    <p className="check"> ✔ </p>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        openform(evento.id);
+                      }}
+                    >
+                      Inscribirse
+                    </button>
+                  )}
+                </div>
               </div>
-              <div className="colum">
-                {myeventos.some(
+              <div className="cardPagos">
+                {evento.tipo.includes("Rua") &&
+                myeventos.some(
                   (myevento) => myevento.evento_id === evento.id
                 ) ? (
-                  <p className="check"> ✔ </p>
+                  mytraje.length > 0 ? (
+                    <small>
+                      {mytraje.some(
+                        (traje) => traje.anio == Number(getYear(evento.fecha))
+                      ) ? (
+                        <div className="colum">
+                          <FaVest className="prenda" />
+                          <span>
+                            {
+                              mytraje.find(
+                                (traje) =>
+                                  traje.anio == Number(getYear(evento.fecha))
+                              ).pecho
+                            }
+                          </span>{" "}
+                          <PiPantsFill className="prenda" />
+                          <span>
+                            {
+                              mytraje.find(
+                                (traje) =>
+                                  traje.anio == Number(getYear(evento.fecha))
+                              ).pierna
+                            }
+                          </span>{" "}
+                        </div>
+                      ) : (
+                        <FormTraje
+                          onInscripcionSuccess={handleInscripcionSuccess}
+                          idevento={evento.id}
+                        ></FormTraje>
+                      )}
+                    </small>
+                  ) : (
+                    <div className="colum">
+                      <FormTraje
+                        onInscripcionSuccess={handleInscripcionSuccess}
+                      ></FormTraje>
+
+                      <div className="cardPagos">
+                        {/* <big>Total : 100 €</big>
+                      <small>Efectuado : 30 €</small> */}
+                      </div>
+                    </div>
+                  )
                 ) : (
-                  <button
-                    onClick={() => {
-                      openform(evento.id);
-                    }}
-                  >
-                    Inscribirse
-                  </button>
+                  ""
                 )}
               </div>
             </div>
-            <div className="cardPagos">
-              {evento.tipo.includes("Rua") &&
-              myeventos.some((myevento) => myevento.evento_id === evento.id) ? (
-                mytraje.length > 0 ? (
-                  <small>
-                    {mytraje.some(
-                      (traje) => traje.anio == Number(getYear(evento.fecha))
-                    ) ? (
-                      <div>
-                        <FaVest className="prenda" />
-                        <span>
-                          {
-                            mytraje.find(
-                              (traje) =>
-                                traje.anio == Number(getYear(evento.fecha))
-                            ).pecho
-                          }
-                        </span>{" "}
-                        <PiPantsFill className="prenda" />
-                        <span>{
-                            mytraje.find(
-                              (traje) =>
-                                traje.anio == Number(getYear(evento.fecha))
-                            ).pierna
-                          }</span>{" "}
-                      </div>
-                    ) : (
-                      <FormTraje
-                        onInscripcionSuccess={handleInscripcionSuccess}
-                        idevento = {evento.id}
-                      ></FormTraje>
-                    )}
-                  </small>
-                ) : (
-                  <div style={{ display: "flex", flexDirection: "column" }}>
-                    <FormTraje
-                      onInscripcionSuccess={handleInscripcionSuccess}
-                    ></FormTraje>
-  
-                    <div className="cardPagos">
-                      {/* <big>Total : 100 €</big>
-                      <small>Efectuado : 30 €</small> */}
-                    </div>
-                  </div>
-                )
-              ) : (
-                ""
-              )}
-            </div>
-          </div>
-        ))}
-      </div>  
-    ) : (
-      <div id="card">
-        <p>NO hay nada programado aun </p>
-      </div>
-    )}
-    <dialog id="forularioInscripcion">
-      <button onClick={closeForm}>X</button>
-      <FormInsc
-        evento={selectEvent}
-        onInscripcionSuccess={handleInscripcionSuccess}
-      ></FormInsc>
-    </dialog>
-  </section>
-  
+          ))}
+        </div>
+      ) : (
+        <div id="card">
+          <p>NO hay nada programado aun </p>
+        </div>
+      )}
+      <dialog id="forularioInscripcion">
+        <button onClick={closeForm}>X</button>
+        <FormInsc
+          evento={selectEvent}
+          onInscripcionSuccess={handleInscripcionSuccess}
+        ></FormInsc>
+      </dialog>
+    </section>
   );
 }
 

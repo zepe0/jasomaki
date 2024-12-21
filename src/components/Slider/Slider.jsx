@@ -102,7 +102,7 @@ function Slider() {
                     </small>
                   </div>
                 ) : (
-                  <div className="">
+                  <div className="colum">
                     <big>{card.nombre}</big>
                     <small>
                       {card.tipo} <span>{getYear(card.fecha)}</span>

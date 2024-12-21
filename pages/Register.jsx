@@ -20,6 +20,8 @@ function Register() {
 
     const email = e.target.email.value;
     const password = e.target.pass.value;
+    const nombre = e.target.nombre.value;
+    const dni = e.target.dni.value;
 
     //VALIDADOR
 
@@ -29,7 +31,9 @@ function Register() {
       error.validatePassword(password);
       Usernew = {
         email: email,
-        password: password,
+        pws: password,
+        nombre: nombre,
+        dni: dni,
       };
     } catch (error) {
       toast.error(error.message);
@@ -37,7 +41,7 @@ function Register() {
 
     // PETICIÓN
 
-    fetch(`${API}/Register/register.php`, {
+    fetch('https://apijasomaki.onrender.com/register', {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -78,6 +82,18 @@ function Register() {
           ></input>
 
           <input
+            className="inputFormReg "
+            type="text"
+            name="nombre"
+            placeholder="Nombre"
+          ></input>
+           <input
+            className="inputFormReg "
+            type="text"
+            name="dni"
+            placeholder="Dni"
+          ></input>
+           <input
             className="inputFormReg password-input "
             type="password"
             name="pass"
