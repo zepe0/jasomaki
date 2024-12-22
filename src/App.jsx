@@ -40,6 +40,7 @@ function App() {
 
           {/*         Pruevas */}
           <Route path="/prueva" element={<Slider />} />
+          <Route path="/a" element="helloww" />
         </Routes>
         <Toaster />
       </BrowserRouter>
