@@ -1,4 +1,3 @@
-
 import error from "../error/index";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -13,15 +12,15 @@ function Login() {
 
     const formData = {
       email: e.target.email.value,
-      pass: e.target.pass.value,
+      pws: e.target.pass.value,
     };
 
     try {
       error.validateStringNotEmptyOrBlank(formData.email);
-      error.validateStringNotEmptyOrBlank(formData.pass);
-      error.validatePassword(formData.pass);
+      error.validateStringNotEmptyOrBlank(formData.pws);
+      error.validatePassword(formData.pws);
 
-      fetch(`${API}login/login.php`, {
+      fetch(`${API}login`, {
         // Usa la URL directa al servidor PHP
         method: "POST",
         headers: {
@@ -31,7 +30,7 @@ function Login() {
       })
         .then((response) => response.json())
         .then((data) => {
-          if (data.error == false) {
+          if (!data.error ) {
             sessionStorage.token = data.token;
             if (data.rol === 0) {
               goto("/");
@@ -44,7 +43,6 @@ function Login() {
           }
         })
         .catch((error) => {
-         
           toast.error("Hubo un problema con la solicitud:", error);
         });
     } catch (error) {
@@ -54,7 +52,6 @@ function Login() {
 
   return (
     <>
-
       <h1>Login</h1>
       <div className="">
         <form className="FormInsc" onSubmit={handleSubmit}>

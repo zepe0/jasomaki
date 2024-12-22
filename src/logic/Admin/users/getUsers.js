@@ -1,7 +1,7 @@
 import toast from "react-hot-toast";
 const API = import.meta.env.VITE_API_URL;
 export function getEventInscripciones($id) {
-  return fetch(`${API}Admin/users/getAllUsers.php`, {
+  return fetch(`${API}alluser`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

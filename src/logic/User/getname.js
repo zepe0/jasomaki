@@ -1,15 +1,15 @@
 import toast from "react-hot-toast";
 const API = import.meta.env.VITE_API_URL;
 
-export function getName(id) {
+export function getName(email) {
 
 
   const formData = {
-    id: id,
+    email: email.email,
   };
 
-  return fetch(`${API}register/name.php`, {
-    method: "POST",
+  return fetch(`${API}user`, {
+    method: "post",
     headers: {
       "Content-Type": "application/json",
     },

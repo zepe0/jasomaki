@@ -19,8 +19,8 @@ function Nav({ update }) {
       try {
         jwtDecode(sessionStorage.token);
         setLogin(true);
-        getName(jwtDecode(sessionStorage.token).id).then((name) => {
-          if (name.length > 0) setName(name[0].nombre);
+        getName(jwtDecode(sessionStorage.token)).then((name) => {
+          if (name) setName(name.user.nombre);
         });
       } catch (error) {
         console.error("Token decoding failed:", error);
