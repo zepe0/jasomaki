@@ -8,6 +8,8 @@ export default defineConfig({
     chunkSizeWarningLimit: 1000, // Ajusta según lo que necesites
   },
   server: {
-    historyApiFallback: true,
+    historyApiFallback: {
+      disableDotRule: true,
+    },
   },
 });

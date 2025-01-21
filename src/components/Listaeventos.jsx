@@ -43,9 +43,9 @@ function ListaEventos({ onEventChange }) {
     });
   };
   const fetchMyEventos = () => {
-    let user = jwtDecode(sessionStorage.token);
-    user = { id_user: user.id };
-    getMyEvents(user).then((res) => {
+    let user = jwtDecode(sessionStorage.token);   
+
+    getMyEvents({id:user.id}).then((res) => {
       setMyEventos(res);
     });
   };

@@ -1,4 +1,3 @@
-
 import ListInsAdmin from "../src/components/Admin/ListInsAdmin";
 import FormInscAdmin from "../src/components/FormInscAdmin";
 
@@ -11,13 +10,13 @@ function AdminInscripciones() {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const goto = useNavigate();
   if (!sessionStorage.token) {
-    goto("/")
+    goto("/Login");
   }
   function openForm(e) {
     const dialog = document.getElementById("formadd");
     dialog.showModal();
     if (e) {
-      setSelectedEvent(null); // Resetea el estado a null
+      setSelectedEvent(null); 
     }
   }
 

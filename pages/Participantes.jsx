@@ -43,8 +43,9 @@ function Participantes() {
       goto("/Login");
     }
     if (sessionStorage.token) {
+    
       const decode = jwtDecode(sessionStorage.token);
-      if (decode.rol === 1) {
+      if (decode.rol === 0) {
         window.location.href = "/Admin";
         return;
       }
@@ -72,7 +73,7 @@ function Participantes() {
       }
       if (res === null) setParticipantes([]);
     });
-  }, [setParticipantes, setLoading, goto, setInit ,setFormState],);
+  }, [setParticipantes, setLoading, goto, setInit, setFormState]);
   const filtrar = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -142,7 +143,7 @@ function Participantes() {
     if (input != null) {
       const btnContainers = document.querySelectorAll(".btn-container");
       btnContainers.forEach((container) => container.classList.add("none"));
-     /*  input.classList.add("font-large"); */
+      /*  input.classList.add("font-large"); */
       html2canvas(input).then((canvas) => {
         const imgData = canvas.toDataURL("image/png");
         const pdf = new jsPDF();
@@ -286,25 +287,49 @@ function Participantes() {
             onChange={handleChange}
             type="text"
             name="nombre"
-            value={formState ? formState.nombre :  selectedParticipantId ? selectedParticipantId.nombre : "No asignado"}
+            value={
+              formState
+                ? formState.nombre
+                : selectedParticipantId
+                ? selectedParticipantId.nombre
+                : "No asignado"
+            }
           />
           <input
             onChange={handleChange}
             type="text"
             name="apellido"
-            value={formState ? formState.apellido :  selectedParticipantId ? selectedParticipantId.apellido : "No asignado"}
+            value={
+              formState
+                ? formState.apellido
+                : selectedParticipantId
+                ? selectedParticipantId.apellido
+                : "No asignado"
+            }
           />
           <input
             onChange={handleChange}
             type="text"
             name="tel"
-            value={formState ? formState.tel :  selectedParticipantId ? selectedParticipantId.tel : "No asignado"}
+            value={
+              formState
+                ? formState.tel
+                : selectedParticipantId
+                ? selectedParticipantId.tel
+                : "No asignado"
+            }
           />
           <input
             onChange={handleChange}
             type="text"
             name="dni"
-            value={formState ? formState.dni :  selectedParticipantId ? selectedParticipantId.dni : "No asignado"}
+            value={
+              formState
+                ? formState.dni
+                : selectedParticipantId
+                ? selectedParticipantId.dni
+                : "No asignado"
+            }
           />
 
           <button type="submit">Guardar</button>
@@ -315,25 +340,47 @@ function Participantes() {
         <form>
           <label>
             Editar Traje de{" "}
-            { formState ? formState.nombre :  selectedParticipantId ? selectedParticipantId.nombre : "No asignado"}
+            {formState
+              ? formState.nombre
+              : selectedParticipantId
+              ? selectedParticipantId.nombre
+              : "No asignado"}
           </label>
           <input
             onChange={handleChange}
             type="text"
             name="pecho"
-            value={formState ? formState.pecho :  selectedParticipantId ? selectedParticipantId.pecho : "No asignado"}
+            value={
+              formState
+                ? formState.pecho
+                : selectedParticipantId
+                ? selectedParticipantId.pecho
+                : "No asignado"
+            }
           />
           <input
             onChange={handleChange}
             type="text"
             name="apepierna"
-            value={formState ? formState.pierna :  selectedParticipantId ? selectedParticipantId.pierna : "No asignado"}
+            value={
+              formState
+                ? formState.pierna
+                : selectedParticipantId
+                ? selectedParticipantId.pierna
+                : "No asignado"
+            }
           />
           <input
             onChange={handleChange}
             type="text"
             name="sexo"
-            value={formState ? formState.sexo :  selectedParticipantId ? selectedParticipantId.sexo : "No asignado"}
+            value={
+              formState
+                ? formState.sexo
+                : selectedParticipantId
+                ? selectedParticipantId.sexo
+                : "No asignado"
+            }
           />
 
           <button type="submit">Guardar</button>

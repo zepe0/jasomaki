@@ -75,7 +75,7 @@ function FormInscTrajeAdmin({ onSuccess, selectedit }) {
       pierna: selectedBottoms,
       id_user: jwtDecode(sessionStorage.token).id,
     };
-   
+
     try {
       fetch(`${API}/traje/setTraje.php`, {
         method: "POST",
@@ -104,7 +104,7 @@ function FormInscTrajeAdmin({ onSuccess, selectedit }) {
   const editevent = (e) => {
     e.preventDefault();
     const form = e.target.closest("form");
-
+    
     const formData = {
       id: form.id,
       titulo: form.Titulo.value,

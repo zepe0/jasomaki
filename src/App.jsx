@@ -5,7 +5,7 @@ import AdminTraje from "../pages/AdminTraje";
 import HomeAdmin from "../pages/HomeAdmin";
 import Inscripciones from "../pages/Inscripciones";
 import Login from "../pages/Login";
-import Pagos from "../pages/Pagos";
+/* import Pagos from "../pages/Pagos"; */
 import Perfil from "../pages/Perfil";
 import Register from "../pages/Register";
 
@@ -21,12 +21,13 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<HomeUser />} />
+          <Route path="/" element="hellow" />
+          <Route path="/user" element={<HomeUser />} />
           <Route path="/ins" element={<Inscripciones />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-
-          <Route path="/pagos" element={<Pagos />} />
+{/* 
+          <Route path="/pagos" element={<Pagos />} /> */}
           <Route path="/Perfil" element={<Perfil />} />
 
           {/*  Rutas Admin */}
@@ -36,7 +37,7 @@ function App() {
 
           <Route path="/Admin/ins" element={<AdminInscripciones />} />
           <Route path="/Admin/traje" element={<AdminTraje />} />
-          <Route path="/Admin/pagos" element={<Pagos />} />
+       {/*    <Route path="/Admin/pagos" element={<Pagos />} /> */}
 
           {/*         Pruevas */}
           <Route path="/prueva" element={<Slider />} />

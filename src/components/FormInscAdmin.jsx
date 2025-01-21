@@ -70,7 +70,7 @@ function FormInscAdmin({ onSuccess, selectedit }) {
       error.validateDate(formData.inicio);
       error.validateId(formData.id);
 
-      fetch(`${API}/inscripción/addins.php`, {
+      fetch(`${API}eventos/new`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -79,7 +79,7 @@ function FormInscAdmin({ onSuccess, selectedit }) {
       })
         .then((response) => response.json())
         .then((data) => {
-          if (data.success) {
+          if (data.length === 0) {
             onSuccess();
             setInputValue({
               Titulo: "",
@@ -87,10 +87,8 @@ function FormInscAdmin({ onSuccess, selectedit }) {
               hora: "",
               tipo: "",
             });
-            const form = document.getElementById("forularioInscripcion");
-
-            form.showModal();
-            return toast.success(data.msn);
+           
+            return toast.success("Inscripción creada con éxito");
           }
           toast.error(data.error);
         })
@@ -113,10 +111,11 @@ function FormInscAdmin({ onSuccess, selectedit }) {
       rol: jwtDecode(sessionStorage.token).rol,
       user: jwtDecode(sessionStorage.token).id,
     };
+    debugger
 
     editevents(formData).then((data) => {
       if (data.success) {
-        toast.success(data.msn);
+        toast.success(data.success);
         onSuccess();
       } else {
         toast.error(data.error);

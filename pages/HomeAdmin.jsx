@@ -1,4 +1,3 @@
-
 import Nav from "../src/components/Nav";
 
 import { jwtDecode } from "jwt-decode";
@@ -13,15 +12,15 @@ function HomeAdmin() {
       goto("/Login");
     }
     const decode = jwtDecode(sessionStorage.token);
+  
     if (decode.rol == "0") {
       goto("/");
     }
   }, [goto]);
   return (
     <>
-      <Nav></Nav>     
+      <Nav></Nav>
       <AdminInscripciones></AdminInscripciones>
-    
     </>
   );
 }

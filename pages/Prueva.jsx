@@ -14,7 +14,11 @@ function HomeUser() {
   const handleEventChange = () => {
     setNavUpdate((prev) => !prev); 
   };
-  useEffect(() => {}, [goto]);
+  useEffect(() => {
+    if (!sessionStorage.token) {
+      goto("/Login");
+    }
+  }, [goto]);
   return (
     <section id="bodyPruevas">
       <Nav update={navUpdate}></Nav>

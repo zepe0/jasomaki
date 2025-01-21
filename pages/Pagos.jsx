@@ -5,7 +5,7 @@ import { useState } from "react";
 
 function Pagos() {
   if (!sessionStorage.token) {
-    window.location.href = "/";
+    window.location.href = "/Login";
   }
   const [selecQuantia, setQuantia] = useState([]);
   const pagar = (e) => {

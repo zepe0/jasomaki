@@ -1,5 +1,6 @@
 .itemListEvent {
-  flex: 0 0 80vw; /* Las tarjetas ocuparán el 80% del ancho de la ventana para dar espacio a ver parte de la siguiente */
+  display: flex;
+  flex-direction: column;
   width: 80vw; /* Define el ancho de las tarjetas */
   padding: 10px;
   box-sizing: border-box;
@@ -7,7 +8,7 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   overflow: hidden;
-  background: #e89df062;
+
   box-shadow: 6px 6px 6px 5px rgba(23, 24, 24, 0.822);
   scroll-snap-align: start; /* Cada tarjeta se alinea al principio al hacer scroll */
 }
@@ -66,15 +67,17 @@ dialog::backdrop {
 }
 .listEvent {
   display: flex;
-  flex-direction: row; /* Las tarjetas se organizan en fila */
-  overflow-x: scroll; /* Habilita el desplazamiento horizontal */
+  flex-direction: column; 
+  align-items: center;
+  gap: 10px; /* Espacio entre tarjetas */
+  overflow-y: scroll; /* Habilita el desplazamiento horizontal */
   scroll-snap-type: x mandatory; /* Ajusta el scroll para que se detenga en cada tarjeta */
   scroll-behavior: smooth; /* Suaviza el scroll */
   width: 100vw; /* Ocupa el 100% del ancho de la ventana */
-  padding: 0;
+  padding: 8px;
   margin: 0;
   list-style: none;
-  background-color: #c453c841;
+ height: 100%;
   scrollbar-width: none; /* Oculta el scrollbar en Firefox */
 } 
 

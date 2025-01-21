@@ -53,9 +53,11 @@ function ListInsAdmin({ onSelect, onSuccess }) {
       user: decode.id,
       rol: decode.rol,
     };
-    delEvento(fromData);
-
+    delEvento(fromData).then((data) => {
+  
     onSuccess();
+    }
+    );
   };
   const toggleDropdown = () => {
     if (dropdownRef.current) {
@@ -68,21 +70,27 @@ function ListInsAdmin({ onSelect, onSuccess }) {
       <section id="lista">
         {list.length > 0 ? (
           list.map((evento) => (
-            <div id="card" className={` w-98 ${evento.tipo.includes('Maquillaje') ? 'maquillaje' : evento.tipo.includes('Summer') ?"bgimg":'bgimgW'}  `}key={evento.id}>
-          {/*     <IoMdMore onClick={() => toggleDropdown(evento.id)} /> */}
+            <div
+              id="card"
+              className={` w-98 ${
+                evento.tipo.includes("Maquillaje")
+                  ? "maquillaje"
+                  : evento.tipo.includes("Summer")
+                  ? "bgimg"
+                  : "bgimgW"
+              }  `}
+              key={evento.id}
+            >
+              {/*     <IoMdMore onClick={() => toggleDropdown(evento.id)} /> */}
               <div id="Cardinfo " onClick={() => handleClick(evento.id)}>
-            
                 <div>
                   {evento.img ? (
-                    
-                    
-                      <div className="colum">
-                        <big>{evento.nombre}</big>
-                        <small>
-                          {evento.tipo} <span>{getYear(evento.fecha)}</span>
-                        </small>
-                      </div>
-                    
+                    <div className="colum">
+                      <big>{evento.Titulo}</big>
+                      <small>
+                        {evento.tipo} <span>{getYear(evento.inicio)}</span>
+                      </small>
+                    </div>
                   ) : (
                     <div className="">
                       {/*    <img
@@ -98,18 +106,17 @@ function ListInsAdmin({ onSelect, onSuccess }) {
                         </div>
                         <div id="buttons">
                           <button onClick={(e) => clikdelet(e, evento.id)}>
-                                              <MdDelete />
-                                            </button>
-                                            <button onClick={(e) => clikedit(e, evento.id)}>
-                                              <CiEdit />
-                                            </button>
+                            <MdDelete />
+                          </button>
+                          <button onClick={(e) => clikedit(e, evento.id)}>
+                            <CiEdit />
+                          </button>
                         </div>
                       </div>
                     </div>
                   )}
                 </div>
               </div>
-             
             </div>
           ))
         ) : (
@@ -126,8 +133,5 @@ function ListInsAdmin({ onSelect, onSuccess }) {
     </div>
   );
 }
-
-
-
 
 export default ListInsAdmin;

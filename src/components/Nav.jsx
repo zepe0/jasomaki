@@ -62,7 +62,7 @@ function Nav({ update }) {
 
         {name ? (
           name
-        ) : jwtDecode(sessionStorage.token).rol == 1 ? (
+        ) : jwtDecode(sessionStorage.token).rol === 1 ? (
           ""
         ) : (
           <li>Inscribete en un evento para guardar tu nombre</li>

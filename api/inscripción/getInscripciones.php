@@ -16,6 +16,7 @@ try {
 } catch (PDOException $e) {
     http_response_code(500);
     $response['error'] = 'Error al conectar con la base de datos: ' . $e->getMessage();
+    
 } catch (Exception $e) {
     http_response_code(400);
     $response['error'] = $e->getMessage();

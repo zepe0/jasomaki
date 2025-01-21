@@ -1,8 +1,8 @@
 import toast from "react-hot-toast";
 const API = import.meta.env.VITE_API_URL;
 export function delEvento(data) {
-  return fetch(`${API}eventos/delEventos.php`, {
-    method: "POST",
+  return fetch(`${API}eventos/eventdelete`, {
+    method: "delete",
     headers: {
       "Content-Type": "application/json",
     },

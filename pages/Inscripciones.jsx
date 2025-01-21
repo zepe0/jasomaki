@@ -6,7 +6,7 @@ import { jwtDecode } from "jwt-decode";
 function Inscripciones() {
  
   if (!sessionStorage.token) {
-    window.location.href = "/";
+    window.location.href = "/Login";
     return
   }
   const decode = jwtDecode(sessionStorage.token);

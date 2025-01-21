@@ -1,3 +1,4 @@
+import { jwtDecode } from "jwt-decode";
 import error from "../error/index";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -30,10 +31,12 @@ function Login() {
       })
         .then((response) => response.json())
         .then((data) => {
+          debugger
           if (!data.error ) {
             sessionStorage.token = data.token;
-            if (data.rol === 0) {
-              goto("/");
+            if (jwtDecode(data.token).rol === 0) {
+              
+              goto("/user");
             } else {
               goto("/Admin");
             }

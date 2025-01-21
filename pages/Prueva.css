@@ -51,7 +51,7 @@
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  overflow: auto;
+ 
   height: 85vh;
   background-color: rgba(240, 248, 255, 0.486);
   border-radius: 20px;

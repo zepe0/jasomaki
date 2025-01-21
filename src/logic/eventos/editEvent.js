@@ -1,7 +1,7 @@
 import toast from "react-hot-toast";
 const API = import.meta.env.VITE_API_URL;
 export function editevents(data) {
-  return fetch(`${API}eventos/editEventos.php`, {
+  return fetch(`${API}eventos/editevent`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

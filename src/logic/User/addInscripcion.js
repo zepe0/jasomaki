@@ -27,7 +27,7 @@ export function RegistroEvento(e, evento) {
     error.validateId(formData.id);
     error.validateId(evento);
 
-    return fetch(`${API}/inscripción/ins.php`, {
+    return fetch(`${API}ins/new`, {
       // Usa la URL directa al servidor PHP
       method: "POST",
       headers: {
