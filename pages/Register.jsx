@@ -4,6 +4,7 @@ import "./Register.css";
 import error from "../error";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { MdOutlineArrowBackIosNew } from "react-icons/md";
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -11,10 +12,10 @@ function Register() {
   const goto = useNavigate();
   useEffect(() => {
     if (sessionStorage.token) {
-      goto("../");
+      goto("../Login");
     }
   }, [goto]);
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -41,7 +42,7 @@ function Register() {
 
     // PETICIÓN
 
-    fetch('https://apijasomaki.onrender.com/register', {
+    fetch("https://apijasomaki.onrender.com/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -59,8 +60,8 @@ function Register() {
           toast.error(data.error);
         }
         sessionStorage.token = data.token;
-        toast.success(data.success);
-        goto("/");
+        toast.success("Usuario registrado correctamente");
+        goto("/user");
       })
       .catch((error) => {
         toast.error("Hubo un problema con la solicitud:", error);
@@ -68,7 +69,7 @@ function Register() {
   };
   return (
     <>
-    
+      
       <h1>
         Únete a la Familia<span> Ja Som Aki</span>
       </h1>
@@ -87,13 +88,13 @@ function Register() {
             name="nombre"
             placeholder="Nombre"
           ></input>
-           <input
+          <input
             className="inputFormReg "
             type="text"
             name="dni"
             placeholder="Dni"
           ></input>
-           <input
+          <input
             className="inputFormReg password-input "
             type="password"
             name="pass"
@@ -104,6 +105,8 @@ function Register() {
             Registrar
           </button>
         </form>
+        
+          Ya tienes Cuenta <a href="/Login">Inicia Sesión</a>
       </div>
       <Toaster />
     </>

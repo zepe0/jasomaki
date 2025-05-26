@@ -29,7 +29,7 @@ function ListaEventos({ onEventChange }) {
   useEffect(() => {
     fetchEventos();
     fetchMyEventos();
-    fetchTraje();
+   /*  fetchTraje(); */
   }, []);
 
   const fetchEventos = () => {
@@ -93,7 +93,7 @@ function ListaEventos({ onEventChange }) {
                 </div>
                 <div className="colum">
                   {myeventos.some(
-                    (myevento) => myevento.evento_id === evento.id
+                    (myevento) => myevento.id === evento.id
                   ) ? (
                     <p className="check"> ✔ </p>
                   ) : (
@@ -110,7 +110,7 @@ function ListaEventos({ onEventChange }) {
               <div className="cardPagos">
                 {evento.tipo.includes("Rua") &&
                 myeventos.some(
-                  (myevento) => myevento.evento_id === evento.id
+                  (myevento) => myevento.id === evento.id
                 ) ? (
                   mytraje.length > 0 ? (
                     <small>

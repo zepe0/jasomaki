@@ -15,18 +15,19 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomeUser from "../pages/Prueva";
 import Participantes from "../pages/Participantes";
 import Slider from "./components/Slider/Slider";
+import Demo from "../pages/Demo";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element="hellow" />
+          <Route path="/" element={<Demo />} />
           <Route path="/user" element={<HomeUser />} />
           <Route path="/ins" element={<Inscripciones />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-{/* 
+          {/* 
           <Route path="/pagos" element={<Pagos />} /> */}
           <Route path="/Perfil" element={<Perfil />} />
 
@@ -37,7 +38,7 @@ function App() {
 
           <Route path="/Admin/ins" element={<AdminInscripciones />} />
           <Route path="/Admin/traje" element={<AdminTraje />} />
-       {/*    <Route path="/Admin/pagos" element={<Pagos />} /> */}
+          {/*    <Route path="/Admin/pagos" element={<Pagos />} /> */}
 
           {/*         Pruevas */}
           <Route path="/prueva" element={<Slider />} />

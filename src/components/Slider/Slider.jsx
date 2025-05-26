@@ -11,6 +11,13 @@ import { FaVest } from "react-icons/fa6";
 
 function Slider() {
   useEffect(() => {
+    if (!sessionStorage.token) {
+      window.location.href = "/Login";
+    }
+    if (jwtDecode(sessionStorage.token).rol !== "user") { 
+      window.location.href = "/Login";
+    }
+    
     fetchEventos();
     fetchMyEventos();
     fetchTraje();
@@ -19,6 +26,7 @@ function Slider() {
   const [selectEvent, setSelectEvent] = useState([]);
   const [myeventos, setMyEventos] = useState([]);
   const [mytraje, setMyTraje] = useState([]);
+
   const fetchEventos = () => {
     getEvents().then((res) => {
       setEventos(res);

@@ -2,11 +2,19 @@ import { jwtDecode } from "jwt-decode";
 import error from "../error/index";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const API = import.meta.env.VITE_API_URL;
 
 function Login() {
+  // Redirige al usuario a la página de inicio si ya está autenticado
+  // Si el usuario ya tiene un token, lo redirige a la página de inicio
   const goto = useNavigate();
+  useEffect(() => {
+    if (!sessionStorage.token) {
+      goto("/Login");
+    }
+  }, [goto]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -31,18 +39,20 @@ function Login() {
       })
         .then((response) => response.json())
         .then((data) => {
-          debugger
-          if (!data.error ) {
+          if (!data.error) {
             sessionStorage.token = data.token;
             if (jwtDecode(data.token).rol === 0) {
-              
+              toast.success("Bienvenido");
               goto("/user");
             } else {
               goto("/Admin");
+              toast.success("Bienvenido");
             }
           }
-          if (data.error == true) {
-            toast.error(data.msn);
+          if (data.error) {
+            toast.error(
+              "Credenciales incorrectas, por favor intente de nuevo."
+            );
           }
         })
         .catch((error) => {

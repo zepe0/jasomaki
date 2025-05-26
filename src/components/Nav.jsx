@@ -50,7 +50,7 @@ function Nav({ update }) {
         <li>
           <MdOutlineArrowBackIosNew onClick={goBack} />
         </li>
-        {jwtDecode(sessionStorage.token).rol == 1 ? (
+        {jwtDecode(sessionStorage.token).rol === 1 ? (
           <div>
             <button onClick={goevent}>Eventos</button>{" "}
             <button onClick={goparticipantes}>Participantes</button>{" "}
@@ -60,7 +60,7 @@ function Nav({ update }) {
           ""
         )}
 
-        {name ? (
+        {name && jwtDecode(sessionStorage.token).rol === 0 ? (
           name
         ) : jwtDecode(sessionStorage.token).rol === 1 ? (
           ""
