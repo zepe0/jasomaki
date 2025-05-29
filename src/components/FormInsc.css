@@ -12,7 +12,15 @@
 .hidden-checkbox {
   display: none;
 }
-
+.password-input{
+  color: rgb(27, 26, 26);
+   background-color: #fff;
+   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.password-input::placeholder {
+  color: #888 !important;
+  opacity: 1 !important;
+}
 /* Style the label, making it the clickable area */
 .custom-checkbox {
   display: inline-flex;
@@ -38,4 +46,22 @@
 #formaddTraje{
 background-color: rgba(241, 241, 227, 0.884);
 }
-
+.demo-credentials {
+  text-align: center;
+  margin-top: 20px;
+  background: #f3eaff7a;
+  border-radius: 8px;
+  padding: 12px 8px;
+  color: #4b2673;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px #0001;
+}
+.demo-text{
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+  text-align: center;
+}
+.demo-label {
+  font-weight: bold;
+  color: #7c2ae8;
+}

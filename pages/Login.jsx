@@ -73,19 +73,37 @@ function Login() {
             type="text"
             name="email"
             placeholder="Email"
+            required
+            defaultValue="demo@demo.es"
           ></input>
 
           <input
-            className="inputFormIns password-input  "
+            className="inputFormIns password-input "
             type="password"
             name="pass"
             placeholder="Contraseña"
+            required
+            defaultValue="1234"
           ></input>
 
           <button type="submit">Entrar</button>
         </form>
-        <p>
+        <p className="demo-text">
           No tienes Cuenta <a href="/register">Regístrate</a>
+        </p>
+        <p className="demo-credentials">
+          Esta diseñada para ser usada en dispositivos móviles y tablets.
+          <br />
+          <br />
+          Se te recomienda usar las credenciales de demo para probar la
+          aplicación:
+          <br />
+          <br />
+          <span className="demo-label">Email:</span> <span>demo@demo.es</span>
+          <br />
+          <span className="demo-label">Contraseña:</span> <span>1234</span>
+          <br />
+        
         </p>
       </div>
       <Toaster />
