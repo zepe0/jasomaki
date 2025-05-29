@@ -7,15 +7,18 @@ function Demo() {
     <section className="demo-container">
       <h1>Demo Page</h1>
       <p className="text">
-        Es una APP Demo diseñada MobileFirst. La aplicación incluye varias rutas
+        Es una APP Demo diseñada para móviles. La aplicación incluye varias rutas
         y componentes que simulan un sistema de gestión de inscripciones y
         participantes.
       </p>
-
+      <p className="text">       
+        Actualmente se encuentra con migración de Api puedes experimentar
+        errores en la asignación de trajes.
+      </p>
       <p className="text">
-        Para empezar puede hacer clic a {" "}
+        Para empezar puede hacer clic en{" "}
         <Link to="/Login" className="btn btn-primary">
-          Ir a Login
+         {" "} Login ↪ 
         </Link>
       </p>
     </section>

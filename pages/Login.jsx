@@ -92,18 +92,16 @@ function Login() {
           No tienes Cuenta <a href="/register">Regístrate</a>
         </p>
         <p className="demo-credentials">
-          Esta diseñada para ser usada en dispositivos móviles y tablets.
-          <br />
-          <br />
-          Se te recomienda usar las credenciales de demo para probar la
-          aplicación:
-          <br />
-          <br />
           <span className="demo-label">Email:</span> <span>demo@demo.es</span>
           <br />
           <span className="demo-label">Contraseña:</span> <span>1234</span>
           <br />
-        
+          <br></br>
+          Se te recomienda usar las credenciales de demo para probar la
+          aplicación:
+          <br />
+          <br />
+          Esta diseñada para ser usada en dispositivos móviles y tablets.
         </p>
       </div>
       <Toaster />
